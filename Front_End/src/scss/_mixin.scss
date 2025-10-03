@@ -1,0 +1,7 @@
+@mixin search-btn($color) {
+    border: none;
+    border-radius: 10px;
+    padding: 5px 15px;
+    color: #dee2e6;
+    background-color: $color;
+}
