@@ -1,7 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { promises as fs } from 'fs'
-import { v4 as uuidv4 } from 'uuid'
 import { todoSchema } from '../validations/validator.js';
 
 const __filename = fileURLToPath(import.meta.url)
@@ -34,52 +33,41 @@ export const getTodoById = async (req, res, next) => {
 
 export const searchTodo = async (req, res, next) => {
   try {
-    const data = await fs.readFile(dbFile, 'utf-8')
-    const todos = JSON.parse(data)
+    const data = await fs.readFile(dbFile, 'utf-8');
+    const todos = JSON.parse(data);
 
-    const query = req.params.str.toLowerCase()
-    const todo = todos.filter(
-      (t) =>
-        !t.is_completed &&
-        (t.title.toLowerCase().includes(query) ||
-          t.tags.toLowerCase().includes(query))
-    )
+    const query = req.params.str.toLowerCase();
+    
+    const todo = todos.filter((t) => {
+      if (t.is_completed) {
+        return false;
+      }
 
-    if (!todo) {
-      const error = new Error(`No search result found.`)
-      error.statusCode = 404
-      throw error
+      const titleMatch = t.title.toLowerCase().includes(query);
+      const tagsMatch = t.tags.some(tag => tag.toLowerCase().includes(query));
+
+      return titleMatch || tagsMatch;
+    });
+
+    if (todo.length === 0) {
+      const error = new Error(`No search result found.`);
+      error.statusCode = 404;
+      throw error;
     }
-    res.json(todo)
+    
+    res.json(todo);
 
   } catch (err) {
-    next(err)
+    next(err);
   }
-}
+};
 
 export const createTodo = async (req, res, next) => {
   try {
     const data = await fs.readFile(dbFile, 'utf-8')
     const todos = JSON.parse(data)
 
-    const validatedBody = await todoSchema.validate(req.body, { abortEarly: false });
-
-    if (!req.body.title) {
-      const error = new Error(`Title not Found.`)
-      error.statusCode = 404
-      throw error
-    }
-
-    const newTodo = {
-      // id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
-      id: uuidv4(),
-      title: validatedBody.title,
-      creation_time: Date.now(),
-      is_completed: false,
-      tags: validatedBody.tags || '',
-      is_important: validatedBody.is_important || false,
-      updated_at: Date.now(),
-    }
+    const newTodo = await todoSchema.validate(req.body, { abortEarly: false, stripUnknown: true });
 
     todos.push(newTodo)
     await fs.writeFile(dbFile, JSON.stringify(todos, null, 2))
