@@ -2,6 +2,7 @@ import express from 'express';
 import {
   getAllTodos,
   getTodoById,
+  searchTodo,
   createTodo,
   updateTodo,
   deleteTodo
@@ -14,6 +15,8 @@ const router = express.Router()
 router.get('/', getAllTodos);
 
 router.get('/:id', getTodoById);
+
+router.get('/search/:str', searchTodo);
 
 router.post('/', createTodo);
 

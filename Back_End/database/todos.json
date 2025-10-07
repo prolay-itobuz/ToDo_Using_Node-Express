@@ -4,8 +4,8 @@
     "title": "Testing1",
     "creation_time": 1759831675867,
     "is_completed": false,
-    "tags": "UUid",
+    "tags": "UUID",
     "is_important": true,
-    "updated_at": 1759831695836
+    "updated_at": 1759833262357
   }
 ]

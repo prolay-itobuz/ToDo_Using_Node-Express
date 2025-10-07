@@ -31,6 +31,31 @@ export const getTodoById = async (req, res, next) => {
   }
 }
 
+export const searchTodo = async (req, res, next) => {
+  try {
+    const data = await fs.readFile(dbFile, 'utf-8')
+    const todos = JSON.parse(data)
+
+    const query = req.params.str.toLowerCase()
+    const todo = todos.filter(
+      (t) =>
+        !t.is_completed &&
+        (t.title.toLowerCase().includes(query) ||
+          t.tags.toLowerCase().includes(query))
+    )
+
+    if (!todo) {
+      const error = new Error(`No search result found.`)
+      error.statusCode = 404
+      throw error
+    }
+    res.json(todo)
+    
+  } catch (err) {
+    next(err)
+  }
+}
+
 export const createTodo = async (req, res, next) => {
   try {
     const data = await fs.readFile(dbFile, 'utf-8')
@@ -43,7 +68,7 @@ export const createTodo = async (req, res, next) => {
     }
 
     const newTodo = {
-        // id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
+      // id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
       id: uuidv4(),
       title: req.body.title,
       creation_time: Date.now(),
