@@ -1,6 +1,7 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { promises as fs } from 'fs'
+import { v4 as uuidv4 } from 'uuid'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -15,8 +16,8 @@ export const getTodoById = async (req, res, next) => {
     const data = await fs.readFile(dbFile, 'utf-8')
     const todos = JSON.parse(data)
 
-    const id = parseInt(req.params.id)
-    const todo = todos.find((t) => t.id === id) // it will give only the selected id
+    const id = req.params.id
+    const todo = todos.find((t) => t.id === id)
 
     if (!todo) {
       const error = new Error(`Todo with id ${id} not found`)
@@ -38,11 +39,12 @@ export const createTodo = async (req, res, next) => {
     if (!req.body.title) {
       const error = new Error(`Title not Found.`)
       error.statusCode = 404
-      throw error;
+      throw error
     }
 
     const newTodo = {
-      id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
+        // id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
+      id: uuidv4(),
       title: req.body.title,
       creation_time: Date.now(),
       is_completed: false,
@@ -61,15 +63,17 @@ export const createTodo = async (req, res, next) => {
   }
 }
 
-export const updateTodo = async (req, res) => {
+export const updateTodo = async (req, res, next) => {
   try {
     const data = await fs.readFile(dbFile, 'utf-8')
     const todos = JSON.parse(data)
-    const id = parseInt(req.params.id)
+    const id = req.params.id
     const index = todos.findIndex((todo) => todo.id === id)
 
     if (index === -1) {
-      return res.status(404).json({ error: 'Todo not found' })
+      const error = new Error(`Todo with id ${id} not found.`)
+      error.statusCode = 404
+      throw error
     }
 
     todos[index] = {
@@ -83,20 +87,21 @@ export const updateTodo = async (req, res) => {
     console.log(`Todo ${id} updated:`, todos[index])
     res.json({ message: 'Todo updated successfully', todo: todos[index] })
   } catch (err) {
-    console.error('Error updating todo:', err)
-    res.status(500).json({ error: 'Failed to update todo' })
+    next(err)
   }
 }
 
-export const deleteTodo = async (req, res) => {
+export const deleteTodo = async (req, res, next) => {
   try {
     const data = await fs.readFile(dbFile, 'utf-8')
     const todos = JSON.parse(data)
-    const id = parseInt(req.params.id)
+    const id = req.params.id
     const todoIndex = todos.findIndex((todo) => todo.id === id)
 
     if (todoIndex === -1) {
-      return res.status(404).json({ error: 'Todo not found' })
+      const error = new Error(`Todo with id ${id} not found.`)
+      error.statusCode = 404
+      throw error
     }
 
     todos.splice(todoIndex, 1)
@@ -105,7 +110,6 @@ export const deleteTodo = async (req, res) => {
     console.log(`Todo ${id} deleted`)
     res.json({ message: 'Todo deleted successfully', id })
   } catch (err) {
-    console.error('Error deleting todo:', err)
-    res.status(500).json({ error: 'Failed to delete todo' })
+    next(err)
   }
 }
