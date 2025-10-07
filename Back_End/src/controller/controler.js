@@ -2,6 +2,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { promises as fs } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
+import { todoSchema } from '../validations/validator.js';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -50,7 +51,7 @@ export const searchTodo = async (req, res, next) => {
       throw error
     }
     res.json(todo)
-    
+
   } catch (err) {
     next(err)
   }
@@ -61,6 +62,8 @@ export const createTodo = async (req, res, next) => {
     const data = await fs.readFile(dbFile, 'utf-8')
     const todos = JSON.parse(data)
 
+    const validatedBody = await todoSchema.validate(req.body, { abortEarly: false });
+
     if (!req.body.title) {
       const error = new Error(`Title not Found.`)
       error.statusCode = 404
@@ -70,11 +73,11 @@ export const createTodo = async (req, res, next) => {
     const newTodo = {
       // id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
       id: uuidv4(),
-      title: req.body.title,
+      title: validatedBody.title,
       creation_time: Date.now(),
       is_completed: false,
-      tags: req.body.tags || '',
-      is_important: req.body.is_important || false,
+      tags: validatedBody.tags || '',
+      is_important: validatedBody.is_important || false,
       updated_at: Date.now(),
     }
 
