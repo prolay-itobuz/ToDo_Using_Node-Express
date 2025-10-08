@@ -26,6 +26,22 @@ export async function fetchTodoById(id) {
   }
 }
 
+//search request
+export async function searchData(q) {
+  try {
+    const res = await fetch(`${ownAPI}search/${q}`);
+    if (!res.ok) {
+      throw new Error(`Todo not found`);
+    }
+    const todo = await res.json();
+    return todo;
+  } 
+  catch (err) {
+    console.error("Error fetching todo:", err);
+    return null;
+  }
+}
+
 
 // post request
 export async function addTodo(text) {

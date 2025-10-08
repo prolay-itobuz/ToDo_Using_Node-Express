@@ -12,10 +12,11 @@
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.93.2",
-    "vite": "^7.1.7"
+    "vite": "^7.1.9"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "uuid": "^13.0.0"
   }
 }

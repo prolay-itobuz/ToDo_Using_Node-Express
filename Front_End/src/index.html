@@ -1,246 +1,265 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>ToDo List</title>
-    <script type="module" src="./js/main.js" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>ToDo List</title>
+  <script type="module" src="./js/main.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 
-<body style="background-color: #121212;">
-    <div class="toast d-none d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
-        <i class="fa fa-check-circle"></i>
-        <p class="m-0">Task Successfully added.</p>
-    </div>
+<body style="background-color: #121212">
+  <div class="toast d-none d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
+    <i class="fa fa-check-circle"></i>
+    <p class="m-0">Task Successfully added.</p>
+  </div>
 
-    <div class="task-manager">
-        <header class="task-manager__header">
-            <h1 class="task-manager__title">Task Manager</h1>
-            <p class="task-manager__subtitle">Organize your tasks efficiently</p>
-        </header>
+  <div class="task-manager">
+    <!-- header section -->
+    <header class="task-manager__header">
+      <h1 class="task-manager__title">Task Manager</h1>
+      <p class="task-manager__subtitle">Organize your tasks efficiently</p>
+    </header>
 
-        <section class="task-manager__add-task">
-            <h3 class="task-manager__form-title">Add New Task</h3>
-            <form id="addTodo-form">
-                <div class="task-manager__form-group">
-                    <label for="taskTitle" class="task-manager__label">Task Title</label>
-                    <input type="text" class="form-control task-manager__input border-danger" id="taskTitle"
-                        placeholder="Enter task title">
-                    <p class="text-danger d-none" id="errMsg">* Please Enter Task Details</p>
-                </div>
-
-                <div class="task-manager__form-group">
-                    <div class="form-check">
-                        <input class="form-check-input task-manager__checkbox" type="checkbox" id="isImportant">
-                        <label class="form-check-label task-manager__label" for="isImportant">
-                            Mark as Important
-                        </label>
-                    </div>
-                </div>
-
-                <div class="task-manager__form-group">
-                    <label class="task-manager__label">Tags (Optional)</label>
-                    <input type="text" class="form-control task-manager__input" id="taskTags" placeholder="Enter tags">
-                </div>
-
-                <button type="submit" class="btn task-manager__btn task-manager__btn--primary">
-                    <i class="fa fa-plus me-2"></i>Add Task
-                </button>
-            </form>
-        </section>
-
-        <section class="task-manager__active-tasks">
-            <div class="grp d-flex justify-content-between flex-column flex-sm-row">
-                <h3 class="task-manager__section-title">Active Tasks</h3>
-                <form class="task-manager__search-grp d-flex gap-2" id="searchForm">
-                    <input type="text" id="searchInput" placeholder="Search Here..."
-                        class="task-manager__section-search w-75">
-                    <button class="task-manager__search-btn w-25 p-1" id="searchBtn">Search</button>
-                    <button class="task-manager__reset-btn w-25 p-1 d-none" id="resetBtn"
-                        onclick="window.location.reload()"><i class="fas fa-undo me-1"></i></button>
-                </form>
-
-            </div>
-
-            <div class="task-manager__tasks">
-                <div class="d-flex flex-column gap-3 d-none" id="searchTasks">
-                    <!-- Searched Tasks -->
-                    <div class="task-manager__empty-state d-none p-0" id="nosearch">
-                        <div class="task-manager__empty-icon">
-                            <i class="fa-solid fa-clipboard-list"></i>
-                        </div>
-                        <h5>No Result found</h5>
-                        <p>Reset and search again for result.</p>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-column gap-3" id="importantTasks">
-                    <!-- Important Tasks -->
-                </div>
-
-                <div class="d-flex flex-column gap-3" id="regularTasks">
-                    <!-- Regular Tasks -->
-                </div>
-
-                <!-- Empty State -->
-                <div class="task-manager__empty-state d-none p-0" id="noTask">
-                    <div class="task-manager__empty-icon">
-                        <i class="fa-solid fa-clipboard-list"></i>
-                    </div>
-                    <h5>No active tasks</h5>
-                    <p>Add a new task to get started</p>
-                </div>
-
-            </div>
-        </section>
-
-        <section class="task-manager__completed-section">
-            <h3 class="task-manager__section-title">Completed Tasks</h3>
-
-            <div class="task-manager__tasks" id="completeTasks">
-                <!-- Completed Task -->
-
-
-                <!-- Empty State -->
-                <div class="task-manager__empty-state d-none" id="noTask_complete">
-                    <div class="task-manager__empty-icon">
-                        <i class="fa fa-check-circle"></i>
-                    </div>
-                    <h5>No completed tasks</h5>
-                    <p>Complete some tasks to see them here</p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content" id="delModal">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm Delete?</h1>
-                    <button type="button" class="btn-close text-light" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this item?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary bg-danger border-danger">Delete</button>
-                </div>
-            </form>
+    <!-- add task section -->
+    <section class="task-manager__add-task">
+      <h3 class="task-manager__form-title">Add New Task</h3>
+      <form id="addTodo-form">
+        <div class="task-manager__form-group">
+          <label for="taskTitle" class="task-manager__label">Task Title</label>
+          <input type="text" class="form-control task-manager__input border-danger" id="taskTitle"
+            placeholder="Enter task title" />
+          <p class="text-danger d-none" id="errMsg">
+            * Please Enter Task Details
+          </p>
         </div>
-    </div>
 
-    <!-- Edit task Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content" id="editModal">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Task</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body d-flex flex-column gap-2">
-                    <input type="text" class="form-control task-manager__input border-danger" id="editTitle"
-                        placeholder="Enter task title">
-                    <p class="text-danger d-none" id="editErr">* Please Fill the details</p>
-                    <input type="text" class="form-control task-manager__input" id="editTags" placeholder="Enter tags">
-                    <div class="form-check">
-                        <input class="form-check-input task-manager__checkbox" type="checkbox" id="editImportant">
-                        <label class="form-check-label task-manager__label" for="isImportant">
-                            Mark as Important
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update changes</button>
-                </div>
-            </form>
+        <div class="task-manager__form-group">
+          <div class="form-check">
+            <input class="form-check-input task-manager__checkbox" type="checkbox" id="isImportant" />
+            <label class="form-check-label task-manager__label" for="isImportant">
+              Mark as Important
+            </label>
+          </div>
         </div>
-    </div>
 
+        <div class="task-manager__form-group">
+          <label class="task-manager__label">Tags (Optional)</label>
+          <input type="text" class="form-control task-manager__input" id="taskTags" placeholder="Enter tags" />
+        </div>
+
+        <button type="submit" class="btn task-manager__btn task-manager__btn--primary">
+          <i class="fa fa-plus me-2"></i>Add Task
+        </button>
+      </form>
+    </section>
+
+
+
+      <!-- task management nav -->
+      <nav class="grp d-flex justify-content-between flex-column gap-3 flex-sm-row gap-sm-0">
+
+        <!-- Toggle Buttons -->
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+          <input type="radio" class="btn-check" name="btnradio" id="importantBtn" autocomplete="off" checked />
+          <label class="btn btn-outline-primary" for="importantBtn">Important</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="activeButton" autocomplete="off" />
+          <label class="btn btn-outline-primary" for="activeButton">Active</label>
+
+          <input type="radio" class="btn-check" name="btnradio" id="completeBtn" autocomplete="off" />
+          <label class="btn btn-outline-primary" for="completeBtn">Complete</label>
+        </div>
+
+        <!-- search Box section -->
+        <form class="task-manager__search-grp d-flex gap-2" id="searchForm">
+          <input type="text" id="searchInput" placeholder="Search Here..." class="task-manager__section-search w-75" />
+          <button class="task-manager__search-btn w-25 p-1" id="searchBtn">
+            Search
+          </button>
+          <button class="task-manager__reset-btn w-25 p-1 d-none" id="resetBtn" onclick="window.location.reload()">
+            <i class="fas fa-undo me-1"></i>
+          </button>
+        </form>
+
+      </nav>
+
+      <div class="task-manager__tasks">
+
+        <!-- Searched Tasks -->
+        <!-- <div class="d-flex flex-column gap-3 d-none" id="searchTasks">
+          <div class="task-manager__empty-state d-none p-0" id="nosearch">
+            <div class="task-manager__empty-icon">
+              <i class="fa-solid fa-clipboard-list"></i>
+            </div>
+            <h5>No Result found</h5>
+            <p>Reset and search again for result.</p>
+          </div>
+        </div> -->
+
+        <div class="d-flex flex-column gap-3" id="importantTasks">
+          <!-- Important Tasks -->
+        </div>
+
+        <div class="d-flex flex-column gap-3" id="regularTasks">
+          <!-- Regular Tasks -->
+        </div>
+
+        <div class="task-manager__tasks" id="completeTasks">
+        <!-- Completed Task -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="task-manager__empty-state d-none p-0" id="noTask">
+          <div class="task-manager__empty-icon">
+            <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+          <h5>No tasks found.</h5>
+          <p>Add a new task to get started</p>
+        </div>
+
+      </div>
+
+
+     
+
+
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" id="delModal">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">
+            Confirm Delete?
+          </h1>
+          <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this item?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary bg-danger border-danger">
+            Delete
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit task Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <form class="modal-content" id="editModal">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Task</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex flex-column gap-2">
+          <input type="text" class="form-control task-manager__input border-danger" id="editTitle"
+            placeholder="Enter task title" />
+          <p class="text-danger d-none" id="editErr">
+            * Please Fill the details
+          </p>
+          <input type="text" class="form-control task-manager__input" id="editTags" placeholder="Enter tags" />
+          <div class="form-check">
+            <input class="form-check-input task-manager__checkbox" type="checkbox" id="editImportant" />
+            <label class="form-check-label task-manager__label" for="editImportant">
+              Mark as Important
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Update changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 <script>
+  async function changeStatus(taskId) {
+    const url = `http://localhost:8000/${taskId}`;
+    // const url = `https://h2jwk8pv-8000.inc1.devtunnels.ms/${taskId}`;
 
-    async function changeStatus(taskId) {
-        const url = `http://localhost:8000/${taskId}`;
-        // const url = `https://h2jwk8pv-8000.inc1.devtunnels.ms/${taskId}`;
+    const res = await fetch(url);
+    const todo = await res.json();
 
-        const res = await fetch(url);
-        const todo = await res.json();
-
-        if (todo.is_completed === false) {
-            const result = await fetch(url, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "is_completed": true })
-            });
-            const updated = await result.json();
-        }
-        else {
-            const result = await fetch(url, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "is_completed": false })
-            });
-            const updated = await result.json();
-        }
-        window.location.reload()
+    if (todo.is_completed === false) {
+      const result = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_completed: true }),
+      });
+      const updated = await result.json();
+    } else {
+      const result = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_completed: false }),
+      });
+      const updated = await result.json();
     }
+    window.location.reload();
+  }
 
-    async function changeImportance(taskId) {
-        const url = `http://localhost:8000/${taskId}`;
-        // const url = `https://h2jwk8pv-8000.inc1.devtunnels.ms/${taskId}`;
+  async function changeImportance(taskId) {
+    const url = `http://localhost:8000/${taskId}`;
+    // const url = `https://h2jwk8pv-8000.inc1.devtunnels.ms/${taskId}`;
 
-        const res = await fetch(url);
-        const todo = await res.json();
+    const res = await fetch(url);
+    const todo = await res.json();
 
-        if (todo.is_important === false) {
-            const result = await fetch(url, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "is_important": true })
-            });
-            const updated = await result.json();
-        }
-        else {
-            const res = await fetch(url, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "is_important": false })
-            });
-            const updated = await res.json();
-        }
-        window.location.reload()
+    if (todo.is_important === false) {
+      const result = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_important: true }),
+      });
+      const updated = await result.json();
+    } else {
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ is_important: false }),
+      });
+      const updated = await res.json();
     }
+    window.location.reload();
+  }
 
-    function delTask(taskId) {
-        const delModalForm = document.getElementById("delModal")
-        delModalForm.setAttribute('data-id', taskId)
-    }
+  function delTask(taskId) {
+    const delModalForm = document.getElementById("delModal");
+    delModalForm.setAttribute("data-id", taskId);
+  }
 
-    async function editTask(taskId) {
-        const editModalForm = document.getElementById("editModal")
-        editModalForm.setAttribute('data-id', taskId)
-        const editTitle = document.getElementById("editTitle")
-        const editTags = document.getElementById("editTags")
-        const is_important = document.getElementById("editImportant")
+  async function editTask(taskId) {
+    const editModalForm = document.getElementById("editModal");
+    editModalForm.setAttribute("data-id", taskId);
+    const editTitle = document.getElementById("editTitle");
+    const editTags = document.getElementById("editTags");
+    const is_important = document.getElementById("editImportant");
 
-        const url = `http://localhost:8000/${taskId}`;
-        // const url = `https://h2jwk8pv-8000.inc1.devtunnels.ms/${taskId}`;
-        const res = await fetch(url);
-        const todo = await res.json();
+    const url = `http://localhost:8000/${taskId}`;
+    // const url = `https://h2jwk8pv-8000.inc1.devtunnels.ms/${taskId}`;
+    const res = await fetch(url);
+    const todo = await res.json();
 
-        editTitle.value = todo.title
-        editTags.value = todo.tags
-        is_important.checked = todo.is_important
-    }
+    editTitle.value = todo.title;
+    editTags.value = todo.tags;
+    is_important.checked = todo.is_important;
+  }
+  
 </script>
 
 </html>
