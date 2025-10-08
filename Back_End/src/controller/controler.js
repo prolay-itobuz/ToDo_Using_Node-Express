@@ -1,37 +1,32 @@
-// import path from 'path'
-// import { fileURLToPath } from 'url'
-// import { promises as fs } from 'fs'
-import { todoSchema } from '../validations/validator.js';
-import Task from '../models/tasks.js';
+import { todoSchema, validateRequest } from '../validations/validator.js'
+import Task from '../models/tasks.js'
 
+export const getAllTodos = async (req, res, next) => {
+  try {
+    const allData = await Task.find({})
+    res.send(allData)
+  } catch (err) {
+    next(err)
+  }
+}
 
-// const __filename = fileURLToPath(import.meta.url)
-// const __dirname = path.dirname(__filename)
-// const dbFile = path.join(__dirname, '../../database/todos.json')
+export const getTodoById = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    console.log(id)
+    const todo = await Task.findById(id)
 
-// export const getAllTodos = (req, res) => {
-//   res.sendFile(dbFile)
-// }
+    if (!todo) {
+      const error = new Error(`Todo with id ${id} not found`)
+      error.statusCode = 404
+      throw error
+    }
 
-// export const getTodoById = async (req, res, next) => {
-//   try {
-//     const data = await fs.readFile(dbFile, 'utf-8')
-//     const todos = JSON.parse(data)
-
-//     const id = req.params.id
-//     const todo = todos.find((t) => t.id === id)
-
-//     if (!todo) {
-//       const error = new Error(`Todo with id ${id} not found`)
-//       error.statusCode = 404
-//       throw error
-//     }
-
-//     res.json(todo)
-//   } catch (err) {
-//     next(err)
-//   }
-// }
+    res.status(200).json(todo)
+  } catch (err) {
+    next(err)
+  }
+}
 
 // export const searchTodo = async (req, res, next) => {
 //   try {
@@ -39,7 +34,7 @@ import Task from '../models/tasks.js';
 //     const todos = JSON.parse(data);
 
 //     const query = req.params.str.toLowerCase();
-    
+
 //     const todo = todos.filter((t) => {
 //       if (t.is_completed) {
 //         return false;
@@ -56,7 +51,7 @@ import Task from '../models/tasks.js';
 //       error.statusCode = 404;
 //       throw error;
 //     }
-    
+
 //     res.json(todo);
 
 //   } catch (err) {
@@ -66,46 +61,31 @@ import Task from '../models/tasks.js';
 
 export const postDocument = async (req, res, next) => {
   try {
-
-    const validatedData = await todoSchema.validate(req.body, { abortEarly: false, stripUnknown: true });
-    const newTodo = new Task(validatedData);
-    await newTodo.save();
+    const validatedData = await validateRequest(todoSchema, req.body, next)
+    const newTodo = new Task(validatedData)
+    await newTodo.save()
 
     console.log('New Todo Added:', newTodo)
     res.status(201).json({ message: 'Todo added successfully', todo: newTodo })
-
   } catch (err) {
     next(err)
   }
 }
 
-// export const updateTodo = async (req, res, next) => {
-//   try {
-//     const data = await fs.readFile(dbFile, 'utf-8')
-//     const todos = JSON.parse(data)
-//     const id = req.params.id
-//     const index = todos.findIndex((todo) => todo.id === id)
+export const updateTodo = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    const updatedTodo = await Task.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    })
 
-//     if (index === -1) {
-//       const error = new Error(`Todo with id ${id} not found.`)
-//       error.statusCode = 404
-//       throw error
-//     }
-
-//     todos[index] = {
-//       ...todos[index],
-//       ...req.body,
-//       updated_at: Date.now(),
-//     }
-
-//     await fs.writeFile(dbFile, JSON.stringify(todos, null, 2))
-
-//     console.log(`Todo ${id} updated:`, todos[index])
-//     res.json({ message: 'Todo updated successfully', todo: todos[index] })
-//   } catch (err) {
-//     next(err)
-//   }
-// }
+    console.log(`Todo ${id} updated:`, todos[index])
+    res.json({ message: 'Todo updated successfully', todo: todos[index] })
+  } catch (err) {
+    next(err)
+  }
+}
 
 // export const deleteTodo = async (req, res, next) => {
 //   try {

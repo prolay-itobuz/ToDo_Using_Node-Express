@@ -1,7 +1,7 @@
 import express from 'express';
 import {
-  // getAllTodos,
-  // getTodoById,
+  getAllTodos,
+  getTodoById,
   // searchTodo,
   postDocument,
   // updateTodo,
@@ -12,9 +12,9 @@ import {
 const router = express.Router()
 
 
-// router.get('/', getAllTodos);
+router.get('/', getAllTodos);
 
-// router.get('/:id', getTodoById);
+router.get('/:id', getTodoById);
 
 // router.get('/search/:str', searchTodo);
 
