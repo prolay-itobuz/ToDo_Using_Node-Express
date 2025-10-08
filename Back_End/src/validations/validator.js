@@ -11,3 +11,4 @@ export const todoSchema = yup.object({
   is_important: yup.boolean().default(false),
   updated_at: yup.number().default(() => Date.now()),
 });
+
