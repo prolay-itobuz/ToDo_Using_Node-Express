@@ -1,4 +1,3 @@
-import { todoSchema, validateRequest } from '../validations/validator.js'
 import Task from '../models/tasks.js'
 
 export const getAllTodos = async (req, res, next) => {
@@ -13,7 +12,6 @@ export const getAllTodos = async (req, res, next) => {
 export const getTodoById = async (req, res, next) => {
   try {
     const id = req.params.id
-    console.log(id)
     const todo = await Task.findById(id)
 
     if (!todo) {
@@ -61,8 +59,7 @@ export const getTodoById = async (req, res, next) => {
 
 export const postDocument = async (req, res, next) => {
   try {
-    const validatedData = await validateRequest(todoSchema, req.body, next)
-    const newTodo = new Task(validatedData)
+    const newTodo = new Task(req.body)
     await newTodo.save()
 
     console.log('New Todo Added:', newTodo)
@@ -75,37 +72,42 @@ export const postDocument = async (req, res, next) => {
 export const updateTodo = async (req, res, next) => {
   try {
     const id = req.params.id
+
     const updatedTodo = await Task.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     })
 
-    console.log(`Todo ${id} updated:`, todos[index])
-    res.json({ message: 'Todo updated successfully', todo: todos[index] })
+    if (!updatedTodo) {
+      const error = new Error(`Todo with id ${id} not found.`)
+      error.statusCode = 404
+      throw error
+    }
+
+    console.log(`Todo ${id} updated:`, updatedTodo)
+    res
+      .status(200)
+      .json({ message: 'Todo updated successfully', todo: updatedTodo })
   } catch (err) {
     next(err)
   }
 }
 
-// export const deleteTodo = async (req, res, next) => {
-//   try {
-//     const data = await fs.readFile(dbFile, 'utf-8')
-//     const todos = JSON.parse(data)
-//     const id = req.params.id
-//     const todoIndex = todos.findIndex((todo) => todo.id === id)
+export const deleteTodo = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    const deletedTodo = await Task.findByIdAndDelete(id)
 
-//     if (todoIndex === -1) {
-//       const error = new Error(`Todo with id ${id} not found.`)
-//       error.statusCode = 404
-//       throw error
-//     }
-
-//     todos.splice(todoIndex, 1)
-//     await fs.writeFile(dbFile, JSON.stringify(todos, null, 2))
-
-//     console.log(`Todo ${id} deleted`)
-//     res.json({ message: 'Todo deleted successfully', id })
-//   } catch (err) {
-//     next(err)
-//   }
-// }
+    if (!deletedTodo) {
+      const error = new Error(`Todo with id ${id} not found.`)
+      error.statusCode = 404
+      throw error
+    }
+    console.log(`Todo ${id} deleted`)
+    res
+      .status(200)
+      .json({ message: 'Todo deleted successfully', id: deletedTodo._id })
+  } catch (err) {
+    next(err)
+  }
+}
