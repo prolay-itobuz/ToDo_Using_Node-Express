@@ -1,8 +1,10 @@
+import * as bootstrap from "bootstrap";
 import * as API from "./api.js";
 console.log("Welcome to ToDo FrontEnd");
 
 // Display The task Cards
-async function init() {
+export default async function init() {
+  console.log("Init Called");
   const searchBox = document.getElementById("searchInput");
   const searchTasks_section = document.getElementById("searchTasks");
 
@@ -12,17 +14,19 @@ async function init() {
   const importantBtn = document.getElementById("importantBtn");
   const activeButton = document.getElementById("activeButton");
   const completeBtn = document.getElementById("completeBtn");
+  const allBtn = document.getElementById("allBtn");
 
   //   tasks sections
   const importantTasks_section = document.getElementById("importantTasks");
   const regularTasks_section = document.getElementById("regularTasks");
   const completeTasks_section = document.getElementById("completeTasks");
-  const noTask_section = document.getElementById("noTask");
+  const allTasks_section = document.getElementById("allTasks");
 
   function hideAllCards() {
+    completeTasks_section.classList.add("d-none");
     importantTasks_section.classList.add("d-none");
     regularTasks_section.classList.add("d-none");
-    completeTasks_section.classList.add("d-none");
+    allTasks_section.classList.add("d-none");
   }
 
   function showSelectedCard() {
@@ -32,9 +36,12 @@ async function init() {
     } else if (activeButton.checked) {
       hideAllCards();
       regularTasks_section.classList.remove("d-none");
-    } else if (completeBtn.checkVisibility) {
+    } else if (completeBtn.checked) {
       hideAllCards();
       completeTasks_section.classList.remove("d-none");
+    } else if (allBtn.checked) {
+      hideAllCards();
+      allTasks_section.classList.remove("d-none");
     }
   }
 
@@ -42,18 +49,20 @@ async function init() {
     radio.addEventListener("change", showSelectedCard);
   });
 
-  showSelectedCard();
+  importantTasks_section.innerHTML = "";
+  regularTasks_section.innerHTML = "";
+  completeTasks_section.innerHTML = "";
+  allTasks_section.innerHTML = "";
 
   const tasks = await API.fetchTodos();
 
-  if (tasks.length === 0) {
-    noTask_section.classList.remove("d-none");
-  }
+  let completeCount = 0,
+    activeCount = 0,
+    allCount = 0,
+    importantCount = 0;
 
   for (let i = 0; i < tasks.length; i++) {
-    if (!tasks[i].is_completed) {
-      if (tasks[i].is_important) {
-        importantTasks_section.innerHTML += `<div class="task-manager__task-card task-manager__task-card--important">
+    let impHTML = `<div class="task-manager__task-card task-manager__task-card--important">
                         <div class="task-manager__task-header">
                             <div>
                                 <h4 class="task-manager__task-title">${
@@ -65,7 +74,9 @@ async function init() {
                             </div>
                         </div>
 
-                        <div class="task-manager__task-tags">
+                        <div class="task-manager__task-tags ${
+                          tasks[i].tags[0] == "" ? "d-none" : ""
+                        }">
                             ${tasks[i].tags
                               .map(
                                 (tag) =>
@@ -76,29 +87,28 @@ async function init() {
 
                         <div class="task-manager__task-actions">
                             <button class="btn task-manager__action-btn task-manager__action-btn--complete" onclick="changeStatus('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')">
                                 <i class="fa fa-check me-1"></i> Complete
                             </button>
                             <button class="btn task-manager__action-btn task-manager__action-btn--important" onclick="changeImportance('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')">
                                 <i class="fa fa-star me-1"></i> Not Important
                             </button>
                             <button class="btn task-manager__action-btn task-manager__action-btn--edit" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editTask('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')">
                                 <i class="fa fa-edit me-1"></i> Edit
                             </button>
                             <button class="btn task-manager__action-btn task-manager__action-btn--delete" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="delTask('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')">
                                 <i class="fa fa-trash me-1"></i> Delete
                             </button>
                         </div>
                     </div>`;
-      } else {
-        regularTasks_section.innerHTML += `<div class="task-manager__task-card">
+    let activeHTML = `<div class="task-manager__task-card">
                         <div class="task-manager__task-header">
                             <div>
                                 <h4 class="task-manager__task-title">${
@@ -106,8 +116,9 @@ async function init() {
                                 }</h4>
                             </div>
                         </div>
-
-                        <div class="task-manager__task-tags">
+                        <div class="task-manager__task-tags ${
+                          tasks[i].tags[0] == "" ? "d-none" : ""
+                        }">
                             ${tasks[i].tags
                               .map(
                                 (tag) =>
@@ -118,30 +129,28 @@ async function init() {
 
                         <div class="task-manager__task-actions">
                             <button class="btn task-manager__action-btn task-manager__action-btn--complete" onclick="changeStatus('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')">
                                 <i class="fa fa-check me-1"></i> Complete
                             </button>
                             <button class="btn task-manager__action-btn task-manager__action-btn--important" onclick="changeImportance('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')" >
                                 <i class="fa fa-star me-1"></i> Important
                             </button>
                             <button class="btn task-manager__action-btn task-manager__action-btn--edit" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editTask('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')">
                                 <i class="fa fa-edit me-1"></i> Edit
                             </button>
                             <button class="btn task-manager__action-btn task-manager__action-btn--delete" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="delTask('${
-                              tasks[i].id
+                              tasks[i]._id
                             }')">
                                 <i class="fa fa-trash me-1"></i> Delete
                             </button>
                         </div>
                     </div>`;
-      }
-    } else {
-      completeTasks_section.innerHTML += `<div class="task-manager__task-card task-manager__task-card--completed">
+    let completeHTML = `<div class="task-manager__task-card task-manager__task-card--completed">
                     <div class="task-manager__task-header">
                         <div>
                             <h4 class="task-manager__task-title task-manager__task-title--completed">${
@@ -150,7 +159,9 @@ async function init() {
                         </div>
                     </div>
 
-                    <div class="task-manager__task-tags">
+                    <div class="task-manager__task-tags ${
+                      tasks[i].tags[0] == "" ? "d-none" : ""
+                    }">
                         ${tasks[i].tags
                           .map(
                             (tag) =>
@@ -161,28 +172,82 @@ async function init() {
 
                     <div class="task-manager__task-actions">
                         <button class="btn task-manager__action-btn task-manager__action-btn--complete" onclick="changeStatus('${
-                          tasks[i].id
+                          tasks[i]._id
                         }')">
                             <i class="fas fa-undo me-1"></i> Not Complete
                         </button>
                         <button class="btn task-manager__action-btn task-manager__action-btn--delete" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="delTask('${
-                          tasks[i].id
+                          tasks[i]._id
                         }')">
                             <i class="fas fa-trash me-1"></i> Delete
                         </button>
                     </div>
                 </div>`;
+
+    if (!tasks[i].isCompleted) {
+      allCount += 1;
+      if (tasks[i].isImportant) {
+        importantCount += 1;
+
+        importantTasks_section.innerHTML += impHTML;
+        allTasks_section.innerHTML += impHTML;
+      } else {
+        activeCount += 1;
+
+        regularTasks_section.innerHTML += activeHTML;
+        allTasks_section.innerHTML += activeHTML;
+      }
+    } else {
+      completeCount += 1;
+      completeTasks_section.innerHTML += completeHTML;
     }
   }
+  if (!completeCount) {
+    completeTasks_section.innerHTML = `<div class="task-manager__empty-state p-0" id="noTask">
+          <div class="task-manager__empty-icon">
+            <i class="fa-solid fa-check-circle"></i>
+          </div>
+          <h5>No Complete Tasks.</h5>
+          <p>Add a new task to get started</p>
+        </div>`;
+  }
+  if (!importantCount) {
+    importantTasks_section.innerHTML = `<div class="task-manager__empty-state p-0" id="noTask">
+          <div class="task-manager__empty-icon">
+            <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+          <h5>No Important tasks.</h5>
+          <p>Add a new task to get started</p>
+        </div>`;
+  }
+  if (!activeCount) {
+    regularTasks_section.innerHTML = `<div class="task-manager__empty-state p-0" id="noTask">
+          <div class="task-manager__empty-icon">
+            <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+          <h5>No active tasks.</h5>
+          <p>Add a new task to get started</p>
+        </div>`;
+  }
+
+  if (!allCount) {
+    allTasks_section.innerHTML = `<div class="task-manager__empty-state p-0" id="noTask">
+          <div class="task-manager__empty-icon">
+            <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+          <h5>No tasks found.</h5>
+          <p>Add a new task to get started</p>
+        </div>`;
+  }
+  showSelectedCard();
 }
 
 init();
 
-
-
 // Add Task by Form Submit
 const addForm = document.getElementById("addTodo-form");
 const toastMsg = document.getElementById("toastMsg");
+
 addForm.addEventListener("submit", async function (event) {
   event.preventDefault();
   const taskTitle = document.getElementById("taskTitle");
@@ -195,7 +260,7 @@ addForm.addEventListener("submit", async function (event) {
     const inputData = {
       title: taskTitle.value,
       tags: tagContainer,
-      is_important: isImportant,
+      isImportant: isImportant,
     };
     await API.addTodo(inputData);
     addForm.reset();
@@ -205,25 +270,26 @@ addForm.addEventListener("submit", async function (event) {
     init();
     setTimeout(() => {
       toastMsg.classList.add("d-none");
-    }, 1000);
+    }, 2000);
   } else {
     errMsg.classList.remove("d-none");
     taskTitle.classList.add("border");
   }
 });
 
+//update task operation
+const editModal = document.getElementById("exampleModal");
+const updateModal = new bootstrap.Modal(editModal);
+const editModalForm = document.getElementById("editForm");
 
-
-// Button Operations (Update Tasks)
-const editForm = document.getElementById("editModal");
-editForm.addEventListener("submit", async function (event) {
+editModalForm.addEventListener("submit", async function (event) {
   event.preventDefault();
-  const taskId = editForm.getAttribute("data-id");
 
   const editTitle = document.getElementById("editTitle");
-  const editTags = document.getElementById("editTags");
-  const is_important = document.getElementById("editImportant");
+  const editTags = document.getElementById("editTags").value;
+  const isImportant = document.getElementById("editImportant").checked;
   const editErr = document.getElementById("editErr");
+  const todoId = editModalForm.getAttribute("data-id");
 
   if (!editTitle.value) {
     editTitle.classList.add("border");
@@ -234,23 +300,32 @@ editForm.addEventListener("submit", async function (event) {
 
     const data = {
       title: editTitle.value,
-      tags: editTags.value.split(","),
-      is_important: is_important.checked,
+      tags: editTags.split(","),
+      isImportant: isImportant,
     };
-    API.updateTodo(taskId, data);
-    window.location.reload();
+    await API.updateTodo(todoId, data);
+    init();
+    updateModal.hide();
   }
 });
 
-// detete task operation
+// delete task operation
+const delModal = document.getElementById("staticBackdrop");
 const deleteForm = document.getElementById("delModal");
-deleteForm.addEventListener("submit", async function (event) {
+const deleteModal = new bootstrap.Modal(delModal);
+
+async function handleSubmit(event) {
   event.preventDefault();
+
   const temp = deleteForm.getAttribute("data-id");
   console.log(temp);
   await API.deleteTodo(temp);
-  window.location.reload();
-});
+
+  init();
+  deleteModal.hide();
+}
+
+deleteForm.addEventListener("submit", handleSubmit);
 
 //search Functionality
 // const searchForm = document.getElementById("searchForm")

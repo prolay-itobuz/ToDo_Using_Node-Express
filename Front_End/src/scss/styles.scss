@@ -31,7 +31,7 @@ body {
   right: 20px;
   background-color: #0b743c;
   color: #eee;
-  width: 200px;
+  width: 300px;
   font-weight: 700;
   animation: toast 500ms forwards;
 }
@@ -152,20 +152,20 @@ body {
   padding-bottom: 10px;
   border-bottom: 2px solid rgba(5, 48, 236, 0.1);
 
-  .btn-check:checked + label{
+  .btn-check:checked + label {
     background-color: #3f37c9 !important;
     border: 1px solid #3f37c9;
   }
 
-  .btn-check:not(:checked) + label{
+  .btn-check:not(:checked) + label {
     color: #6366f1;
   }
 
-  .imp-btn:checked ~ .imp-section{
+  .imp-btn:checked ~ .imp-section {
     display: block;
   }
 
-  .btn-outline-primary{
+  .btn-outline-primary {
     border: 1px solid #3f37c9;
   }
 
