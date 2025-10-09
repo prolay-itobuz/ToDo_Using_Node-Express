@@ -1,28 +1,22 @@
 import express from 'express'
-import {
-  getAllTodos,
-  getTodoById,
-  // searchTodo,
-  postDocument,
-  updateTodo,
-  deleteTodo,
-} from '../controller/controler.js'
+import controllerClass from '../controller/controler.js'
 
 import ToDoValidations from '../validations/middlewares/todoValidations.js'
 
 const router = express.Router()
 const validationMiddleware = new ToDoValidations()
+const controller = new controllerClass()
 
-router.get('/', getAllTodos)
+router.get('/', controller.getAllTodos)
 
-router.get('/:id', getTodoById)
+router.get('/:id', controller.getTodoById)
 
 // router.get('/search/:str', searchTodo);
 
-router.post('/', validationMiddleware.validateRequest, postDocument)
+router.post('/', validationMiddleware.validateRequest, controller.postDocument)
 
-router.put('/:id', validationMiddleware.updateRequest, updateTodo)
+router.put('/:id', validationMiddleware.updateRequest, controller.updateTodo)
 
-router.delete('/:id', deleteTodo)
+router.delete('/:id', controller.deleteTodo)
 
 export default router

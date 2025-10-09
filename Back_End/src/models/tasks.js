@@ -6,23 +6,23 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    is_completed: {
+    isCompleted: {
       type: Boolean,
       default: false,
     },
-    is_important: {
+    isImportant: {
       type: Boolean,
       default: false,
     },
     tags: {
-      type: [String],
+      type: Array,
       default: [],
     },
-    creation_time: {
+    createdAt: {
       type: Date,
       default: Date.now(),
     },
-    updated_at: {
+    updatedAt: {
       type: Date,
       default: Date.now(),
     },
