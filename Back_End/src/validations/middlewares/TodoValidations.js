@@ -1,7 +1,6 @@
 import { postSchema, updateSchema } from '../schema/toDoValidationsSchemas.js'
 
 export default class ToDoValidations {
-  debugger
   validateRequest = async (req, res, next) => {
     try {
       await postSchema.validate(req.body, {
@@ -15,8 +14,6 @@ export default class ToDoValidations {
         err.status = 400
         next(new Error(err.errors.join(', ')))
       }
-
-      console.log({ err })
       next(err)
     }
   }
@@ -32,8 +29,8 @@ export default class ToDoValidations {
     } catch (err) {
       if (err.name === 'ValidationError') {
         err.status = 400
+        next(new Error(err.errors.join(', ')))
       }
-
       next(err)
     }
   }

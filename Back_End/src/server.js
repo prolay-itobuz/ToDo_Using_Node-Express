@@ -15,7 +15,7 @@ app.use(express.json())
 
 app.use('/', x) // use is a middleware
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(500).send({
     message: err.message,
     success: false,

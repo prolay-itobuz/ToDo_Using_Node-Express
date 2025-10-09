@@ -7,6 +7,7 @@ import {
   updateTodo,
   deleteTodo,
 } from '../controller/controler.js'
+
 import ToDoValidations from '../validations/middlewares/todoValidations.js'
 
 const router = express.Router()
@@ -20,7 +21,7 @@ router.get('/:id', getTodoById)
 
 router.post('/', validationMiddleware.validateRequest, postDocument)
 
-router.put('/:id', updateTodo)
+router.put('/:id', validationMiddleware.updateRequest, updateTodo)
 
 router.delete('/:id', deleteTodo)
 

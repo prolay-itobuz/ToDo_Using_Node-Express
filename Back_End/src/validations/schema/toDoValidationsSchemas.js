@@ -8,12 +8,11 @@ export const postSchema = yup.object({
     .trim()
     .min(3, 'Title must be at least 3 characters long')
     .required('Title is required'),
-  is_completed: yup.boolean().default(false),
-
-  body: yup.string().required(),
-  taskPerformedOn: yup.date().required(),
+  isCompleted: yup.boolean().default(false),
+  isImportant: yup.boolean().default(false),
+  createdAt: yup.number().default(Date.now()),
   tags: yup.array().optional(),
-  is_important: yup.boolean().default(false),
+  updatedAt: yup.number().default(Date.now()),
 })
 
 export const updateSchema = yup.object({
@@ -23,9 +22,9 @@ export const updateSchema = yup.object({
     .trim()
     .min(3, 'Title must be at least 3 characters long')
     .optional(),
-  creation_time: yup.number().optional(),
-  is_completed: yup.boolean().optional(),
+  createdAt: yup.number().optional(),
+  isCompleted: yup.boolean().optional(),
   tags: yup.array().optional(),
-  is_important: yup.boolean().optional(),
-  updated_at: yup.number().optional(),
+  isImportant: yup.boolean().optional(),
+  updatedAt: yup.number().optional(),
 })
