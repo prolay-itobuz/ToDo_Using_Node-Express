@@ -161,7 +161,7 @@
 
       <div class="task-manager__tasks">
         <!-- Searched Tasks -->
-        <!-- <div class="d-flex flex-column gap-3 d-none" id="searchTasks">
+        <div class="d-flex flex-column gap-3 d-none" id="searchTasks">
           <div class="task-manager__empty-state d-none p-0" id="nosearch">
             <div class="task-manager__empty-icon">
               <i class="fa-solid fa-clipboard-list"></i>
@@ -169,7 +169,7 @@
             <h5>No Result found</h5>
             <p>Reset and search again for result.</p>
           </div>
-        </div> -->
+        </div>
 
         <div class="d-flex flex-column gap-3" id="allTasks">
           <!-- All Tasks -->
@@ -306,7 +306,7 @@
       const res = await fetch(url);
       const todo = await res.json();
 
-      if (!todo.isCompleted) {
+      if (!todo.data.isCompleted) {
         const result = await fetch(url, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -321,6 +321,7 @@
         });
         const updated = await result.json();
       }
+      init();
     }
 
     async function changeImportance(taskId) {
@@ -329,22 +330,22 @@
       const res = await fetch(url);
       const todo = await res.json();
 
-      if (todo.is_important === false) {
+      if (todo.data.isImportant === false) {
         const result = await fetch(url, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ is_important: true }),
+          body: JSON.stringify({ isImportant: true }),
         });
         const updated = await result.json();
       } else {
         const res = await fetch(url, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ is_important: false }),
+          body: JSON.stringify({ isImportant: false }),
         });
         const updated = await res.json();
       }
-      window.location.reload();
+      init();
     }
 
     function delTask(taskId) {
@@ -364,9 +365,9 @@
       const res = await fetch(url);
       const todo = await res.json();
 
-      editTitle.value = todo.title;
-      editTags.value = todo.tags;
-      is_important.checked = todo.isImportant;
+      editTitle.value = todo.data.title;
+      editTags.value = todo.data.tags;
+      is_important.checked = todo.data.isImportant;
     }
   </script>
 </html>
