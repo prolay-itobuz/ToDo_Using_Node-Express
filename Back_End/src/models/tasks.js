@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const taskSchema = new mongoose.Schema(
   {
@@ -18,19 +18,15 @@ const taskSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now(),
-    },
   },
   {
     timestamps: true,
   }
-)
+);
 
-const Task = mongoose.model('Task', taskSchema)
-export default Task
+taskSchema.query.byTitle = function (name) {
+  return this.where({ name: new RegExp(name, 'i') });
+};
+
+const Task = mongoose.model('Task', taskSchema);
+export default Task;

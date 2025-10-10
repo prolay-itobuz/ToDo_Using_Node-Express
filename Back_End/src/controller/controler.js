@@ -3,8 +3,16 @@ import Task from '../models/tasks.js';
 export default class controllerClass {
   getAllTodos = async (req, res, next) => {
     try {
-      const allData = await Task.find({});
-      res.send(allData);
+      const allData = await Task.find({}).sort({
+        createdAt: -1,
+        updatedAt: -1,
+      });
+
+      res.status(200).send({
+        message: 'All Task Successfully Fetched',
+        success: true,
+        data: allData,
+      });
     } catch (err) {
       next(err);
     }
@@ -16,58 +24,61 @@ export default class controllerClass {
       const todo = await Task.findById(id);
 
       if (!todo) {
-        const error = new Error(`Todo with id ${id} not found`);
-        error.statusCode = 404;
-        throw error;
+        res.status(404);
+        throw new Error(`Todo with id ${id} not found`);
       }
 
-      res.status(200).json(todo);
+      res.status(200).send({
+        message: 'Task Successfully Fetched',
+        success: true,
+        data: todo,
+      });
     } catch (err) {
       next(err);
     }
   };
 
-  // searchTodo = async (req, res, next) => {
-  //   try {
-  //     const data = await fs.readFile(dbFile, 'utf-8')
-  //     const todos = JSON.parse(data)
+  searchTodo = async (req, res, next) => {
+    try {
+      const query = req.params.str.toLowerCase();
 
-  //     const query = req.params.str.toLowerCase()
+      if (!query) {
+        res.status(404);
+        throw new Error(`No query found`);
+      }
 
-  //     const todo = todos.filter((t) => {
-  //       if (t.is_completed) {
-  //         return false
-  //       }
+      const todo = await Task.find({
+        isCompleted: false,
+        $or: [
+          { title: { $regex: query, $options: 'i' } },
+          { tags: { $elemMatch: { $regex: query, $options: 'i' } } },
+        ],
+      });
 
-  //       const titleMatch = t.title.toLowerCase().includes(query)
-  //       const tagsMatch = t.tags.some((tag) =>
-  //         tag.toLowerCase().includes(query)
-  //       )
+      if (todo.length === 0) {
+        res.status(404);
+        throw new Error(`No result found`);
+      }
 
-  //       return titleMatch || tagsMatch
-  //     })
-
-  //     if (todo.length === 0) {
-  //       const error = new Error(`No search result found.`)
-  //       error.statusCode = 404
-  //       throw error
-  //     }
-
-  //     res.json(todo)
-  //   } catch (err) {
-  //     next(err)
-  //   }
-  // }
+      res
+        .status(200)
+        .json({ message: 'Search result found.', success: true, data: todo });
+    } catch (err) {
+      next(err);
+    }
+  };
 
   postDocument = async (req, res, next) => {
     try {
       const newTodo = new Task(req.body);
+
       await newTodo.save();
 
-      console.log('New Todo Added:', newTodo);
-      res
-        .status(201)
-        .json({ message: 'Todo added successfully', todo: newTodo });
+      res.status(201).json({
+        message: 'Todo added successfully',
+        success: true,
+        data: newTodo,
+      });
     } catch (err) {
       next(err);
     }
@@ -83,15 +94,15 @@ export default class controllerClass {
       });
 
       if (!updatedTodo) {
-        const error = new Error(`Todo with id ${id} not found.`);
-        error.statusCode = 404;
-        throw error;
+        res.status(404);
+        throw new Error(`Todo with id ${id} not found`);
       }
 
-      console.log(`Todo ${id} updated:`, updatedTodo);
-      res
-        .status(200)
-        .json({ message: 'Todo updated successfully', todo: updatedTodo });
+      res.status(200).json({
+        message: 'Todo updated successfully',
+        success: true,
+        data: updatedTodo,
+      });
     } catch (err) {
       next(err);
     }
@@ -103,14 +114,15 @@ export default class controllerClass {
       const deletedTodo = await Task.findByIdAndDelete(id);
 
       if (!deletedTodo) {
-        const error = new Error(`Todo with id ${id} not found.`);
-        error.statusCode = 404;
-        throw error;
+        res.status(404);
+        throw new Error(`Todo with id ${id} not found`);
       }
-      console.log(`Todo ${id} deleted`);
-      res
-        .status(200)
-        .json({ message: 'Todo deleted successfully', id: deletedTodo._id });
+
+      res.status(200).json({
+        message: 'Todo deleted successfully',
+        success: true,
+        id: deletedTodo._id,
+      });
     } catch (err) {
       next(err);
     }

@@ -1,5 +1,5 @@
-import * as yup from 'yup'
-import { v4 as uuidv4 } from 'uuid'
+import * as yup from 'yup';
+import { v4 as uuidv4 } from 'uuid';
 
 export const postSchema = yup.object({
   id: yup.string().default(() => uuidv4()),
@@ -13,7 +13,7 @@ export const postSchema = yup.object({
   createdAt: yup.number().default(Date.now()),
   tags: yup.array().optional(),
   updatedAt: yup.number().default(Date.now()),
-})
+});
 
 export const updateSchema = yup.object({
   id: yup.string().optional(),
@@ -26,5 +26,5 @@ export const updateSchema = yup.object({
   isCompleted: yup.boolean().optional(),
   tags: yup.array().optional(),
   isImportant: yup.boolean().optional(),
-  updatedAt: yup.number().optional(),
-})
+  updatedAt: yup.number().default(Date.now()),
+});
