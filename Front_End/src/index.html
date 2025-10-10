@@ -353,21 +353,21 @@
       delModalForm.setAttribute("data-id", taskId);
     }
 
-    async function editTask(taskId) {
-      const editModalForm = document.getElementById("editForm");
-      editModalForm.setAttribute("data-id", taskId);
-      const editTitle = document.getElementById("editTitle");
-      const editTags = document.getElementById("editTags");
-      const is_important = document.getElementById("editImportant");
+    // async function editTask(taskId) {
+    //   const editModalForm = document.getElementById("editForm");
+    //   editModalForm.setAttribute("data-id", taskId);
+    //   const editTitle = document.getElementById("editTitle");
+    //   const editTags = document.getElementById("editTags");
+    //   const is_important = document.getElementById("editImportant");
 
-      const url = `http://localhost:8000/${taskId}`;
+    //   const url = `http://localhost:8000/${taskId}`;
 
-      const res = await fetch(url);
-      const todo = await res.json();
+    //   const res = await fetch(url);
+    //   const todo = await res.json();
 
-      editTitle.value = todo.data.title;
-      editTags.value = todo.data.tags;
-      is_important.checked = todo.data.isImportant;
-    }
+    //   editTitle.value = todo.data.title;
+    //   editTags.value = todo.data.tags;
+    //   is_important.checked = todo.data.isImportant;
+    // }
   </script>
 </html>

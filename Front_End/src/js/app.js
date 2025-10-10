@@ -1,6 +1,7 @@
 import * as bootstrap from "bootstrap";
 import * as API from "./api.js";
 import init from "./displayTasks.js";
+import editTask from "./updateTasks.js";
 
 console.log("Welcome to ToDo FrontEnd");
 
@@ -37,38 +38,6 @@ addForm.addEventListener("submit", async function (event) {
   } else {
     errMsg.classList.remove("d-none");
     taskTitle.classList.add("border");
-  }
-});
-
-//update task operation
-const editModal = document.getElementById("exampleModal");
-const updateModal = new bootstrap.Modal(editModal);
-const editModalForm = document.getElementById("editForm");
-
-editModalForm.addEventListener("submit", async function (event) {
-  event.preventDefault();
-
-  const editTitle = document.getElementById("editTitle");
-  const editTags = document.getElementById("editTags").value;
-  const isImportant = document.getElementById("editImportant").checked;
-  const editErr = document.getElementById("editErr");
-  const todoId = editModalForm.getAttribute("data-id");
-
-  if (!editTitle.value) {
-    editTitle.classList.add("border");
-    editErr.classList.remove("d-none");
-  } else {
-    editTitle.classList.remove("border");
-    editErr.classList.add("d-none");
-
-    const data = {
-      title: editTitle.value,
-      tags: editTags.split(","),
-      isImportant: isImportant,
-    };
-    await API.updateTodo(todoId, data);
-    init();
-    updateModal.hide();
   }
 });
 
