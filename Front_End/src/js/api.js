@@ -45,7 +45,8 @@ export async function addTodo(text) {
     body: JSON.stringify(text),
   });
   const newTodo = await res.json();
-  console.log("Added:", newTodo);
+  
+  return newTodo;
 }
 
 // update request
@@ -56,11 +57,11 @@ export async function updateTodo(id, text) {
     body: JSON.stringify(text),
   });
   const updated = await res.json();
-  console.log("Updated:", updated);
+  return updated;
 }
 
 // delete request
 export async function deleteTodo(id) {
-  await fetch(`${ownAPI}${id}`, { method: "DELETE" });
-  console.log("Deleted", id);
+  const data = await fetch(`${ownAPI}${id}`, { method: "DELETE" });
+  return data;
 }

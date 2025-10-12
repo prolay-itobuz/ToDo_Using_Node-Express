@@ -168,4 +168,43 @@ export default class displayTemplates {
           <p>Add a new task to get started</p>
         </div>`;
   };
+
+  successToastInsertion = () =>{
+    return `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
+    <i class="fa fa-check-circle"></i>
+    <p class="m-0">Task Successfully added.</p>
+  </div>`;
+  };
+
+  successToastDeletion = () =>{
+    return  `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
+    <i class="fa fa-check-circle"></i>
+    <p class="m-0">Task Successfully deleted.</p>
+  </div>`;
+  }
+
+  successToastUpdated = () =>{
+    return `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
+    <i class="fa fa-check-circle"></i>
+    <p class="m-0">Task Successfully Updated.</p>
+  </div>`;
+  };
+
+  errorToast = (msg) => {
+    return `  <div class="toast text-bg-danger d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
+    <i class="fa fa-times-circle"></i>
+    <p class="m-0">${msg}</p>
+  </div>`;
+  };
+
+  emptySearch = () =>{
+    return `<div class="task-manager__empty-state p-0" id="nosearch">
+          <div class="task-manager__empty-icon">
+            <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+          <h5>No Result found</h5>
+          <p>Reset and search again for result.</p>
+        </div>`;
+  };
+
 }

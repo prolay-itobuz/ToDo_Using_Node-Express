@@ -1,16 +1,22 @@
 import * as bootstrap from "bootstrap";
 import * as API from "./api.js";
 import init from "./displayTasks.js";
+import displayTemplates from "./templates.js";
+
+const taskTemplates = new displayTemplates();
 
 //update task operation
-export default async function editTask(taskId) {
-  const editModalForm = document.getElementById("editForm");
-  editModalForm.setAttribute("data-id", taskId);
+const editModal = document.getElementById("exampleModal");
+const updateModal = new bootstrap.Modal(editModal);
+const toastSection = document.getElementById("toastsection");
+
+async function editTask(taskId) {
   const editTitle = document.getElementById("editTitle");
   const editTags = document.getElementById("editTags");
   const is_important = document.getElementById("editImportant");
-  const editModal = document.getElementById("exampleModal");
-  const updateModal = new bootstrap.Modal(editModal);
+
+  const editModalForm = document.getElementById("editForm");
+  editModalForm.setAttribute("data-id", taskId);
 
   const todo = await API.fetchTodoById(taskId);
 
@@ -39,11 +45,62 @@ export default async function editTask(taskId) {
         tags: editTags.split(","),
         isImportant: isImportant,
       };
-      await API.updateTodo(todoId, data);
+      const taskData = await API.updateTodo(todoId, data);
+
+
+      if (taskData.success) {
+        toastSection.innerHTML = taskTemplates.successToastInsertion();
+      }
+      else {
+        toastSection.innerHTML = taskTemplates.errorToast(taskData.message);
+      }
+
       init();
+
+      setTimeout(() => {
+        toastSection.innerHTML = ''
+      }, 2000);
+      
       updateModal.hide();
     }
   });
 }
 
 window.editTask = editTask;
+
+
+// Change Important Priority 
+async function changeImportance(taskId) {
+  const todo = await API.fetchTodoById(taskId)
+  const data = {}
+
+  if (!todo.data.isImportant) {
+    data.isImportant = true
+  } else {
+    data.isImportant = false
+  }
+
+  await API.updateTodo(taskId, data);
+  init();
+}
+
+window.changeImportance = changeImportance
+
+
+
+// Change Task Status 
+async function changeStatus(taskId) {
+  const todo = await API.fetchTodoById(taskId)
+  const data = {}
+
+  if (!todo.data.isCompleted) {
+    data.isCompleted = true
+  } else {
+    data.isCompleted = false
+  }
+
+  await API.updateTodo(taskId, data);
+  init();
+}
+
+window.changeStatus = changeStatus

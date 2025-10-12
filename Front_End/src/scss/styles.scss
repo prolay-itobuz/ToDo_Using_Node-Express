@@ -29,10 +29,10 @@ body {
   position: fixed;
   top: 50px;
   right: 20px;
-  background-color: #0b743c;
   color: #eee;
   width: 300px;
   font-weight: 700;
+  z-index: 1000;
   animation: toast 500ms forwards;
 }
 
