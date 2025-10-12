@@ -4,6 +4,7 @@ export default class manageDisplay {
     document.getElementById("importantTasks").classList.add("d-none");
     document.getElementById("regularTasks").classList.add("d-none");
     document.getElementById("allTasks").classList.add("d-none");
+    document.getElementById("searchTasks").classList.add("d-none");
   };
 
   showSelectedCard = () => {

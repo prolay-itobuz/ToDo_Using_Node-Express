@@ -1,5 +1,7 @@
 // Import our custom CSS
 import "../scss/styles.scss";
 
-// import './api.js';
 import "./app.js";
+
+import "./updateTasks.js";
+import "./searchTasks.js";

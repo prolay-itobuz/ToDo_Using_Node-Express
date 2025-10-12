@@ -1,6 +1,6 @@
 import express from 'express';
-import controllerClass from '../controller/controler.js';
 
+import controllerClass from '../controller/controler.js';
 import ToDoValidations from '../validations/middlewares/todoValidations.js';
 
 const router = express.Router();

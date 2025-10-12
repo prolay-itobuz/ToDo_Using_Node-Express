@@ -7,6 +7,7 @@ const taskTemplates = new displayTemplates();
 const helper = new manageDisplay();
 
 export default async function init() {
+
   // tasks Buttons toggle
   const radioButtons = document.querySelectorAll('input[name="btnradio"]');
 
@@ -15,6 +16,7 @@ export default async function init() {
   const regularTasks_section = document.getElementById("regularTasks");
   const completeTasks_section = document.getElementById("completeTasks");
   const allTasks_section = document.getElementById("allTasks");
+  const toastSection = document.getElementById("toastsection");
 
   helper.showSelectedCard();
 
@@ -28,6 +30,13 @@ export default async function init() {
   allTasks_section.innerHTML = "";
 
   const tasks = await API.fetchTodos();
+
+  if (!tasks.success) {
+    toastSection.innerHTML = taskTemplates.errorToast(tasks.message);
+  }
+  setTimeout(() => {
+    toastSection.innerHTML = ''
+  }, 2000);
 
   let completeCount = 0,
     activeCount = 0,

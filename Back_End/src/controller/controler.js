@@ -53,11 +53,14 @@ export default class controllerClass {
           { title: { $regex: query, $options: 'i' } },
           { tags: { $elemMatch: { $regex: query, $options: 'i' } } },
         ],
+      }).sort({
+        createdAt: -1,
+        updatedAt: -1,
       });
 
       if (todo.length === 0) {
         res.status(404);
-        throw new Error(`No result found`);
+        throw new Error(`No Result found`);
       }
 
       res
@@ -75,10 +78,11 @@ export default class controllerClass {
       await newTodo.save();
 
       res.status(201).json({
-        message: 'Todo added successfully',
+        message: 'Task Added Successfully',
         success: true,
         data: newTodo,
       });
+
     } catch (err) {
       next(err);
     }
@@ -118,7 +122,7 @@ export default class controllerClass {
         throw new Error(`Todo with id ${id} not found`);
       }
 
-      res.status(200).json({
+      res.status(200).send({
         message: 'Todo deleted successfully',
         success: true,
         id: deletedTodo._id,
