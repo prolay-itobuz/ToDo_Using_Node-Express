@@ -2,7 +2,7 @@ import user from '../models/user.js';
 import otp from '../models/otpModel.js';
 import genOTP from '../utils/genOTP.js';
 import otpValidation from '../utils/otpValidation.js';
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 
 const validateOTP = new otpValidation();
 

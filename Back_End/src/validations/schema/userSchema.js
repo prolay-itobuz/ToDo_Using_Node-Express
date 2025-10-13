@@ -3,7 +3,6 @@ import * as yup from 'yup';
 export const userSchema = yup.object({
   username: yup
     .string()
-    .trim()
     .min(3, 'Name must be at least 3 characters long')
     .required('username is required'),
   email: yup.string().required('email is required'),
