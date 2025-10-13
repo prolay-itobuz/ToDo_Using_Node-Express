@@ -82,7 +82,6 @@ export default class controllerClass {
         success: true,
         data: newTodo,
       });
-
     } catch (err) {
       next(err);
     }

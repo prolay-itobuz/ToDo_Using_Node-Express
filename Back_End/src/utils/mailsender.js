@@ -9,7 +9,7 @@ export default class SendMail {
       console.log('sending email...');
 
       const transporter = nodemailer.createTransport({
-        service: 'Gmail',
+        service: process.env.MAIL_SERVICE,
         auth: {
           user: process.env.MAIL_USER,
           pass: process.env.MAIL_PASS,
@@ -23,7 +23,6 @@ export default class SendMail {
         html: body,
       });
 
-      console.log('Email info: ', info);
       return info;
     } catch (error) {
       console.log(error.message);

@@ -15,8 +15,10 @@ router.post(
 
 // router.post('/login');
 
-// router.post('/reset');
+// router.post('/reset/:id', authcontroller.resetPass);
 
-// router.post('/otp');
+router.post('/resend/:id', authcontroller.resendOTP);
+
+router.post('/otp/:id', authcontroller.verifyOTP);
 
 export default router;
