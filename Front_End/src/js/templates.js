@@ -169,24 +169,10 @@ export default class displayTemplates {
         </div>`;
   };
 
-  successToastInsertion = () =>{
+  successToast = (msg) => {
     return `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
     <i class="fa fa-check-circle"></i>
-    <p class="m-0">Task Successfully added.</p>
-  </div>`;
-  };
-
-  successToastDeletion = () =>{
-    return  `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
-    <i class="fa fa-check-circle"></i>
-    <p class="m-0">Task Successfully deleted.</p>
-  </div>`;
-  }
-
-  successToastUpdated = () =>{
-    return `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
-    <i class="fa fa-check-circle"></i>
-    <p class="m-0">Task Successfully Updated.</p>
+    <p class="m-0">${msg}</p>
   </div>`;
   };
 
@@ -197,7 +183,7 @@ export default class displayTemplates {
   </div>`;
   };
 
-  emptySearch = () =>{
+  emptySearch = () => {
     return `<div class="task-manager__empty-state p-0" id="nosearch">
           <div class="task-manager__empty-icon">
             <i class="fa-solid fa-clipboard-list"></i>
@@ -206,5 +192,4 @@ export default class displayTemplates {
           <p>Reset and search again for result.</p>
         </div>`;
   };
-
 }

@@ -32,9 +32,10 @@ addForm.addEventListener("submit", async function (event) {
     addForm.reset();
 
     if (data.success) {
-      toastSection.innerHTML = taskTemplates.successToastInsertion();
-    }
-    else {
+      toastSection.innerHTML = taskTemplates.successToast(
+        "Task Successfully added."
+      );
+    } else {
       toastSection.innerHTML = taskTemplates.errorToast(data.message);
     }
 
@@ -44,9 +45,8 @@ addForm.addEventListener("submit", async function (event) {
     init();
 
     setTimeout(() => {
-      toastSection.innerHTML = ''
+      toastSection.innerHTML = "";
     }, 2000);
-
   } else {
     errMsg.classList.remove("d-none");
     taskTitle.classList.add("border");
@@ -67,11 +67,12 @@ function delTask(taskId) {
     const temp = deleteForm.getAttribute("data-id");
     await API.deleteTodo(temp);
 
-    toastSection.innerHTML = taskTemplates.successToastDeletion();
-
+    toastSection.innerHTML = taskTemplates.successToast(
+      "Task Successfully deleted."
+    );
 
     setTimeout(() => {
-      toastSection.innerHTML = ''
+      toastSection.innerHTML = "";
     }, 2000);
 
     init();

@@ -47,20 +47,20 @@ async function editTask(taskId) {
       };
       const taskData = await API.updateTodo(todoId, data);
 
-
       if (taskData.success) {
-        toastSection.innerHTML = taskTemplates.successToastInsertion();
-      }
-      else {
+        toastSection.innerHTML = taskTemplates.successToast(
+          "Task Successfully Updated."
+        );
+      } else {
         toastSection.innerHTML = taskTemplates.errorToast(taskData.message);
       }
 
       init();
 
       setTimeout(() => {
-        toastSection.innerHTML = ''
+        toastSection.innerHTML = "";
       }, 2000);
-      
+
       updateModal.hide();
     }
   });
@@ -68,39 +68,36 @@ async function editTask(taskId) {
 
 window.editTask = editTask;
 
-
-// Change Important Priority 
+// Change Important Priority
 async function changeImportance(taskId) {
-  const todo = await API.fetchTodoById(taskId)
-  const data = {}
+  const todo = await API.fetchTodoById(taskId);
+  const data = {};
 
   if (!todo.data.isImportant) {
-    data.isImportant = true
+    data.isImportant = true;
   } else {
-    data.isImportant = false
+    data.isImportant = false;
   }
 
   await API.updateTodo(taskId, data);
   init();
 }
 
-window.changeImportance = changeImportance
+window.changeImportance = changeImportance;
 
-
-
-// Change Task Status 
+// Change Task Status
 async function changeStatus(taskId) {
-  const todo = await API.fetchTodoById(taskId)
-  const data = {}
+  const todo = await API.fetchTodoById(taskId);
+  const data = {};
 
   if (!todo.data.isCompleted) {
-    data.isCompleted = true
+    data.isCompleted = true;
   } else {
-    data.isCompleted = false
+    data.isCompleted = false;
   }
 
   await API.updateTodo(taskId, data);
   init();
 }
 
-window.changeStatus = changeStatus
+window.changeStatus = changeStatus;
