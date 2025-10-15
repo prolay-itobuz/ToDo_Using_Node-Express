@@ -1,9 +1,12 @@
 import Task from '../models/tasks.js';
+import getUserId from '../utils/validateToken.js';
 
 export default class controllerClass {
   getAllTodos = async (req, res, next) => {
     try {
-      const allData = await Task.find({}).sort({
+      const userId = getUserId(req);
+
+      const allData = await Task.find({ userid: userId }).sort({
         createdAt: -1,
         updatedAt: -1,
       });
@@ -14,18 +17,24 @@ export default class controllerClass {
         data: allData,
       });
     } catch (err) {
+      if (err.message == 'jwt expired') {
+        err.status = 401;
+        next(err);
+      }
       next(err);
     }
   };
 
   getTodoById = async (req, res, next) => {
     try {
+      const userId = getUserId(req);
+
       const id = req.params.id;
-      const todo = await Task.findById(id);
+      const todo = await Task.find({ _id: id, userid: userId });
 
       if (!todo) {
         res.status(404);
-        throw new Error(`Todo with id ${id} not found`);
+        throw new Error(`Todo not found`);
       }
 
       res.status(200).send({
@@ -40,6 +49,7 @@ export default class controllerClass {
 
   searchTodo = async (req, res, next) => {
     try {
+      const userId = getUserId(req);
       const query = req.params.str.toLowerCase();
 
       if (!query) {
@@ -48,6 +58,7 @@ export default class controllerClass {
       }
 
       const todo = await Task.find({
+        userid: userId,
         isCompleted: false,
         $or: [
           { title: { $regex: query, $options: 'i' } },
@@ -73,6 +84,9 @@ export default class controllerClass {
 
   postDocument = async (req, res, next) => {
     try {
+      const userId = getUserId(req);
+      req.body.userid = userId;
+
       const newTodo = new Task(req.body);
 
       await newTodo.save();

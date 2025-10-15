@@ -2,9 +2,15 @@ import user from '../models/user.js';
 import otp from '../models/otpModel.js';
 import genOTP from '../utils/genOTP.js';
 import otpValidation from '../utils/otpValidation.js';
-// import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
+import TokenGen from '../utils/genTokens.js';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+
+dotenv.config();
 
 const validateOTP = new otpValidation();
+const tokenGenerator = new TokenGen();
 
 export default class authControllerClass {
   signup = async (req, res, next) => {
@@ -19,12 +25,15 @@ export default class authControllerClass {
 
         throw new Error(`user already exists`);
       } else if (appUser[0] && !appUser[0].isVerified) {
+        const uid = appUser[0]._id.toString();
+
+        await user.findByIdAndUpdate(uid, req.body);
         genOTP(mail);
 
         res.status(200).json({
           message: 'OTP Sent Successfully',
           success: true,
-          user: newUser,
+          user: appUser,
         });
       } else {
         await newUser.save();
@@ -48,7 +57,7 @@ export default class authControllerClass {
 
       if (!newUser) {
         res.status(404);
-        throw new Error(`User not found`);
+        throw next(`User not found`);
       }
 
       const mail = newUser.email;
@@ -70,6 +79,10 @@ export default class authControllerClass {
 
       if (req.body.task == 'verify') {
         verifiedUser = await validateOTP.verifyUser(id);
+      } else if (req.body.task == 'reset') {
+        verifiedUser = await user.findByIdAndUpdate(id, {
+          isVerified: true,
+        });
       }
 
       res.status(200).send({
@@ -105,25 +118,101 @@ export default class authControllerClass {
     }
   };
 
-  // resetPass = async (req, res, next) => {
-  //   try {
-  //     const id = req.params.id;
-  //     const newUser = await user.findById(id);
+  resetPass = async (req, res, next) => {
+    try {
+      const mail = req.body.email;
 
-  //     if (!newUser) {
-  //       res.status(404);
-  //       throw new Error(`User not found`);
-  //     }
+      if (mail) {
+        const isUser = await user.find({ email: mail });
 
-  //     // const newPass = await bcrypt.hash(req.body.password, 10);
+        if (!isUser[0]) {
+          res.status(404);
+          throw new Error(`Email does not exists`);
+        }
 
-  //     res.status(200).json({
-  //       message: 'Password Reset Successfully',
-  //       success: true,
-  //       user: newUser,
-  //     });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // };
+        genOTP(mail);
+
+        res.status(200).json({
+          message: 'Email Sent Successfully',
+          success: true,
+          user: isUser[0],
+        });
+      } else {
+        const userid = req.body.id;
+        const data = await user.findByIdAndUpdate(userid, {
+          password: await bcrypt.hash(req.body.password, 10),
+        });
+
+        res.status(200).json({
+          message: 'Password Updated',
+          success: true,
+          user: data,
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  signin = async (req, res, next) => {
+    try {
+      const loginData = req.body;
+      const userinfo = await user.find({ email: loginData.email });
+
+      if (!userinfo[0]) {
+        res.status(404);
+        throw new Error(`User does not exists`);
+      }
+
+      if (userinfo[0].isVerified) {
+        const hashedPass = userinfo[0].password;
+        const passMatch = await bcrypt.compare(loginData.password, hashedPass);
+
+        if (passMatch) {
+          const access_token = tokenGenerator.genAccess(userinfo[0]._id);
+          const refresh_token = tokenGenerator.genRefresh(userinfo[0]._id);
+
+          res.status(200).json({
+            message: 'Login Success',
+            success: true,
+            access_token: access_token,
+            refresh_token: refresh_token,
+          });
+        } else {
+          res.status(401);
+          throw new Error(`Invalid Password.`);
+        }
+      } else {
+        res.status(401);
+        throw new Error(`User not verified, Complete Signup`);
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  resetToken = async (req, res, next) => {
+    try {
+      const refresh_token = req.headers.authorization.split(' ')[1];
+      const refresh_secret = process.env.REFRESH_SECRET;
+
+      const decoded = jwt.verify(refresh_token, refresh_secret);
+
+      console.log(decoded);
+
+      if (decoded) {
+        const access = tokenGenerator.genAccess(decoded.userId);
+        const refresh = tokenGenerator.genRefresh(decoded.userId);
+
+        res.status(200).json({
+          message: 'Token Regenerated successfully',
+          success: true,
+          access_token: access,
+          refresh_token: refresh,
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  };
 }

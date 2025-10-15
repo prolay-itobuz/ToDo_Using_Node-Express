@@ -13,12 +13,14 @@ router.post(
   authcontroller.signup
 );
 
-// router.post('/login');
+router.post('/login', authcontroller.signin);
 
-// router.post('/reset/:id', authcontroller.resetPass);
+router.post('/reset', authcontroller.resetPass);
 
 router.post('/resend/:id', authcontroller.resendOTP);
 
 router.post('/otp/:id', authcontroller.verifyOTP);
+
+router.post('/token', authcontroller.resetToken);
 
 export default router;

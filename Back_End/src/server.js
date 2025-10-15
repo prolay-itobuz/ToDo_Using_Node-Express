@@ -19,9 +19,12 @@ app.use(loggerMiddleware);
 app.use('/', x); // use is a middleware
 app.use('/user/auth', y); // handle user authentication
 
-app.use((err, req, res) => {
-  res.status(500).send({
-    message: err.message,
+app.use((err, req, res, next) => {
+  const status = err.status || 500;
+  const message = err.message || 'Internal Server Error';
+
+  res.status(status).json({
+    message: message,
     success: false,
   });
 });
