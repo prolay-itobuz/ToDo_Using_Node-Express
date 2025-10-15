@@ -20,9 +20,9 @@ async function editTask(taskId) {
 
   const todo = await API.fetchTodoById(taskId);
 
-  editTitle.value = todo.data.title;
-  editTags.value = todo.data.tags;
-  is_important.checked = todo.data.isImportant;
+  editTitle.value = todo.data[0].title;
+  editTags.value = todo.data[0].tags;
+  is_important.checked = todo.data[0].isImportant;
 
   editModalForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -51,11 +51,10 @@ async function editTask(taskId) {
         toastSection.innerHTML = taskTemplates.successToast(
           "Task Successfully Updated."
         );
+        init();
       } else {
         toastSection.innerHTML = taskTemplates.errorToast(taskData.message);
       }
-
-      init();
 
       setTimeout(() => {
         toastSection.innerHTML = "";
@@ -73,7 +72,7 @@ async function changeImportance(taskId) {
   const todo = await API.fetchTodoById(taskId);
   const data = {};
 
-  if (!todo.data.isImportant) {
+  if (!todo.data[0].isImportant) {
     data.isImportant = true;
   } else {
     data.isImportant = false;
@@ -90,7 +89,7 @@ async function changeStatus(taskId) {
   const todo = await API.fetchTodoById(taskId);
   const data = {};
 
-  if (!todo.data.isCompleted) {
+  if (!todo.data[0].isCompleted) {
     data.isCompleted = true;
   } else {
     data.isCompleted = false;

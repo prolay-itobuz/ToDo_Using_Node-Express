@@ -43,3 +43,14 @@ export async function reset(mail) {
   const userinfo = await res.json();
   return userinfo;
 }
+
+export async function loginUser(userdata) {
+  const res = await fetch(authAPI + "login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(userdata),
+  });
+
+  const userinfo = await res.json();
+  return userinfo;
+}

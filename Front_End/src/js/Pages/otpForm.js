@@ -1,16 +1,19 @@
+import * as authAPI from "./authApi";
+import displayTemplates from "../templates.js";
+const taskTemplates = new displayTemplates();
+
 const inputs = document.querySelectorAll(".otp-input input");
 const timerDisplay = document.getElementById("timer");
 const resendButton = document.getElementById("resendButton");
-let timeLeft = 300;
+let timeLeft = 60;
 let timerId;
 
 export function startTimer() {
   timerId = setInterval(() => {
     if (timeLeft <= 0) {
       clearInterval(timerId);
-      timerDisplay.textContent = "Code expired";
+      timerDisplay.textContent = "Resend OTP";
       resendButton.disabled = false;
-      inputs.forEach((input) => (input.disabled = true));
     } else {
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
@@ -46,7 +49,7 @@ inputs.forEach((input, index) => {
   });
 });
 
-export async function resendOTP() {
+export async function resendOTP(userid) {
   const resendRequest = await authAPI.resendOTP(userid);
 
   if (resendRequest.success) {
@@ -59,7 +62,7 @@ export async function resendOTP() {
     toastSection.innerHTML = "";
   }, 3000);
 
-  timeLeft = 300;
+  timeLeft = 60;
   inputs.forEach((input) => {
     input.value = "";
     input.disabled = false;

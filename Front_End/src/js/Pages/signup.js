@@ -3,7 +3,7 @@ import * as authAPI from "./authApi.js";
 import displayTemplates from "../templates.js";
 import { resendOTP, startTimer } from "./otpForm.js";
 
-let timeLeft = 300;
+let timeLeft = 60;
 
 const taskTemplates = new displayTemplates();
 
@@ -34,13 +34,14 @@ signupForm.addEventListener("submit", async (e) => {
 
   if (userinfo.success) {
     //redirect otp page
-
     otpSection.classList.remove("d-none");
     signupFormSection.classList.add("d-none");
     toastSection.innerHTML = taskTemplates.successToast("Success, OTP Sent");
 
     const temp = userinfo.user._id || userinfo.user[0]._id;
     userid = temp.toString();
+
+    startTimer();
   } else {
     toastSection.innerHTML = taskTemplates.errorToast("User Already Exists.");
   }
@@ -65,11 +66,12 @@ async function verifyOTP() {
       });
 
       if (authVerification.success) {
-        window.location.href = "/pages/signin.html";
-
         toastSection.innerHTML = taskTemplates.successToast(
           "Registration Successful."
         );
+        setTimeout(() => {
+          window.location.href = "/pages/signin.html";
+        }, 2000);
       } else {
         toastSection.innerHTML = taskTemplates.errorToast(
           authVerification.message
@@ -100,4 +102,7 @@ async function verifyOTP() {
 }
 window.verifyOTP = verifyOTP;
 
-startTimer();
+const resendButton = document.getElementById("resendButton");
+resendButton.addEventListener("click", async () => {
+  resendOTP(userid);
+});

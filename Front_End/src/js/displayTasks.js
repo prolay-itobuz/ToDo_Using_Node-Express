@@ -7,7 +7,6 @@ const taskTemplates = new displayTemplates();
 const helper = new manageDisplay();
 
 export default async function init() {
-
   // tasks Buttons toggle
   const radioButtons = document.querySelectorAll('input[name="btnradio"]');
 
@@ -24,19 +23,30 @@ export default async function init() {
     radio.addEventListener("change", helper.showSelectedCard);
   });
 
+  let tasks = await API.fetchTodos();
+
   importantTasks_section.innerHTML = "";
   regularTasks_section.innerHTML = "";
   completeTasks_section.innerHTML = "";
   allTasks_section.innerHTML = "";
 
-  const tasks = await API.fetchTodos();
-
   if (!tasks.success) {
-    toastSection.innerHTML = taskTemplates.errorToast(tasks.message);
+    if (tasks.message === "jwt expired") {
+      console.log("Access Expired");
+      const newToken = await API.resetToken();
+
+      localStorage.clear();
+      localStorage.setItem("access_token", newToken.access_token);
+      localStorage.setItem("refresh_token", newToken.refresh_token);
+
+      tasks = await API.fetchTodos();
+
+      if (newToken.message === "jwt expired") {
+        localStorage.clear();
+        window.location.href = "/pages/signin.html";
+      }
+    }
   }
-  setTimeout(() => {
-    toastSection.innerHTML = ''
-  }, 2000);
 
   let completeCount = 0,
     activeCount = 0,

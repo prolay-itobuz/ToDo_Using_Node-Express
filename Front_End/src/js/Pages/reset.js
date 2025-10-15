@@ -3,7 +3,7 @@ import * as authAPI from "./authApi";
 import displayTemplates from "../templates.js";
 import { resendOTP, startTimer } from "./otpForm.js";
 
-let timeLeft = 300;
+let timeLeft = 60;
 
 const taskTemplates = new displayTemplates();
 
@@ -14,6 +14,7 @@ const inputs = document.querySelectorAll(".otp-input input");
 const toastSection = document.getElementById("toastSection");
 const resetFormSection = document.getElementById("resetFormSection");
 const otpSection = document.getElementById("otpSection");
+const resetPasswordForm = document.getElementById("resetPasswordForm");
 
 const userMail = document.getElementById("userMail");
 let userid = "";
@@ -31,6 +32,7 @@ resetVerifyForm.addEventListener("submit", async (e) => {
     otpSection.classList.remove("d-none");
 
     userid = data.user._id;
+    startTimer();
   }
 
   setTimeout(() => {
@@ -56,11 +58,12 @@ async function verifyResetOTP() {
           authVerification.message
         );
       } else {
+        // otp verified
         toastSection.innerHTML = taskTemplates.successToast(
           authVerification.message
         );
-
-        console.log(authVerification);
+        otpSection.classList.add("d-none");
+        resetPasswordForm.classList.remove("d-none");
       }
 
       setTimeout(() => {
@@ -87,4 +90,27 @@ async function verifyResetOTP() {
 }
 window.verifyResetOTP = verifyResetOTP;
 
-startTimer();
+// set password form
+const resetVerifyPass = document.getElementById("resetVerifyPass");
+const userPass = document.getElementById("userPass");
+
+resetVerifyPass.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const data = await authAPI.reset({ id: userid, password: userPass.value });
+
+  if (data.success) {
+    toastSection.innerHTML = taskTemplates.successToast(data.message);
+
+    setTimeout(() => {
+      window.location.href = "/pages/signin.html";
+    }, 2000);
+  } else {
+    toastSection.innerHTML = taskTemplates.errorToast(data.message);
+  }
+});
+
+const resendButton = document.getElementById("resendButton");
+resendButton.addEventListener("click", async () => {
+  resendOTP(userid);
+});

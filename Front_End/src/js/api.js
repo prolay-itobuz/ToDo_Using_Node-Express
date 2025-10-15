@@ -2,7 +2,13 @@ const ownAPI = "http://localhost:8000/";
 
 // get full request
 export async function fetchTodos() {
-  const res = await fetch(ownAPI);
+  const res = await fetch(ownAPI, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  });
   const data = await res.json();
   return data;
 }
@@ -10,7 +16,13 @@ export async function fetchTodos() {
 // get selected request
 export async function fetchTodoById(id) {
   try {
-    const res = await fetch(`${ownAPI}${id}`);
+    const res = await fetch(`${ownAPI}${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
     if (!res.ok) {
       throw new Error(`Todo with id ${id} not found`);
     }
@@ -25,7 +37,13 @@ export async function fetchTodoById(id) {
 //search request
 export async function searchData(q) {
   try {
-    const res = await fetch(`${ownAPI}search/${q}`);
+    const res = await fetch(`${ownAPI}search/${q}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
     if (!res.ok) {
       throw new Error(`Todo not found`);
     }
@@ -41,11 +59,14 @@ export async function searchData(q) {
 export async function addTodo(text) {
   const res = await fetch(ownAPI, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
     body: JSON.stringify(text),
   });
   const newTodo = await res.json();
-  
+
   return newTodo;
 }
 
@@ -53,7 +74,10 @@ export async function addTodo(text) {
 export async function updateTodo(id, text) {
   const res = await fetch(`${ownAPI}${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
     body: JSON.stringify(text),
   });
   const updated = await res.json();
@@ -62,6 +86,25 @@ export async function updateTodo(id, text) {
 
 // delete request
 export async function deleteTodo(id) {
-  const data = await fetch(`${ownAPI}${id}`, { method: "DELETE" });
+  const data = await fetch(`${ownAPI}${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  });
   return data;
+}
+
+export async function resetToken() {
+  const res = await fetch(ownAPI + "user/auth/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("refresh_token")}`,
+    },
+  });
+  const newToken = await res.json();
+
+  return newToken;
 }
