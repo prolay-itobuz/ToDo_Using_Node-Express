@@ -1,6 +1,6 @@
-import "../../scss/Pages/signup.scss";
-import * as authAPI from "./authApi.js";
-import displayTemplates from "../templates.js";
+import "../../scss/Pages/auth.scss";
+import * as authAPI from "../Api/authApi.js";
+import displayTemplates from "../Dashboard/templates.js";
 
 const taskTemplates = new displayTemplates();
 
@@ -31,7 +31,7 @@ signinForm.addEventListener("submit", async (e) => {
 
     setTimeout(() => {
       window.location.href = "/";
-    }, 3000);
+    }, 1000);
   }
 
   setTimeout(() => {

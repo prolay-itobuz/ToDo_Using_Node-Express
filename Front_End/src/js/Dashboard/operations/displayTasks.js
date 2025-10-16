@@ -1,7 +1,7 @@
 // Display The task Cards
 import * as API from "./api.js";
-import displayTemplates from "./templates.js";
-import manageDisplay from "./helper.js";
+import displayTemplates from "../utils/templates.js";
+import manageDisplay from "../utils/helper.js";
 
 const taskTemplates = new displayTemplates();
 const helper = new manageDisplay();
@@ -15,7 +15,7 @@ export default async function init() {
   const regularTasks_section = document.getElementById("regularTasks");
   const completeTasks_section = document.getElementById("completeTasks");
   const allTasks_section = document.getElementById("allTasks");
-  const toastSection = document.getElementById("toastsection");
+  const toastSection = document.getElementById("toastSection");
 
   helper.showSelectedCard();
 

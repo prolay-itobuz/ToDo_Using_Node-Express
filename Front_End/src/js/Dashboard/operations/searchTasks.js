@@ -1,6 +1,6 @@
-import manageDisplay from "./helper.js";
+import manageDisplay from "../utils/helper.js";
 import * as API from "./api.js";
-import displayTemplates from "./templates.js";
+import displayTemplates from "../utils/templates.js";
 import init from "./displayTasks.js";
 
 const helper = new manageDisplay();

@@ -1,7 +1,7 @@
-import "../../scss/Pages/signup.scss";
-import * as authAPI from "./authApi.js";
-import displayTemplates from "../templates.js";
-import { resendOTP, startTimer } from "./otpForm.js";
+import "../../scss/Pages/auth.scss";
+import * as authAPI from "../Api/authApi.js";
+import displayTemplates from "../Dashboard/utils/templates.js";
+import { resendOTP, startTimer } from "../common/otpForm.js";
 
 let timeLeft = 60;
 

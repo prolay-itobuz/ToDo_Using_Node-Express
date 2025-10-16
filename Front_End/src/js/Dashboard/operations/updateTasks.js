@@ -1,19 +1,19 @@
 import * as bootstrap from "bootstrap";
 import * as API from "./api.js";
 import init from "./displayTasks.js";
-import displayTemplates from "./templates.js";
+import displayTemplates from "../utils/templates.js";
 
 const taskTemplates = new displayTemplates();
 const editModal = document.getElementById("exampleModal");
 const updateModal = new bootstrap.Modal(editModal); //update task operation
-const toastSection = document.getElementById("toastsection");
+const toastSection = document.getElementById("toastSection");
 
 async function editTask(taskId) {
   const editTitle = document.getElementById("editTitle");
   const editTags = document.getElementById("editTags");
   const is_important = document.getElementById("editImportant");
-
   const editModalForm = document.getElementById("editForm");
+
   editModalForm.setAttribute("data-id", taskId);
 
   const todo = await API.fetchTodoById(taskId);

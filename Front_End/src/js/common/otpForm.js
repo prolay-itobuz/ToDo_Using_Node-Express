@@ -1,5 +1,5 @@
-import * as authAPI from "./authApi";
-import displayTemplates from "../templates.js";
+import * as authAPI from "../Api/authApi.js";
+import displayTemplates from "../Dashboard/utils/templates.js";
 const taskTemplates = new displayTemplates();
 
 const inputs = document.querySelectorAll(".otp-input input");

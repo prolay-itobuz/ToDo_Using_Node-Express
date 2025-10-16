@@ -1,7 +1,7 @@
 import * as bootstrap from "bootstrap";
 import * as API from "./api.js";
 import init from "./displayTasks.js";
-import displayTemplates from "./templates.js";
+import displayTemplates from "../utils/templates.js";
 
 const taskTemplates = new displayTemplates();
 
@@ -10,7 +10,7 @@ init();
 
 // Add Task by Form Submit
 const addForm = document.getElementById("addTodo-form");
-const toastSection = document.getElementById("toastsection");
+const toastSection = document.getElementById("toastSection");
 
 addForm.addEventListener("submit", async function (event) {
   event.preventDefault();
