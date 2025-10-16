@@ -2,8 +2,7 @@ import "../../scss/Pages/auth.scss";
 import * as authAPI from "../Api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
 import { resendOTP, startTimer } from "../common/otpForm.js";
-
-let timeLeft = 60;
+import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
 
@@ -40,55 +39,16 @@ resetVerifyForm.addEventListener("submit", async (e) => {
 });
 
 // otp page js
-async function verifyResetOTP() {
+
+otpSection.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
   const otp = Array.from(inputs)
     .map((input) => input.value)
     .join("");
 
-  if (otp.length === 4) {
-    if (timeLeft > 0) {
-      const authVerification = await authAPI.verifyOTP(userid, {
-        data: otp,
-        task: "reset",
-      });
-
-      if (!authVerification.success) {
-        toastSection.innerHTML = taskTemplates.errorToast(
-          authVerification.message
-        );
-      } else {
-        // otp verified
-        toastSection.innerHTML = taskTemplates.successToast(
-          authVerification.message
-        );
-
-        otpSection.classList.add("d-none");
-        resetPasswordForm.classList.remove("d-none");
-      }
-
-      setTimeout(() => {
-        toastSection.innerHTML = "";
-      }, 3000);
-    } else {
-      toastSection.innerHTML = taskTemplates.errorToast(
-        "OTP Expired, Please Resend."
-      );
-
-      setTimeout(() => {
-        toastSection.innerHTML = "";
-      }, 3000);
-    }
-  } else {
-    toastSection.innerHTML = taskTemplates.errorToast(
-      "OTP should be 4 digits."
-    );
-
-    setTimeout(() => {
-      toastSection.innerHTML = "";
-    }, 3000);
-  }
-}
-window.verifyResetOTP = verifyResetOTP;
+  otpSubmit(otp, "reset", userid);
+});
 
 // set password form
 const resetVerifyPass = document.getElementById("resetVerifyPass");
@@ -104,7 +64,7 @@ resetVerifyPass.addEventListener("submit", async (e) => {
 
     setTimeout(() => {
       window.location.href = "/pages/signin.html";
-    }, 2000);
+    }, 1000);
   } else {
     toastSection.innerHTML = taskTemplates.errorToast(data.message);
   }

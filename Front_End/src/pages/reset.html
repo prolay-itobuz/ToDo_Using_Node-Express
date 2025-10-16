@@ -38,9 +38,9 @@
       </div>
     </div>
 
-    <div class="otp-container d-none" id="otpSection">
+    <form class="otp-container d-none" id="otpSection">
       <h1>OTP Verification</h1>
-      <p>Enter the 6-digit code sent to your device</p>
+      <p>Enter the 4-digit code sent to your device</p>
       <div id="timer">Time remaining: 1:00</div>
       <div class="otp-input">
         <input type="number" min="0" max="9" required />
@@ -48,9 +48,9 @@
         <input type="number" min="0" max="9" required />
         <input type="number" min="0" max="9" required />
       </div>
-      <button onclick="verifyResetOTP()">Verify</button>
+      <button type="submit">Verify</button>
       <button id="resendButton" disabled>Resend Code</button>
-    </div>
+    </form>
 
     <div class="signup-form d-none" id="resetPasswordForm">
       <div class="container">

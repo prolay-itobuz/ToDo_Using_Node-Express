@@ -78,3 +78,61 @@ export async function resendOTP(userid) {
 }
 
 window.resendOTP = resendOTP;
+
+export async function otpSubmit(otp, taskName, userid) {
+  if (otp.length === 4) {
+    if (timeLeft > 0) {
+      const authVerification = await authAPI.verifyOTP(userid, {
+        data: otp,
+        task: taskName,
+      });
+
+      if (!authVerification.success) {
+        toastSection.innerHTML = taskTemplates.errorToast(
+          authVerification.message
+        );
+      } else {
+        if (taskName === "verify") {
+          toastSection.innerHTML = taskTemplates.successToast(
+            "Registration Successful."
+          );
+
+          setTimeout(() => {
+            window.location.href = "/pages/signin.html";
+          }, 1000);
+        } else {
+          toastSection.innerHTML = taskTemplates.successToast(
+            authVerification.message
+          );
+
+          otpSection.classList.add("d-none");
+          resetPasswordForm.classList.remove("d-none");
+
+          setTimeout(() => {
+            toastSection.innerHTML = "";
+          }, 3000);
+        }
+      }
+
+      setTimeout(() => {
+        toastSection.innerHTML = "";
+      }, 3000);
+    } else {
+      toastSection.innerHTML = taskTemplates.errorToast(
+        "OTP Expired, Please Resend."
+      );
+
+      setTimeout(() => {
+        toastSection.innerHTML = "";
+      }, 3000);
+    }
+  } else {
+    toastSection.innerHTML = taskTemplates.errorToast(
+      "OTP should be 4 digits."
+    );
+
+    setTimeout(() => {
+      toastSection.innerHTML = "";
+    }, 3000);
+  }
+}

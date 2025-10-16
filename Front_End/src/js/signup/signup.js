@@ -2,8 +2,7 @@ import "../../scss/Pages/auth.scss";
 import * as authAPI from "../Api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
 import { resendOTP, startTimer } from "../common/otpForm.js";
-
-let timeLeft = 60;
+import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
 
@@ -51,56 +50,15 @@ signupForm.addEventListener("submit", async (e) => {
 
 // otp page js
 
-async function verifyOTP() {
+otpSection.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
   const otp = Array.from(inputs)
     .map((input) => input.value)
     .join("");
 
-  if (otp.length === 4) {
-    if (timeLeft > 0) {
-      const authVerification = await authAPI.verifyOTP(userid, {
-        data: otp,
-        task: "verify",
-      });
-
-      if (authVerification.success) {
-        toastSection.innerHTML = taskTemplates.successToast(
-          "Registration Successful."
-        );
-
-        setTimeout(() => {
-          window.location.href = "/pages/signin.html";
-        }, 1000);
-      } else {
-        toastSection.innerHTML = taskTemplates.errorToast(
-          authVerification.message
-        );
-      }
-
-      setTimeout(() => {
-        toastSection.innerHTML = "";
-      }, 3000);
-    } else {
-      toastSection.innerHTML = taskTemplates.errorToast(
-        "OTP Expired, Please Resend."
-      );
-
-      setTimeout(() => {
-        toastSection.innerHTML = "";
-      }, 3000);
-    }
-  } else {
-    toastSection.innerHTML = taskTemplates.errorToast(
-      "OTP should be 4 digits."
-    );
-
-    setTimeout(() => {
-      toastSection.innerHTML = "";
-    }, 3000);
-  }
-}
-
-window.verifyOTP = verifyOTP;
+  otpSubmit(otp, "verify", userid);
+});
 
 const resendButton = document.getElementById("resendButton");
 resendButton.addEventListener("click", async () => {
