@@ -1,5 +1,5 @@
 // Import our custom CSS
-import "../scss/styles.scss";
-import "./app.js";
-import "./updateTasks.js";
-import "./searchTasks.js";
+import "../../scss/styles.scss";
+import "../Dashboard/operations/app.js";
+import "../Dashboard/operations/updateTasks.js";
+import "../Dashboard/operations/searchTasks.js";

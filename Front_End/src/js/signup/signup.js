@@ -70,7 +70,7 @@ async function verifyOTP() {
 
         setTimeout(() => {
           window.location.href = "/pages/signin.html";
-        }, 2000);
+        }, 1000);
       } else {
         toastSection.innerHTML = taskTemplates.errorToast(
           authVerification.message
