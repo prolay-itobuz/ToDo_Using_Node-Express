@@ -12,11 +12,13 @@ export function startTimer() {
   timerId = setInterval(() => {
     if (timeLeft <= 0) {
       clearInterval(timerId);
+
       timerDisplay.textContent = "Resend OTP";
       resendButton.disabled = false;
     } else {
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
+
       timerDisplay.textContent = `Time remaining: ${minutes}:${seconds
         .toString()
         .padStart(2, "0")}`;
@@ -67,8 +69,10 @@ export async function resendOTP(userid) {
     input.value = "";
     input.disabled = false;
   });
+
   resendButton.disabled = true;
   inputs[0].focus();
+
   clearInterval(timerId);
   startTimer();
 }

@@ -30,24 +30,6 @@ export default async function init() {
   completeTasks_section.innerHTML = "";
   allTasks_section.innerHTML = "";
 
-  if (!tasks.success) {
-    if (tasks.message === "jwt expired") {
-      console.log("Access Expired");
-      const newToken = await API.resetToken();
-
-      localStorage.clear();
-      localStorage.setItem("access_token", newToken.access_token);
-      localStorage.setItem("refresh_token", newToken.refresh_token);
-
-      tasks = await API.fetchTodos();
-
-      if (newToken.message === "jwt expired") {
-        localStorage.clear();
-        window.location.href = "/pages/signin.html";
-      }
-    }
-  }
-
   let completeCount = 0,
     activeCount = 0,
     allCount = 0,
@@ -56,8 +38,10 @@ export default async function init() {
   for (let i = 0; i < tasks.data.length; i++) {
     if (!tasks.data[i].isCompleted) {
       allCount += 1;
+
       if (tasks.data[i].isImportant) {
         importantCount += 1;
+
         importantTasks_section.innerHTML += taskTemplates.showImportant(
           tasks.data,
           i
@@ -68,6 +52,7 @@ export default async function init() {
         );
       } else {
         activeCount += 1;
+
         regularTasks_section.innerHTML += taskTemplates.showActive(
           tasks.data,
           i
@@ -76,18 +61,22 @@ export default async function init() {
       }
     } else {
       completeCount += 1;
+
       completeTasks_section.innerHTML += taskTemplates.showComplete(
         tasks.data,
         i
       );
     }
   }
+
   if (!completeCount) {
     completeTasks_section.innerHTML = taskTemplates.emptyComplete();
   }
+
   if (!importantCount) {
     importantTasks_section.innerHTML = taskTemplates.emptyImportant();
   }
+
   if (!activeCount) {
     regularTasks_section.innerHTML = taskTemplates.emptyActive();
   }
@@ -95,6 +84,7 @@ export default async function init() {
   if (!allCount) {
     allTasks_section.innerHTML = taskTemplates.emptyAll();
   }
+
   helper.showSelectedCard();
 }
 

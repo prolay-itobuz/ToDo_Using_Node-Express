@@ -185,11 +185,12 @@ export default class displayTemplates {
 
   emptySearch = () => {
     return `<div class="task-manager__empty-state p-0" id="nosearch">
-          <div class="task-manager__empty-icon">
-            <i class="fa-solid fa-clipboard-list"></i>
-          </div>
-          <h5>No Result found</h5>
-          <p>Reset and search again for result.</p>
-        </div>`;
+              <div class="task-manager__empty-icon">
+                <i class="fa-solid fa-clipboard-list"></i>
+              </div>
+              
+              <h5>No Result found</h5>
+              <p>Reset and search again for result.</p>
+            </div>`;
   };
 }

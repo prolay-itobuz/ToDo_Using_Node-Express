@@ -4,10 +4,8 @@ import init from "./displayTasks.js";
 import displayTemplates from "./templates.js";
 
 const taskTemplates = new displayTemplates();
-
-//update task operation
 const editModal = document.getElementById("exampleModal");
-const updateModal = new bootstrap.Modal(editModal);
+const updateModal = new bootstrap.Modal(editModal); //update task operation
 const toastSection = document.getElementById("toastsection");
 
 async function editTask(taskId) {
@@ -45,12 +43,14 @@ async function editTask(taskId) {
         tags: editTags.split(","),
         isImportant: isImportant,
       };
+
       const taskData = await API.updateTodo(todoId, data);
 
       if (taskData.success) {
         toastSection.innerHTML = taskTemplates.successToast(
           "Task Successfully Updated."
         );
+
         init();
       } else {
         toastSection.innerHTML = taskTemplates.errorToast(taskData.message);

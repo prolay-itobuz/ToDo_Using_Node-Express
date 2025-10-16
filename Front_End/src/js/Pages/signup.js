@@ -8,7 +8,6 @@ let timeLeft = 60;
 const taskTemplates = new displayTemplates();
 
 const signupForm = document.getElementById("signupForm");
-
 const signupFormSection = document.getElementById("signupFormSection");
 const toastSection = document.getElementById("toastSection");
 const otpSection = document.getElementById("otpSection");
@@ -30,7 +29,6 @@ signupForm.addEventListener("submit", async (e) => {
   };
 
   const userinfo = await authAPI.createUser(userdata);
-  console.log(userinfo);
 
   if (userinfo.success) {
     //redirect otp page
@@ -69,6 +67,7 @@ async function verifyOTP() {
         toastSection.innerHTML = taskTemplates.successToast(
           "Registration Successful."
         );
+
         setTimeout(() => {
           window.location.href = "/pages/signin.html";
         }, 2000);
@@ -100,6 +99,7 @@ async function verifyOTP() {
     }, 3000);
   }
 }
+
 window.verifyOTP = verifyOTP;
 
 const resendButton = document.getElementById("resendButton");

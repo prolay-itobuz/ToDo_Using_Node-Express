@@ -5,7 +5,6 @@ import displayTemplates from "../templates.js";
 const taskTemplates = new displayTemplates();
 
 const toastSection = document.getElementById("toastSection");
-
 const signinForm = document.getElementById("signinForm");
 
 const userMail = document.getElementById("userMail");

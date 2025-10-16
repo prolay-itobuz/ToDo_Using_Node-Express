@@ -8,7 +8,6 @@ let timeLeft = 60;
 const taskTemplates = new displayTemplates();
 
 const resetVerifyForm = document.getElementById("resetVerifyForm");
-
 const inputs = document.querySelectorAll(".otp-input input");
 
 const toastSection = document.getElementById("toastSection");
@@ -62,6 +61,7 @@ async function verifyResetOTP() {
         toastSection.innerHTML = taskTemplates.successToast(
           authVerification.message
         );
+
         otpSection.classList.add("d-none");
         resetPasswordForm.classList.remove("d-none");
       }
