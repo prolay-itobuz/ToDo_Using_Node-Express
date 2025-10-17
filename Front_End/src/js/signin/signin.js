@@ -1,7 +1,6 @@
 import "../../scss/Pages/auth.scss";
 import * as authAPI from "../Api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
-import "../common/elements.js";
 
 const taskTemplates = new displayTemplates();
 

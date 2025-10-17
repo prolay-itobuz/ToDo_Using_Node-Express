@@ -13,30 +13,34 @@ addTodoForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   if (taskTitle.value) {
-    const tagContainer = taskTags.value.split(",");
-    const inputData = {
-      title: taskTitle.value,
-      tags: tagContainer,
-      isImportant: isImportant.checked,
-    };
+    try {
+      const tagContainer = taskTags.value.split(",");
+      const inputData = {
+        title: taskTitle.value,
+        tags: tagContainer,
+        isImportant: isImportant.checked,
+      };
 
-    const data = await API.addTodo(inputData);
-    addTodoForm.reset();
+      const data = await API.addTodo(inputData);
+      addTodoForm.reset();
 
-    if (data.success) {
-      toastSection.innerHTML = taskTemplates.successToast(data.message);
-    } else {
-      toastSection.innerHTML = taskTemplates.errorToast(data.message);
+      if (data.success) {
+        toastSection.innerHTML = taskTemplates.successToast(data.message);
+      } else {
+        toastSection.innerHTML = taskTemplates.errorToast(data.message);
+      }
+
+      errMsg.classList.add("d-none");
+      taskTitle.classList.remove("border");
+
+      init();
+    } catch (err) {
+      toastSection.innerHTML = taskTemplates.errorToast(err.message);
+    } finally {
+      setTimeout(() => {
+        toastSection.innerHTML = "";
+      }, 2000);
     }
-
-    errMsg.classList.add("d-none");
-    taskTitle.classList.remove("border");
-
-    init();
-
-    setTimeout(() => {
-      toastSection.innerHTML = "";
-    }, 2000);
   } else {
     errMsg.classList.remove("d-none");
     taskTitle.classList.add("border");
@@ -55,18 +59,26 @@ function delTask(taskId) {
     event.preventDefault();
 
     const temp = deleteForm.getAttribute("data-id");
-    await API.deleteTodo(temp);
+    try {
+      const deletedTask = await API.deleteTodo(temp);
 
-    toastSection.innerHTML = taskTemplates.successToast(
-      "Task Successfully deleted."
-    );
+      if (deletedTask.success) {
+        toastSection.innerHTML = taskTemplates.successToast(
+          deletedTask.message
+        );
+      } else {
+        toastSection.innerHTML = taskTemplates.errorToast(deletedTask.message);
+      }
+    } catch (err) {
+      toastSection.innerHTML = taskTemplates.errorToast(err.message);
+    } finally {
+      setTimeout(() => {
+        toastSection.innerHTML = "";
+      }, 2000);
 
-    setTimeout(() => {
-      toastSection.innerHTML = "";
-    }, 2000);
-
-    init();
-    deleteModal.hide();
+      init();
+      deleteModal.hide();
+    }
   });
 }
 

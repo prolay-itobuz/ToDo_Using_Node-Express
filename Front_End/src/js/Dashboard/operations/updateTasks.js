@@ -9,48 +9,51 @@ const updateModal = new bootstrap.Modal(editModal); //update task operation
 
 async function editTask(taskId) {
   editForm.setAttribute("data-id", taskId);
+  try {
+    const todo = await API.fetchTodoById(taskId);
 
-  const todo = await API.fetchTodoById(taskId);
+    editTitle.value = todo.data[0].title;
+    editTags.value = todo.data[0].tags;
+    editImportant.checked = todo.data[0].isImportant;
 
-  editTitle.value = todo.data[0].title;
-  editTags.value = todo.data[0].tags;
-  editImportant.checked = todo.data[0].isImportant;
+    editForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
 
-  editForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
+      const todoId = editForm.getAttribute("data-id");
 
-    const todoId = editForm.getAttribute("data-id");
-
-    if (!editTitle.value) {
-      editTitle.classList.add("border");
-      editErr.classList.remove("d-none");
-    } else {
-      editTitle.classList.remove("border");
-      editErr.classList.add("d-none");
-
-      const data = {
-        title: editTitle.value,
-        tags: editTags.value.split(","),
-        isImportant: editImportant.checked,
-      };
-
-      const taskData = await API.updateTodo(todoId, data);
-
-      if (taskData.success) {
-        toastSection.innerHTML = taskTemplates.successToast(taskData.message);
-
-        init();
+      if (!editTitle.value) {
+        editTitle.classList.add("border");
+        editErr.classList.remove("d-none");
       } else {
-        toastSection.innerHTML = taskTemplates.errorToast(taskData.message);
+        editTitle.classList.remove("border");
+        editErr.classList.add("d-none");
+
+        const data = {
+          title: editTitle.value,
+          tags: editTags.value.split(","),
+          isImportant: editImportant.checked,
+        };
+
+        const taskData = await API.updateTodo(todoId, data);
+
+        if (taskData.success) {
+          toastSection.innerHTML = taskTemplates.successToast(taskData.message);
+
+          init();
+        } else {
+          toastSection.innerHTML = taskTemplates.errorToast(taskData.message);
+        }
+
+        updateModal.hide();
       }
-
-      setTimeout(() => {
-        toastSection.innerHTML = "";
-      }, 2000);
-
-      updateModal.hide();
-    }
-  });
+    });
+  } catch (err) {
+    oastSection.innerHTML = taskTemplates.errorToast(err.message);
+  } finally {
+    setTimeout(() => {
+      toastSection.innerHTML = "";
+    }, 2000);
+  }
 }
 
 window.editTask = editTask;
@@ -66,8 +69,12 @@ async function changeImportance(taskId) {
     data.isImportant = false;
   }
 
-  await API.updateTodo(taskId, data);
-  init();
+  try {
+    await API.updateTodo(taskId, data);
+    init();
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
+  }
 }
 
 window.changeImportance = changeImportance;
@@ -83,8 +90,12 @@ async function changeStatus(taskId) {
     data.isCompleted = false;
   }
 
-  await API.updateTodo(taskId, data);
-  init();
+  try {
+    await API.updateTodo(taskId, data);
+    init();
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
+  }
 }
 
 window.changeStatus = changeStatus;
