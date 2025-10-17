@@ -1,4 +1,5 @@
 import { postSchema, updateSchema } from '../schema/toDoValidationsSchemas.js';
+import { ValidationError } from 'yup';
 
 export default class ToDoValidations {
   validateRequest = async (req, res, next) => {
@@ -10,10 +11,11 @@ export default class ToDoValidations {
 
       next();
     } catch (err) {
-      if (err.name === 'ValidationError') {
+      if (err instanceof ValidationError) {
         err.status = 400;
         next(new Error(err.errors.join(', ')));
       }
+
       next(err);
     }
   };
@@ -27,10 +29,11 @@ export default class ToDoValidations {
 
       next();
     } catch (err) {
-      if (err.name === 'ValidationError') {
+      if (err instanceof ValidationError) {
         err.status = 400;
         next(new Error(err.errors.join(', ')));
       }
+
       next(err);
     }
   };

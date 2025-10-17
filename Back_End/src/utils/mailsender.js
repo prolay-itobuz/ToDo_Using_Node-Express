@@ -25,7 +25,7 @@ export default class SendMail {
 
       return info;
     } catch (error) {
-      console.log(error.message);
+      return error;
     }
   };
 

@@ -23,7 +23,7 @@ export default class authControllerClass {
       if (appUser[0] && appUser[0].isVerified) {
         res.status(403);
 
-        throw new Error(`user already exists`);
+        throw new Error(`User already exists`);
       } else if (appUser[0] && !appUser[0].isVerified) {
         const uid = appUser[0]._id.toString();
 
@@ -40,7 +40,7 @@ export default class authControllerClass {
         genOTP(mail);
 
         res.status(201).json({
-          message: 'User Added Successfully',
+          message: 'OTP Sent Successfully',
           success: true,
           user: newUser,
         });
@@ -65,7 +65,11 @@ export default class authControllerClass {
         createdAt: -1,
       });
 
-      if (req.body.data !== key[0].otp) {
+      if (req.body.data.length !== 4) {
+        res.status(500);
+
+        throw new Error(`OTP should be 4 digits.`);
+      } else if (req.body.data !== key[0].otp) {
         res.status(401);
 
         throw new Error(`Invalid OTP`);
@@ -86,7 +90,7 @@ export default class authControllerClass {
       }
 
       res.status(200).send({
-        message: 'OTP Verified',
+        message: 'Email Verified Successfully.',
         success: true,
         data: verifiedUser,
       });
@@ -173,17 +177,19 @@ export default class authControllerClass {
           const refresh_token = tokenGenerator.genRefresh(userinfo[0]._id);
 
           res.status(200).json({
-            message: 'Login Success',
+            message: 'Login Successful.',
             success: true,
             access_token: access_token,
             refresh_token: refresh_token,
           });
         } else {
           res.status(401);
+
           throw new Error(`Invalid Password.`);
         }
       } else {
         res.status(401);
+
         throw new Error(`User not verified, Complete Signup`);
       }
     } catch (err) {
@@ -198,8 +204,6 @@ export default class authControllerClass {
 
       const decoded = jwt.verify(refresh_token, refresh_secret);
 
-      console.log(decoded);
-
       if (decoded) {
         const access = tokenGenerator.genAccess(decoded.userId);
         const refresh = tokenGenerator.genRefresh(decoded.userId);
@@ -212,6 +216,7 @@ export default class authControllerClass {
         });
       }
     } catch (err) {
+      err.status = 401;
       next(err);
     }
   };

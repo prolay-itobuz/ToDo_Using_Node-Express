@@ -1,4 +1,5 @@
 import { userSchema } from '../schema/userSchema.js';
+import { ValidationError } from 'yup';
 import bcrypt from 'bcrypt';
 
 export default class userValidation {
@@ -19,7 +20,7 @@ export default class userValidation {
 
       next();
     } catch (err) {
-      if (err.name === 'ValidationError') {
+      if (err instanceof ValidationError) {
         err.status = 400;
         next(new Error(err.errors.join(', ')));
       }

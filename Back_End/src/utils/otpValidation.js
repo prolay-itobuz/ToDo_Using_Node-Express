@@ -10,6 +10,7 @@ export default class otpValidation {
         runValidators: true,
       }
     );
+
     return verifiedUser;
   };
 }

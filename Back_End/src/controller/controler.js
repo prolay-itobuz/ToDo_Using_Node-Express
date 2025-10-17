@@ -21,6 +21,7 @@ export default class controllerClass {
         err.status = 401;
         next(err);
       }
+
       next(err);
     }
   };
