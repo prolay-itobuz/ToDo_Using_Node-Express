@@ -1,10 +1,11 @@
 import * as authAPI from "../Api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
+import { inputs } from "./authElements.js";
+
 const taskTemplates = new displayTemplates();
 
-const inputs = document.querySelectorAll(".otp-input input");
 const timerDisplay = document.getElementById("timer");
-const resendButton = document.getElementById("resendButton");
+
 let timeLeft = 60;
 let timerId;
 

@@ -10,13 +10,6 @@ export default async function init() {
   // tasks Buttons toggle
   const radioButtons = document.querySelectorAll('input[name="btnradio"]');
 
-  // tasks sections
-  const importantTasks_section = document.getElementById("importantTasks");
-  const regularTasks_section = document.getElementById("regularTasks");
-  const completeTasks_section = document.getElementById("completeTasks");
-  const allTasks_section = document.getElementById("allTasks");
-  const toastSection = document.getElementById("toastSection");
-
   helper.showSelectedCard();
 
   radioButtons.forEach((radio) => {
@@ -25,10 +18,10 @@ export default async function init() {
 
   let tasks = await API.fetchTodos();
 
-  importantTasks_section.innerHTML = "";
-  regularTasks_section.innerHTML = "";
-  completeTasks_section.innerHTML = "";
-  allTasks_section.innerHTML = "";
+  importantTasks.innerHTML = "";
+  regularTasks.innerHTML = "";
+  completeTasks.innerHTML = "";
+  allTasks.innerHTML = "";
 
   let completeCount = 0,
     activeCount = 0,
@@ -42,47 +35,35 @@ export default async function init() {
       if (tasks.data[i].isImportant) {
         importantCount += 1;
 
-        importantTasks_section.innerHTML += taskTemplates.showImportant(
-          tasks.data,
-          i
-        );
-        allTasks_section.innerHTML += taskTemplates.showImportant(
-          tasks.data,
-          i
-        );
+        importantTasks.innerHTML += taskTemplates.showImportant(tasks.data, i);
+        allTasks.innerHTML += taskTemplates.showImportant(tasks.data, i);
       } else {
         activeCount += 1;
 
-        regularTasks_section.innerHTML += taskTemplates.showActive(
-          tasks.data,
-          i
-        );
-        allTasks_section.innerHTML += taskTemplates.showActive(tasks.data, i);
+        regularTasks.innerHTML += taskTemplates.showActive(tasks.data, i);
+        allTasks.innerHTML += taskTemplates.showActive(tasks.data, i);
       }
     } else {
       completeCount += 1;
 
-      completeTasks_section.innerHTML += taskTemplates.showComplete(
-        tasks.data,
-        i
-      );
+      completeTasks.innerHTML += taskTemplates.showComplete(tasks.data, i);
     }
   }
 
   if (!completeCount) {
-    completeTasks_section.innerHTML = taskTemplates.emptyComplete();
+    completeTasks.innerHTML = taskTemplates.emptyComplete();
   }
 
   if (!importantCount) {
-    importantTasks_section.innerHTML = taskTemplates.emptyImportant();
+    importantTasks.innerHTML = taskTemplates.emptyImportant();
   }
 
   if (!activeCount) {
-    regularTasks_section.innerHTML = taskTemplates.emptyActive();
+    regularTasks.innerHTML = taskTemplates.emptyActive();
   }
 
   if (!allCount) {
-    allTasks_section.innerHTML = taskTemplates.emptyAll();
+    allTasks.innerHTML = taskTemplates.emptyAll();
   }
 
   helper.showSelectedCard();

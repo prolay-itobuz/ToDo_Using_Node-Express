@@ -1,14 +1,9 @@
 import "../../scss/Pages/auth.scss";
 import * as authAPI from "../Api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
+import "../common/elements.js";
 
 const taskTemplates = new displayTemplates();
-
-const toastSection = document.getElementById("toastSection");
-const signinForm = document.getElementById("signinForm");
-
-const userMail = document.getElementById("userMail");
-const userPass = document.getElementById("userPass");
 
 signinForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -37,6 +32,4 @@ signinForm.addEventListener("submit", async (e) => {
   setTimeout(() => {
     toastSection.innerHTML = "";
   }, 3000);
-
-  console.log(userinfo);
 });

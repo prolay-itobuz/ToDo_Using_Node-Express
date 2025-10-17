@@ -130,7 +130,7 @@ export default class displayTemplates {
   };
 
   emptyComplete = () => {
-    return `<div class="task-manager__empty-state p-0" id="noTask">
+    return `<div class="task-manager__empty-state p-0">
           <div class="task-manager__empty-icon">
             <i class="fa-solid fa-check-circle"></i>
           </div>
@@ -140,7 +140,7 @@ export default class displayTemplates {
   };
 
   emptyImportant = () => {
-    return `<div class="task-manager__empty-state p-0" id="noTask">
+    return `<div class="task-manager__empty-state p-0">
           <div class="task-manager__empty-icon">
             <i class="fa-solid fa-clipboard-list"></i>
           </div>
@@ -150,7 +150,7 @@ export default class displayTemplates {
   };
 
   emptyActive = () => {
-    return `<div class="task-manager__empty-state p-0" id="noTask">
+    return `<div class="task-manager__empty-state p-0">
           <div class="task-manager__empty-icon">
             <i class="fa-solid fa-clipboard-list"></i>
           </div>
@@ -160,7 +160,7 @@ export default class displayTemplates {
   };
 
   emptyAll = () => {
-    return `<div class="task-manager__empty-state p-0" id="noTask">
+    return `<div class="task-manager__empty-state p-0">
           <div class="task-manager__empty-icon">
             <i class="fa-solid fa-clipboard-list"></i>
           </div>
@@ -170,21 +170,21 @@ export default class displayTemplates {
   };
 
   successToast = (msg) => {
-    return `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
+    return `  <div class="toast text-bg-success d-flex justify-content-center align-items-center p-2 gap-2" >
     <i class="fa fa-check-circle"></i>
     <p class="m-0">${msg}</p>
   </div>`;
   };
 
   errorToast = (msg) => {
-    return `  <div class="toast text-bg-danger d-flex justify-content-center align-items-center p-2 gap-2" id="toastMsg">
+    return `  <div class="toast text-bg-danger d-flex justify-content-center align-items-center p-2 gap-2">
     <i class="fa fa-times-circle"></i>
     <p class="m-0">${msg}</p>
   </div>`;
   };
 
   emptySearch = () => {
-    return `<div class="task-manager__empty-state p-0" id="nosearch">
+    return `<div class="task-manager__empty-state p-0">
               <div class="task-manager__empty-icon">
                 <i class="fa-solid fa-clipboard-list"></i>
               </div>

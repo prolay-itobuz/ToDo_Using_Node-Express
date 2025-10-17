@@ -1,6 +1,6 @@
 const BASE_URL = "http://localhost:8000/";
 
-import customFetch from "./interceper.js";
+import customFetch from "./interceptor.js";
 window.fetch = customFetch;
 
 // get full request

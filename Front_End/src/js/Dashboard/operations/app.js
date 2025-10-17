@@ -10,22 +10,16 @@ init();
 
 // Add Task by Form Submit
 const addForm = document.getElementById("addTodo-form");
-const toastSection = document.getElementById("toastSection");
 
 addForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  const taskTitle = document.getElementById("taskTitle");
-  const errMsg = document.getElementById("errMsg");
-  const isImportant = document.getElementById("isImportant").checked;
-  const taskTags = document.getElementById("taskTags").value;
-
   if (taskTitle.value) {
-    const tagContainer = taskTags.split(",");
+    const tagContainer = taskTags.value.split(",");
     const inputData = {
       title: taskTitle.value,
       tags: tagContainer,
-      isImportant: isImportant,
+      isImportant: isImportant.checked,
     };
 
     const data = await API.addTodo(inputData);

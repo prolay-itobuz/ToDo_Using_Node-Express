@@ -3,18 +3,10 @@ import * as authAPI from "../Api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
 import { resendOTP, startTimer } from "../common/otpForm.js";
 import { otpSubmit } from "../common/otpForm.js";
+import { inputs } from "../common/elements.js";
 
 const taskTemplates = new displayTemplates();
 
-const resetVerifyForm = document.getElementById("resetVerifyForm");
-const inputs = document.querySelectorAll(".otp-input input");
-
-const toastSection = document.getElementById("toastSection");
-const resetFormSection = document.getElementById("resetFormSection");
-const otpSection = document.getElementById("otpSection");
-const resetPasswordForm = document.getElementById("resetPasswordForm");
-
-const userMail = document.getElementById("userMail");
 let userid = "";
 
 resetVerifyForm.addEventListener("submit", async (e) => {
@@ -51,8 +43,6 @@ otpSection.addEventListener("submit", async (e) => {
 });
 
 // set password form
-const resetVerifyPass = document.getElementById("resetVerifyPass");
-const userPass = document.getElementById("userPass");
 
 resetVerifyPass.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -70,7 +60,6 @@ resetVerifyPass.addEventListener("submit", async (e) => {
   }
 });
 
-const resendButton = document.getElementById("resendButton");
 resendButton.addEventListener("click", async () => {
   resendOTP(userid);
 });

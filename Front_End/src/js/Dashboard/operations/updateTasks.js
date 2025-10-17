@@ -6,30 +6,20 @@ import displayTemplates from "../utils/templates.js";
 const taskTemplates = new displayTemplates();
 const editModal = document.getElementById("exampleModal");
 const updateModal = new bootstrap.Modal(editModal); //update task operation
-const toastSection = document.getElementById("toastSection");
 
 async function editTask(taskId) {
-  const editTitle = document.getElementById("editTitle");
-  const editTags = document.getElementById("editTags");
-  const is_important = document.getElementById("editImportant");
-  const editModalForm = document.getElementById("editForm");
-
-  editModalForm.setAttribute("data-id", taskId);
+  editForm.setAttribute("data-id", taskId);
 
   const todo = await API.fetchTodoById(taskId);
 
   editTitle.value = todo.data[0].title;
   editTags.value = todo.data[0].tags;
-  is_important.checked = todo.data[0].isImportant;
+  editImportant.checked = todo.data[0].isImportant;
 
-  editModalForm.addEventListener("submit", async function (event) {
+  editForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const editTitle = document.getElementById("editTitle");
-    const editTags = document.getElementById("editTags").value;
-    const isImportant = document.getElementById("editImportant").checked;
-    const editErr = document.getElementById("editErr");
-    const todoId = editModalForm.getAttribute("data-id");
+    const todoId = editForm.getAttribute("data-id");
 
     if (!editTitle.value) {
       editTitle.classList.add("border");
@@ -40,16 +30,14 @@ async function editTask(taskId) {
 
       const data = {
         title: editTitle.value,
-        tags: editTags.split(","),
-        isImportant: isImportant,
+        tags: editTags.value.split(","),
+        isImportant: editImportant.checked,
       };
 
       const taskData = await API.updateTodo(todoId, data);
 
       if (taskData.success) {
-        toastSection.innerHTML = taskTemplates.successToast(
-          "Task Successfully Updated."
-        );
+        toastSection.innerHTML = taskTemplates.successToast(taskData.message);
 
         init();
       } else {
