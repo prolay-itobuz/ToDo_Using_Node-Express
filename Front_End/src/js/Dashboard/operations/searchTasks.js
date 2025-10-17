@@ -1,10 +1,10 @@
-import manageDisplay from "../utils/helper.js";
+import Helper from "../utils/helper.js";
 import * as API from "../../Api/api.js";
-import displayTemplates from "../utils/templates.js";
+import Templates from "../utils/templates.js";
 import init from "./displayTasks.js";
 
-const helper = new manageDisplay();
-const taskTemplates = new displayTemplates();
+const helper = new Helper();
+const taskTemplates = new Templates();
 
 searchForm.addEventListener("submit", handleSubmit);
 

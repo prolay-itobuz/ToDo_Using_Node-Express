@@ -1,17 +1,15 @@
 import * as bootstrap from "bootstrap";
 import * as API from "../../Api/api.js";
 import init from "./displayTasks.js";
-import displayTemplates from "../utils/templates.js";
+import Templates from "../utils/templates.js";
 
-const taskTemplates = new displayTemplates();
+const taskTemplates = new Templates();
 
 // Display The task Cards
 init();
 
 // Add Task by Form Submit
-const addForm = document.getElementById("addTodo-form");
-
-addForm.addEventListener("submit", async function (event) {
+addTodoForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   if (taskTitle.value) {
@@ -23,12 +21,10 @@ addForm.addEventListener("submit", async function (event) {
     };
 
     const data = await API.addTodo(inputData);
-    addForm.reset();
+    addTodoForm.reset();
 
     if (data.success) {
-      toastSection.innerHTML = taskTemplates.successToast(
-        "Task Successfully added."
-      );
+      toastSection.innerHTML = taskTemplates.successToast(data.message);
     } else {
       toastSection.innerHTML = taskTemplates.errorToast(data.message);
     }

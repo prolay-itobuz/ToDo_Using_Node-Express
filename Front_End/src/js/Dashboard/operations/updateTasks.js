@@ -1,9 +1,9 @@
 import * as bootstrap from "bootstrap";
 import * as API from "../../Api/api.js";
 import init from "./displayTasks.js";
-import displayTemplates from "../utils/templates.js";
+import Templates from "../utils/templates.js";
 
-const taskTemplates = new displayTemplates();
+const taskTemplates = new Templates();
 const editModal = document.getElementById("exampleModal");
 const updateModal = new bootstrap.Modal(editModal); //update task operation
 

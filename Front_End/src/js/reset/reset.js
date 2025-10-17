@@ -3,9 +3,10 @@ import * as authAPI from "../Api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
 import { resendOTP, startTimer } from "../common/otpForm.js";
 import { otpSubmit } from "../common/otpForm.js";
-import { inputs } from "../common/elements.js";
 
 const taskTemplates = new displayTemplates();
+
+const inputs = document.querySelectorAll(".otp-input input");
 
 let userid = "";
 

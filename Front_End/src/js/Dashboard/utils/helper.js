@@ -1,4 +1,4 @@
-export default class manageDisplay {
+export default class Helper {
   hideAllCards = () => {
     completeTasks.classList.add("d-none");
     importantTasks.classList.add("d-none");

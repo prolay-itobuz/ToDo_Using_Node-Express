@@ -1,10 +1,10 @@
 // Display The task Cards
 import * as API from "../../Api/api.js";
-import displayTemplates from "../utils/templates.js";
-import manageDisplay from "../utils/helper.js";
+import Templates from "../utils/templates.js";
+import Helper from "../utils/helper.js";
 
-const taskTemplates = new displayTemplates();
-const helper = new manageDisplay();
+const taskTemplates = new Templates();
+const helper = new Helper();
 
 export default async function init() {
   // tasks Buttons toggle

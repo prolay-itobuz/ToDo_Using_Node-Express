@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000/";
+const BASE_URL = "http://localhost:8000";
 
 import customFetch from "./interceptor.js";
 window.fetch = customFetch;
@@ -18,7 +18,7 @@ export async function fetchTodos() {
 // get selected request
 export async function fetchTodoById(id) {
   try {
-    const res = await fetch(`${BASE_URL}${id}`, {
+    const res = await fetch(`${BASE_URL}/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,9 +37,9 @@ export async function fetchTodoById(id) {
 }
 
 //search request
-export async function searchData(q) {
+export async function searchData(query) {
   try {
-    const res = await fetch(`${BASE_URL}search/${q}`, {
+    const res = await fetch(`${BASE_URL}/search/${query}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export async function addTodo(text) {
 
 // update request
 export async function updateTodo(id, text) {
-  const res = await fetch(`${BASE_URL}${id}`, {
+  const res = await fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export async function updateTodo(id, text) {
 
 // delete request
 export async function deleteTodo(id) {
-  const data = await fetch(`${BASE_URL}${id}`, {
+  const data = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

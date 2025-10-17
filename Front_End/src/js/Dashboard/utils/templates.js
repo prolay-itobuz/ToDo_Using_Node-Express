@@ -1,4 +1,4 @@
-export default class displayTemplates {
+export default class Templates {
   showImportant = (tasks, i) => {
     return `<div class="task-manager__task-card task-manager__task-card--important">
                         <div class="task-manager__task-header">

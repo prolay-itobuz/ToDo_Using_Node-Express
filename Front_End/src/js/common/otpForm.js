@@ -1,10 +1,9 @@
 import * as authAPI from "../Api/authApi.js";
-import displayTemplates from "../Dashboard/utils/templates.js";
-import { inputs } from "./authElements.js";
+import Templates from "../Dashboard/utils/templates.js";
 
-const taskTemplates = new displayTemplates();
+const taskTemplates = new Templates();
 
-const timerDisplay = document.getElementById("timer");
+const inputs = document.querySelectorAll(".otp-input input");
 
 let timeLeft = 60;
 let timerId;
@@ -14,13 +13,13 @@ export function startTimer() {
     if (timeLeft <= 0) {
       clearInterval(timerId);
 
-      timerDisplay.textContent = "Resend OTP";
+      timer.textContent = "Resend OTP";
       resendButton.disabled = false;
     } else {
       const minutes = Math.floor(timeLeft / 60);
       const seconds = timeLeft % 60;
 
-      timerDisplay.textContent = `Time remaining: ${minutes}:${seconds
+      timer.textContent = `Time remaining: ${minutes}:${seconds
         .toString()
         .padStart(2, "0")}`;
       timeLeft--;

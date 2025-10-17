@@ -1,8 +1,8 @@
-const authAPI = "http://localhost:8000/user/auth/";
+const authAPI = "http://localhost:8000/user/auth";
 
 // Create User
 export async function createUser(userDetails) {
-  const res = await fetch(authAPI + "signup", {
+  const res = await fetch(authAPI + "/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userDetails),
@@ -13,7 +13,7 @@ export async function createUser(userDetails) {
 }
 
 export async function verifyOTP(id, details) {
-  const res = await fetch(authAPI + "otp/" + id, {
+  const res = await fetch(authAPI + "/otp/" + id, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(details),
@@ -24,7 +24,7 @@ export async function verifyOTP(id, details) {
 }
 
 export async function resendOTP(id) {
-  const res = await fetch(authAPI + "resend/" + id, {
+  const res = await fetch(authAPI + "/resend/" + id, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
   });
@@ -34,7 +34,7 @@ export async function resendOTP(id) {
 }
 
 export async function reset(mail) {
-  const res = await fetch(authAPI + "reset", {
+  const res = await fetch(authAPI + "/reset", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(mail),
@@ -45,7 +45,7 @@ export async function reset(mail) {
 }
 
 export async function loginUser(userdata) {
-  const res = await fetch(authAPI + "login", {
+  const res = await fetch(authAPI + "/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userdata),

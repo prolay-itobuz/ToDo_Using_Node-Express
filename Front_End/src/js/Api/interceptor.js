@@ -1,5 +1,5 @@
 const { fetch: originalFetch } = window;
-const ownAPI = "http://localhost:8000/";
+const BASE_URL = "http://localhost:8000";
 
 const customFetch = async (url, options) => {
   options.headers.Authorization = `Bearer ${localStorage.getItem(
@@ -7,12 +7,11 @@ const customFetch = async (url, options) => {
   )}`;
 
   let response = await originalFetch(url, options);
-  response = await response.json();
 
-  if (!response.success) {
-    if (response.message === "jwt expired") {
-      console.log("Access Expired");
-      const newToken = await resetToken();
+  if (!response.ok) {
+    if (response.status === 401) {
+      const newResponse = await resetToken();
+      const newToken = await newResponse.json();
 
       localStorage.clear();
       localStorage.setItem("access_token", newToken.access_token);
@@ -23,9 +22,8 @@ const customFetch = async (url, options) => {
       )}`;
 
       response = await originalFetch(url, options);
-      response = await response.json();
 
-      if (newToken.message === "jwt expired") {
+      if (newResponse.status === 401) {
         localStorage.clear();
         window.location.href = "/pages/signin.html";
       }
@@ -37,13 +35,11 @@ const customFetch = async (url, options) => {
     }
   }
 
-  return response;
+  return (response = await response.json());
 };
 
 async function resetToken() {
-  console.log("regenerating tokens");
-
-  const res = await originalFetch(ownAPI + "user/auth/token", {
+  const res = await originalFetch(BASE_URL + "/user/auth/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -51,8 +47,7 @@ async function resetToken() {
     },
   });
 
-  const newToken = await res.json();
-  return newToken;
+  return res;
 }
 
 export default customFetch;
