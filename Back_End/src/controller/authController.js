@@ -12,7 +12,7 @@ dotenv.config();
 const validateOTP = new otpValidation();
 const tokenGenerator = new TokenGen();
 
-export default class authControllerClass {
+export default class AuthController {
   signup = async (req, res, next) => {
     try {
       const newUser = new user(req.body);
@@ -126,8 +126,34 @@ export default class authControllerClass {
     try {
       const mail = req.body.email;
 
-      if (mail) {
+      if (!mail) {
+        res.status(400);
+
+        throw new Error('Email is required');
+      } else if (mail && req.body.id) {
+        const userid = req.body.id;
+
+        console.log('test : ', req.body.password);
+
+        if (!req.body.password) {
+          res.status(400);
+
+          throw new Error('New password is required');
+        } else {
+          const data = await user.findByIdAndUpdate(userid, {
+            password: await bcrypt.hash(req.body.password, 10),
+          });
+
+          res.status(200).json({
+            message: 'Password Updated',
+            success: true,
+            user: data,
+          });
+        }
+      } else if (mail) {
         const isUser = await user.find({ email: mail });
+
+        console.log('hello');
 
         if (!isUser[0]) {
           res.status(404);
@@ -140,17 +166,6 @@ export default class authControllerClass {
           message: 'Email Sent Successfully',
           success: true,
           user: isUser[0],
-        });
-      } else {
-        const userid = req.body.id;
-        const data = await user.findByIdAndUpdate(userid, {
-          password: await bcrypt.hash(req.body.password, 10),
-        });
-
-        res.status(200).json({
-          message: 'Password Updated',
-          success: true,
-          user: data,
         });
       }
     } catch (err) {

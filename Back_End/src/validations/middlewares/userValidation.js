@@ -11,12 +11,12 @@ export default class userValidation {
         req.body.role = 'user';
       }
 
-      req.body.password = await bcrypt.hash(req.body.password, 10);
-
       await userSchema.validate(req.body, {
         abortEarly: false, // return all validation errors
         stripUnknown: true, // remove unexpected fields
       });
+
+      req.body.password = await bcrypt.hash(req.body.password, 10);
 
       next();
     } catch (err) {

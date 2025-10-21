@@ -31,7 +31,6 @@ export default class SendMail {
 
   sendVerificationEmail = async (email, otp, next) => {
     try {
-      console.log('Email middlewere called');
       const mailResponse = await this.mailSender(
         email,
         'Verification Email',

@@ -1,8 +1,8 @@
 import express from 'express';
-import authControllerClass from '../controller/authControler.js';
+import AuthController from '../controller/authController.js';
 import userValidation from '../validations/middlewares/userValidation.js';
 
-const authcontroller = new authControllerClass();
+const authcontroller = new AuthController();
 const userValidationRequest = new userValidation();
 
 const router = express.Router();

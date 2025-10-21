@@ -1,6 +1,6 @@
 import express from 'express'; // used because its express framework
 import dotenv from 'dotenv'; // used because we use sensetive keys inside .env
-import todoRoutes from './routes/routes.js'; // imported routes.js using any name , ex: 'x'
+import todoRoutes from './routes/routes.js';
 import authRoutes from './routes/authRoutes.js';
 import cors from 'cors'; // for link backend and frontend
 import connectDB from './config/db.js';
@@ -17,9 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use(loggerMiddleware);
 
-/* Routes */
-app.use('/', todoRoutes); // use is a middleware
-app.use('/user/auth', authRoutes); // handle user authentication
+app.use('/', todoRoutes);
+app.use('/user/auth', authRoutes);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
