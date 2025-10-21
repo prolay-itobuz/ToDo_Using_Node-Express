@@ -1,5 +1,5 @@
 import Helper from "../utils/helper.js";
-import * as API from "../../Api/api.js";
+import * as API from "../../api/api.js";
 import Templates from "../utils/templates.js";
 import init from "./displayTasks.js";
 

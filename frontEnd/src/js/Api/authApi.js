@@ -1,6 +1,6 @@
-const authAPI = "http://localhost:8000/user/auth";
-import Helper from "../Dashboard/utils/helper.js";
+import Helper from "../dashboard/utils/helper.js";
 
+const authAPI = "http://localhost:8000/user/auth";
 const details = new Helper();
 
 // Create User

@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:8000";
 
 import customFetch from "./interceptor.js";
-import Helper from "../Dashboard/utils/helper.js";
+import Helper from "../dashboard/utils/helper.js";
 
 const details = new Helper();
 window.fetch = customFetch;

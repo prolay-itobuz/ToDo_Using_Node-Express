@@ -1,5 +1,5 @@
-import * as authAPI from "../Api/authApi.js";
-import Templates from "../Dashboard/utils/templates.js";
+import * as authAPI from "../api/authApi.js";
+import Templates from "../dashboard/utils/templates.js";
 
 const taskTemplates = new Templates();
 

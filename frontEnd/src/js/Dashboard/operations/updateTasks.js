@@ -1,5 +1,5 @@
 import * as bootstrap from "bootstrap";
-import * as API from "../../Api/api.js";
+import * as API from "../../api/api.js";
 import init from "./displayTasks.js";
 import Templates from "../utils/templates.js";
 

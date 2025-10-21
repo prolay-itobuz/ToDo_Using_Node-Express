@@ -1,5 +1,5 @@
 import "../../scss/Pages/auth.scss";
-import * as authAPI from "../Api/authApi.js";
+import * as authAPI from "../api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
 import { resendOTP, startTimer } from "../common/otpForm.js";
 import { otpSubmit } from "../common/otpForm.js";
