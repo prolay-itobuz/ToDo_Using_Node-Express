@@ -21,7 +21,7 @@ export default class userValidation {
       next();
     } catch (err) {
       if (err instanceof ValidationError) {
-        err.status = 400;
+        res.status(400);
         next(new Error(err.errors.join(', ')));
       }
 

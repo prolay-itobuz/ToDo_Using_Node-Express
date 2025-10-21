@@ -216,7 +216,7 @@ export default class authControllerClass {
         });
       }
     } catch (err) {
-      err.status = 401;
+      res.status(401);
       next(err);
     }
   };

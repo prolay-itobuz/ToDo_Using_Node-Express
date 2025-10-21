@@ -23,7 +23,7 @@ app.use('/user/auth', authRoutes); // handle user authentication
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  const status = err.status || 500;
+  const status = res.statusCode === 200 ? 500 : res.statusCode;
   const message = err.message || 'Internal Server Error';
 
   res.status(status).json({
