@@ -4,6 +4,7 @@ import Templates from "../Dashboard/utils/templates.js";
 const taskTemplates = new Templates();
 
 const inputs = document.querySelectorAll(".otp-input input");
+const toastSection = document.getElementById("toastSection");
 
 let timeLeft = 60;
 let timerId;
@@ -52,61 +53,73 @@ inputs.forEach((input, index) => {
 });
 
 export async function resendOTP(userid) {
-  const resendRequest = await authAPI.resendOTP(userid);
+  try {
+    const resendRequest = await authAPI.resendOTP(userid);
 
-  if (resendRequest.success) {
-    toastSection.innerHTML = taskTemplates.successToast(resendRequest.message);
-  } else {
-    toastSection.innerHTML = taskTemplates.errorToast(resendRequest.message);
+    if (resendRequest.success) {
+      toastSection.innerHTML = taskTemplates.successToast(
+        resendRequest.message
+      );
+    } else {
+      toastSection.innerHTML = taskTemplates.errorToast(resendRequest.message);
+    }
+
+    setTimeout(() => {
+      toastSection.innerHTML = "";
+    }, 3000);
+
+    timeLeft = 60;
+    inputs.forEach((input) => {
+      input.value = "";
+      input.disabled = false;
+    });
+
+    resendButton.disabled = true;
+    inputs[0].focus();
+
+    clearInterval(timerId);
+    startTimer();
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
   }
-
-  setTimeout(() => {
-    toastSection.innerHTML = "";
-  }, 3000);
-
-  timeLeft = 60;
-  inputs.forEach((input) => {
-    input.value = "";
-    input.disabled = false;
-  });
-
-  resendButton.disabled = true;
-  inputs[0].focus();
-
-  clearInterval(timerId);
-  startTimer();
 }
 
 window.resendOTP = resendOTP;
 
 export async function otpSubmit(otp, taskName, userid) {
-  const authVerification = await authAPI.verifyOTP(userid, {
-    data: otp,
-    task: taskName,
-  });
+  try {
+    const authVerification = await authAPI.verifyOTP(userid, {
+      data: otp,
+      task: taskName,
+    });
 
-  if (!authVerification.success) {
-    toastSection.innerHTML = taskTemplates.errorToast(authVerification.message);
-  } else {
-    if (taskName === "verify") {
-      toastSection.innerHTML = taskTemplates.successToast(
+    if (!authVerification.success) {
+      toastSection.innerHTML = taskTemplates.errorToast(
         authVerification.message
       );
-
-      setTimeout(() => {
-        window.location.href = "/pages/signin.html";
-      }, 1000);
     } else {
-      toastSection.innerHTML = taskTemplates.successToast(
-        authVerification.message
-      );
+      if (taskName === "verify") {
+        toastSection.innerHTML = taskTemplates.successToast(
+          authVerification.message
+        );
 
-      otpSection.classList.add("d-none");
-      resetPasswordForm.classList.remove("d-none");
+        setTimeout(() => {
+          window.location.href = "/pages/signin.html";
+        }, 1000);
+      } else {
+        toastSection.innerHTML = taskTemplates.successToast(
+          authVerification.message
+        );
 
-      setTimeout(() => {
-        toastSection.innerHTML = "";
-      }, 3000);
+        otpSection.classList.add("d-none");
+        resetPasswordForm.classList.remove("d-none");
+
+        setTimeout(() => {
+          toastSection.innerHTML = "";
+        }, 3000);
+      }
     }
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
   }
 }

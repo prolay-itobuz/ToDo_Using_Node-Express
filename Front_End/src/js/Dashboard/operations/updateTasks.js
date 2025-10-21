@@ -4,8 +4,15 @@ import init from "./displayTasks.js";
 import Templates from "../utils/templates.js";
 
 const taskTemplates = new Templates();
+
 const editModal = document.getElementById("exampleModal");
-const updateModal = new bootstrap.Modal(editModal); //update task operation
+const updateModal = new bootstrap.Modal(editModal);
+const editTitle = document.getElementById("editTitle");
+const editForm = document.getElementById("editForm");
+const editTags = document.getElementById("editTags");
+const editImportant = document.getElementById("editImportant");
+const editErr = document.getElementById("editErr");
+const toastSection = document.getElementById("toastSection");
 
 async function editTask(taskId) {
   editForm.setAttribute("data-id", taskId);
@@ -48,7 +55,7 @@ async function editTask(taskId) {
       }
     });
   } catch (err) {
-    oastSection.innerHTML = taskTemplates.errorToast(err.message);
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
   } finally {
     setTimeout(() => {
       toastSection.innerHTML = "";

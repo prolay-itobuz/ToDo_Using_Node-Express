@@ -5,6 +5,13 @@ import Templates from "../utils/templates.js";
 
 const taskTemplates = new Templates();
 
+const addTodoForm = document.getElementById("addTodoForm");
+const taskTitle = document.getElementById("taskTitle");
+const taskTags = document.getElementById("taskTags");
+const isImportant = document.getElementById("isImportant");
+const toastSection = document.getElementById("toastSection");
+const errMsg = document.getElementById("errMsg");
+
 // Display The task Cards
 init();
 

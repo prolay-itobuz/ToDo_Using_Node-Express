@@ -9,6 +9,11 @@ const helper = new Helper();
 export default async function init() {
   // tasks Buttons toggle
   const radioButtons = document.querySelectorAll('input[name="btnradio"]');
+  const importantTasks = document.getElementById("importantTasks");
+  const regularTasks = document.getElementById("regularTasks");
+  const completeTasks = document.getElementById("completeTasks");
+  const allTasks = document.getElementById("allTasks");
+  const toastSection = document.getElementById("toastSection");
 
   helper.showSelectedCard();
 
