@@ -7,13 +7,16 @@ import { otpSubmit } from "../common/otpForm.js";
 const taskTemplates = new displayTemplates();
 
 const inputs = document.querySelectorAll(".otp-input input");
+const userMail = document.getElementById("userMail");
 
 let userid = "";
+let email = "";
 
 resetVerifyForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
-    const data = await authAPI.reset({ email: userMail.value });
+    email = userMail.value;
+    const data = await authAPI.reset({ email: email });
 
     if (!data.success) {
       toastSection.innerHTML = taskTemplates.errorToast(data.message);
@@ -35,7 +38,6 @@ resetVerifyForm.addEventListener("submit", async (e) => {
 });
 
 // otp page js
-
 otpSection.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -47,12 +49,12 @@ otpSection.addEventListener("submit", async (e) => {
 });
 
 // set password form
-
 resetVerifyPass.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
     if (userConfirmPassword.value === userPass.value) {
       const data = await authAPI.reset({
+        email: email,
         id: userid,
         password: userPass.value,
       });
