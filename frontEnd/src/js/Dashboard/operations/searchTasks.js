@@ -5,7 +5,6 @@ import init from "./displayTasks.js";
 
 const helper = new Helper();
 const taskTemplates = new Templates();
-
 const searchInput = document.getElementById("searchInput");
 const toastSection = document.getElementById("toastSection");
 const searchTasks = document.getElementById("searchTasks");

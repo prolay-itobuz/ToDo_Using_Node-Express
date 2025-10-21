@@ -4,7 +4,6 @@ import init from "./displayTasks.js";
 import Templates from "../utils/templates.js";
 
 const taskTemplates = new Templates();
-
 const addTodoForm = document.getElementById("addTodoForm");
 const taskTitle = document.getElementById("taskTitle");
 const taskTags = document.getElementById("taskTags");

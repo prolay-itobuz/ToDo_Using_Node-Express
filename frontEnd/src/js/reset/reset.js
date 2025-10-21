@@ -5,7 +5,6 @@ import { resendOTP, startTimer } from "../common/otpForm.js";
 import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
-
 const inputs = document.querySelectorAll(".otp-input input");
 const userMail = document.getElementById("userMail");
 

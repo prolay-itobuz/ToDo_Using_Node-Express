@@ -4,7 +4,6 @@ import init from "./displayTasks.js";
 import Templates from "../utils/templates.js";
 
 const taskTemplates = new Templates();
-
 const editModal = document.getElementById("exampleModal");
 const updateModal = new bootstrap.Modal(editModal);
 const editTitle = document.getElementById("editTitle");

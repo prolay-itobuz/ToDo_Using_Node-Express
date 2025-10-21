@@ -2,7 +2,6 @@ import * as authAPI from "../api/authApi.js";
 import Templates from "../dashboard/utils/templates.js";
 
 const taskTemplates = new Templates();
-
 const inputs = document.querySelectorAll(".otp-input input");
 const toastSection = document.getElementById("toastSection");
 
