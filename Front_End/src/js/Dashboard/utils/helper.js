@@ -26,4 +26,19 @@ export default class Helper {
       allTasks.classList.remove("d-none");
     }
   };
+
+  option = (method, todo = null) => {
+    const data = {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    if (todo) {
+      data.body = JSON.stringify(todo);
+    }
+
+    return data;
+  };
 }

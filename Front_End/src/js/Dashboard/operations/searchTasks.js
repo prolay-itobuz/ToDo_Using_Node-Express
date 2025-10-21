@@ -23,15 +23,7 @@ async function handleSubmit(event) {
   try {
     event.preventDefault();
 
-    if (!searchInput.value) {
-      toastSection.innerHTML = taskTemplates.errorToast(
-        "Please Enter Details to Search."
-      );
-
-      setTimeout(() => {
-        toastSection.innerHTML = "";
-      }, 4000);
-    } else if (searchInput.value.length < 3) {
+    if (searchInput.value.length < 3) {
       toastSection.innerHTML = taskTemplates.errorToast(
         "Please Enter min 3 character to Search"
       );
@@ -60,7 +52,7 @@ async function handleSubmit(event) {
       }
     }
   } catch (error) {
-    console.log(error);
+    toastSection.innerHTML = taskTemplates.errorToast(error.message);
   } finally {
     searchBtn.classList.add("d-none");
     resetBtn.classList.remove("d-none");

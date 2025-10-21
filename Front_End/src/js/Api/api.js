@@ -1,16 +1,14 @@
 const BASE_URL = "http://localhost:8000";
 
 import customFetch from "./interceptor.js";
+import Helper from "../Dashboard/utils/helper.js";
+
+const details = new Helper();
 window.fetch = customFetch;
 
 // get full request
 export async function fetchTodos() {
-  const res = await fetch(BASE_URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const res = await fetch(BASE_URL, details.option("GET"));
 
   return res;
 }
@@ -18,12 +16,7 @@ export async function fetchTodos() {
 // get selected request
 export async function fetchTodoById(id) {
   try {
-    const res = await fetch(`${BASE_URL}/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(`${BASE_URL}/${id}`, details.option("GET"));
 
     if (!res.success) {
       throw new Error(`Todo with id ${id} not found`);
@@ -39,12 +32,11 @@ export async function fetchTodoById(id) {
 //search request
 export async function searchData(query) {
   try {
-    const res = await fetch(`${BASE_URL}/search/${query}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await fetch(
+      `${BASE_URL}/search/${query}`,
+      details.option("GET")
+    );
+
     if (!res.success) {
       throw new Error(`Todo not found`);
     }
@@ -57,39 +49,22 @@ export async function searchData(query) {
 }
 
 // post request
-export async function addTodo(text) {
-  const res = await fetch(BASE_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(text),
-  });
+export async function addTodo(todo) {
+  const res = await fetch(BASE_URL, details.option("POST", todo));
 
   return res;
 }
 
 // update request
-export async function updateTodo(id, text) {
-  const res = await fetch(`${BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(text),
-  });
+export async function updateTodo(id, todo) {
+  const res = await fetch(`${BASE_URL}/${id}`, details.option("PUT", todo));
 
   return res;
 }
 
 // delete request
 export async function deleteTodo(id) {
-  const data = await fetch(`${BASE_URL}/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const data = await fetch(`${BASE_URL}/${id}`, details.option("DELETE"));
 
   return data;
 }

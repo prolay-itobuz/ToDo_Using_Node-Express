@@ -1,55 +1,45 @@
 const authAPI = "http://localhost:8000/user/auth";
+import Helper from "../Dashboard/utils/helper.js";
+
+const details = new Helper();
 
 // Create User
 export async function createUser(userDetails) {
-  const res = await fetch(authAPI + "/signup", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userDetails),
-  });
+  const res = await fetch(
+    authAPI + "/signup",
+    details.option("POST", userDetails)
+  );
 
   const userinfo = await res.json();
   return userinfo;
 }
 
 export async function verifyOTP(id, details) {
-  const res = await fetch(authAPI + "/otp/" + id, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(details),
-  });
+  const res = await fetch(
+    authAPI + "/otp/" + id,
+    details.option("POST", details)
+  );
 
   const userinfo = await res.json();
   return userinfo;
 }
 
 export async function resendOTP(id) {
-  const res = await fetch(authAPI + "/resend/" + id, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  });
+  const res = await fetch(authAPI + "/resend/" + id, details.option("POST"));
 
   const userinfo = await res.json();
   return userinfo;
 }
 
 export async function reset(mail) {
-  const res = await fetch(authAPI + "/reset", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(mail),
-  });
+  const res = await fetch(authAPI + "/reset", details.option("POST", mail));
 
   const userinfo = await res.json();
   return userinfo;
 }
 
 export async function loginUser(userdata) {
-  const res = await fetch(authAPI + "/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userdata),
-  });
+  const res = await fetch(authAPI + "/login", details.option("POST", userdata));
 
   const userinfo = await res.json();
   return userinfo;
