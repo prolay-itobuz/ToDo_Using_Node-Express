@@ -14,10 +14,10 @@ export async function createUser(userDetails) {
   return userinfo;
 }
 
-export async function verifyOTP(id, details) {
+export async function verifyOTP(id, verifyDetails) {
   const res = await fetch(
     authAPI + "/otp/" + id,
-    details.option("POST", details)
+    details.option("POST", verifyDetails)
   );
 
   const userinfo = await res.json();

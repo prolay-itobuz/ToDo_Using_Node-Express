@@ -12,23 +12,26 @@ let userid = "";
 
 resetVerifyForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  try {
+    const data = await authAPI.reset({ email: userMail.value });
 
-  const data = await authAPI.reset({ email: userMail.value });
+    if (!data.success) {
+      toastSection.innerHTML = taskTemplates.errorToast(data.message);
+    } else {
+      toastSection.innerHTML = taskTemplates.successToast(data.message);
+      resetFormSection.classList.add("d-none");
+      otpSection.classList.remove("d-none");
 
-  if (!data.success) {
-    toastSection.innerHTML = taskTemplates.errorToast(data.message);
-  } else {
-    toastSection.innerHTML = taskTemplates.successToast(data.message);
-    resetFormSection.classList.add("d-none");
-    otpSection.classList.remove("d-none");
-
-    userid = data.user._id;
-    startTimer();
+      userid = data.user._id;
+      startTimer();
+    }
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
+  } finally {
+    setTimeout(() => {
+      toastSection.innerHTML = "";
+    }, 3000);
   }
-
-  setTimeout(() => {
-    toastSection.innerHTML = "";
-  }, 3000);
 });
 
 // otp page js
@@ -47,17 +50,33 @@ otpSection.addEventListener("submit", async (e) => {
 
 resetVerifyPass.addEventListener("submit", async (e) => {
   e.preventDefault();
+  try {
+    if (userConfirmPassword.value === userPass.value) {
+      const data = await authAPI.reset({
+        id: userid,
+        password: userPass.value,
+      });
 
-  const data = await authAPI.reset({ id: userid, password: userPass.value });
+      if (data.success) {
+        toastSection.innerHTML = taskTemplates.successToast(data.message);
 
-  if (data.success) {
-    toastSection.innerHTML = taskTemplates.successToast(data.message);
-
+        setTimeout(() => {
+          window.location.href = "/pages/signin.html";
+        }, 1000);
+      } else {
+        toastSection.innerHTML = taskTemplates.errorToast(data.message);
+      }
+    } else {
+      toastSection.innerHTML = taskTemplates.errorToast(
+        "Password and Confirm Password don't match."
+      );
+    }
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
+  } finally {
     setTimeout(() => {
-      window.location.href = "/pages/signin.html";
-    }, 1000);
-  } else {
-    toastSection.innerHTML = taskTemplates.errorToast(data.message);
+      toastSection.innerHTML = "";
+    }, 3000);
   }
 });
 

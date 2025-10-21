@@ -11,24 +11,27 @@ signinForm.addEventListener("submit", async (e) => {
     email: userMail.value,
     password: userPass.value,
   };
+  try {
+    const userinfo = await authAPI.loginUser(data);
 
-  const userinfo = await authAPI.loginUser(data);
+    if (!userinfo.success) {
+      toastSection.innerHTML = taskTemplates.errorToast(userinfo.message);
+    } else {
+      //login user
+      localStorage.setItem("access_token", userinfo.access_token);
+      localStorage.setItem("refresh_token", userinfo.refresh_token);
 
-  if (!userinfo.success) {
-    toastSection.innerHTML = taskTemplates.errorToast(userinfo.message);
-  } else {
-    //login
-    localStorage.setItem("access_token", userinfo.access_token);
-    localStorage.setItem("refresh_token", userinfo.refresh_token);
+      toastSection.innerHTML = taskTemplates.successToast(userinfo.message);
 
-    toastSection.innerHTML = taskTemplates.successToast(userinfo.message);
-
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1000);
+    }
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToastToast(err.message);
+  } finally {
     setTimeout(() => {
-      window.location.href = "/";
-    }, 1000);
+      toastSection.innerHTML = "";
+    }, 3000);
   }
-
-  setTimeout(() => {
-    toastSection.innerHTML = "";
-  }, 3000);
 });

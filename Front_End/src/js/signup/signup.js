@@ -23,6 +23,8 @@ signupForm.addEventListener("submit", async (e) => {
   if (userdata.password == userdata.confirmPassword) {
     const userinfo = await authAPI.createUser(userdata);
 
+    console.log(userinfo);
+
     if (userinfo.success) {
       //redirect otp page
       otpSection.classList.remove("d-none");
