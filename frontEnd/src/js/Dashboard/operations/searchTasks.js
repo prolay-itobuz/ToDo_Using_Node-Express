@@ -1,5 +1,5 @@
 import Helper from "../utils/helper.js";
-import * as API from "../../api/api.js";
+import * as api from "../../api/api.js";
 import Templates from "../utils/templates.js";
 import init from "./displayTasks.js";
 
@@ -42,7 +42,7 @@ async function handleSubmit(event) {
       searchTasks.classList.remove("d-none");
       searchTasks.innerHTML = "";
 
-      const data = await API.searchData(searchInput.value);
+      const data = await api.searchData(searchInput.value);
 
       if (!data) {
         searchTasks.innerHTML = taskTemplates.emptySearch();

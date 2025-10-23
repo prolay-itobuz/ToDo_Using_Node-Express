@@ -1,7 +1,7 @@
 import "../../scss/Pages/auth.scss";
-import * as authAPI from "../api/authApi.js";
+import * as authApi from "../api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
-import { resendOTP, startTimer } from "../common/otpForm.js";
+import { resendOtp, startTimer } from "../common/otpForm.js";
 import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
@@ -19,7 +19,7 @@ signupForm.addEventListener("submit", async (e) => {
   };
 
   if (userdata.password == userdata.confirmPassword) {
-    const userinfo = await authAPI.createUser(userdata);
+    const userinfo = await authApi.createUser(userdata);
 
     console.log(userinfo);
 
@@ -59,5 +59,5 @@ otpSection.addEventListener("submit", async (e) => {
 });
 
 resendButton.addEventListener("click", async () => {
-  resendOTP(userid);
+  resendOtp(userid);
 });

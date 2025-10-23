@@ -1,5 +1,5 @@
 import "../../scss/Pages/auth.scss";
-import * as authAPI from "../api/authApi.js";
+import * as authApi from "../api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
 
 const taskTemplates = new displayTemplates();
@@ -12,7 +12,7 @@ signinForm.addEventListener("submit", async (e) => {
     password: userPass.value,
   };
   try {
-    const userinfo = await authAPI.loginUser(data);
+    const userinfo = await authApi.loginUser(data);
 
     if (!userinfo.success) {
       toastSection.innerHTML = taskTemplates.errorToast(userinfo.message);

@@ -1,7 +1,7 @@
 import "../../scss/Pages/auth.scss";
-import * as authAPI from "../api/authApi.js";
+import * as authApi from "../api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
-import { resendOTP, startTimer } from "../common/otpForm.js";
+import { resendOtp, startTimer } from "../common/otpForm.js";
 import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
@@ -15,7 +15,7 @@ resetVerifyForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
     email = userMail.value;
-    const data = await authAPI.reset({ email: email });
+    const data = await authApi.reset({ email: email });
 
     if (!data.success) {
       toastSection.innerHTML = taskTemplates.errorToast(data.message);
@@ -52,7 +52,7 @@ resetVerifyPass.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
     if (userConfirmPassword.value === userPass.value) {
-      const data = await authAPI.reset({
+      const data = await authApi.reset({
         email: email,
         id: userid,
         password: userPass.value,
@@ -82,5 +82,5 @@ resetVerifyPass.addEventListener("submit", async (e) => {
 });
 
 resendButton.addEventListener("click", async () => {
-  resendOTP(userid);
+  resendOtp(userid);
 });

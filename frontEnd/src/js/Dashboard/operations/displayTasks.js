@@ -1,5 +1,5 @@
 // Display The task Cards
-import * as API from "../../api/api.js";
+import * as api from "../../api/api.js";
 import Templates from "../utils/templates.js";
 import Helper from "../utils/helper.js";
 
@@ -22,7 +22,7 @@ export default async function init() {
   });
 
   try {
-    let tasks = await API.fetchTodos();
+    let tasks = await api.fetchTodos();
 
     importantTasks.innerHTML = "";
     regularTasks.innerHTML = "";
@@ -36,10 +36,10 @@ export default async function init() {
 
     for (let i = 0; i < tasks.data.length; i++) {
       if (!tasks.data[i].isCompleted) {
-        allCount += 1;
+        allCount++;
 
         if (tasks.data[i].isImportant) {
-          importantCount += 1;
+          importantCount++;
 
           importantTasks.innerHTML += taskTemplates.showImportant(
             tasks.data,
@@ -47,13 +47,13 @@ export default async function init() {
           );
           allTasks.innerHTML += taskTemplates.showImportant(tasks.data, i);
         } else {
-          activeCount += 1;
+          activeCount++;
 
           regularTasks.innerHTML += taskTemplates.showActive(tasks.data, i);
           allTasks.innerHTML += taskTemplates.showActive(tasks.data, i);
         }
       } else {
-        completeCount += 1;
+        completeCount++;
 
         completeTasks.innerHTML += taskTemplates.showComplete(tasks.data, i);
       }

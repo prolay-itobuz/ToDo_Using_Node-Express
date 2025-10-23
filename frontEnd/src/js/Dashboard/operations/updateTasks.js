@@ -1,5 +1,5 @@
 import * as bootstrap from "bootstrap";
-import * as API from "../../api/api.js";
+import * as api from "../../api/api.js";
 import init from "./displayTasks.js";
 import Templates from "../utils/templates.js";
 
@@ -16,7 +16,7 @@ const toastSection = document.getElementById("toastSection");
 async function editTask(taskId) {
   editForm.setAttribute("data-id", taskId);
   try {
-    const todo = await API.fetchTodoById(taskId);
+    const todo = await api.fetchTodoById(taskId);
 
     editTitle.value = todo.data[0].title;
     editTags.value = todo.data[0].tags;
@@ -40,7 +40,7 @@ async function editTask(taskId) {
           isImportant: editImportant.checked,
         };
 
-        const taskData = await API.updateTodo(todoId, data);
+        const taskData = await api.updateTodo(todoId, data);
 
         if (taskData.success) {
           toastSection.innerHTML = taskTemplates.successToast(taskData.message);
@@ -66,17 +66,17 @@ window.editTask = editTask;
 
 // Change Important Priority
 async function changeImportance(taskId) {
-  const todo = await API.fetchTodoById(taskId);
-  const data = {};
-
-  if (!todo.data[0].isImportant) {
-    data.isImportant = true;
-  } else {
-    data.isImportant = false;
-  }
-
   try {
-    await API.updateTodo(taskId, data);
+    const todo = await api.fetchTodoById(taskId);
+    const data = {};
+
+    if (!todo.data[0].isImportant) {
+      data.isImportant = true;
+    } else {
+      data.isImportant = false;
+    }
+
+    await api.updateTodo(taskId, data);
     init();
   } catch (err) {
     toastSection.innerHTML = taskTemplates.errorToast(err.message);
@@ -87,17 +87,17 @@ window.changeImportance = changeImportance;
 
 // Change Task Status
 async function changeStatus(taskId) {
-  const todo = await API.fetchTodoById(taskId);
-  const data = {};
-
-  if (!todo.data[0].isCompleted) {
-    data.isCompleted = true;
-  } else {
-    data.isCompleted = false;
-  }
-
   try {
-    await API.updateTodo(taskId, data);
+    const todo = await api.fetchTodoById(taskId);
+    const data = {};
+
+    if (!todo.data[0].isCompleted) {
+      data.isCompleted = true;
+    } else {
+      data.isCompleted = false;
+    }
+
+    await api.updateTodo(taskId, data);
     init();
   } catch (err) {
     toastSection.innerHTML = taskTemplates.errorToast(err.message);

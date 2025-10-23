@@ -1,4 +1,4 @@
-import * as authAPI from "../api/authApi.js";
+import * as authApi from "../api/authApi.js";
 import Templates from "../dashboard/utils/templates.js";
 
 const taskTemplates = new Templates();
@@ -51,9 +51,9 @@ inputs.forEach((input, index) => {
   });
 });
 
-export async function resendOTP(userid) {
+export async function resendOtp(userid) {
   try {
-    const resendRequest = await authAPI.resendOTP(userid);
+    const resendRequest = await authApi.resendOtp(userid);
 
     if (resendRequest.success) {
       toastSection.innerHTML = taskTemplates.successToast(
@@ -83,11 +83,11 @@ export async function resendOTP(userid) {
   }
 }
 
-window.resendOTP = resendOTP;
+window.resendOtp = resendOtp;
 
 export async function otpSubmit(otp, taskName, userid) {
   try {
-    const authVerification = await authAPI.verifyOTP(userid, {
+    const authVerification = await authApi.verifyOTP(userid, {
       data: otp,
       task: taskName,
     });
