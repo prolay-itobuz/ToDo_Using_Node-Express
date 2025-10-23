@@ -1,12 +1,12 @@
 import otpGenerator from 'otp-generator';
-import SendMail from '../utils/mailsender.js';
+import SendMail from './mailSender.js';
 import otp from '../models/otpModel.js';
 
 const mailer = new SendMail();
 
-export default function genOTP(mail) {
+export default function genOtp(mail) {
   try {
-    const otpkey = otpGenerator.generate(4, {
+    const otpKey = otpGenerator.generate(4, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
@@ -14,11 +14,11 @@ export default function genOTP(mail) {
 
     const newOtp = new otp({
       email: mail,
-      otp: otpkey,
+      otp: otpKey,
     });
 
     newOtp.save();
-    mailer.sendVerificationEmail(mail, otpkey);
+    mailer.sendVerificationEmail(mail, otpKey);
   } catch (err) {
     return err;
   }

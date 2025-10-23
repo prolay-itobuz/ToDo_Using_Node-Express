@@ -1,15 +1,13 @@
-import user from '../models/user.js';
+import user from '../models/userModel.js';
 import otp from '../models/otpModel.js';
-import genOTP from '../utils/genOTP.js';
+import genOtp from '../utils/genOtp.js';
 import otpValidation from '../utils/otpValidation.js';
 import bcrypt from 'bcrypt';
 import TokenGen from '../utils/genTokens.js';
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import configuration from '../config/config.js';
 
-dotenv.config();
-
-const validateOTP = new otpValidation();
+const validateOtp = new otpValidation();
 const tokenGenerator = new TokenGen();
 
 export default class AuthController {
@@ -28,7 +26,7 @@ export default class AuthController {
         const uid = appUser[0]._id.toString();
 
         await user.findByIdAndUpdate(uid, req.body);
-        genOTP(mail);
+        genOtp(mail);
 
         res.status(200).json({
           message: 'OTP Sent Successfully',
@@ -37,7 +35,7 @@ export default class AuthController {
         });
       } else {
         await newUser.save();
-        genOTP(mail);
+        genOtp(mail);
 
         res.status(201).json({
           message: 'OTP Sent Successfully',
@@ -82,7 +80,7 @@ export default class AuthController {
       let verifiedUser = {};
 
       if (req.body.task == 'verify') {
-        verifiedUser = await validateOTP.verifyUser(id);
+        verifiedUser = await validateOtp.verifyUser(id);
       } else if (req.body.task == 'reset') {
         verifiedUser = await user.findByIdAndUpdate(id, {
           isVerified: true,
@@ -110,7 +108,7 @@ export default class AuthController {
       }
 
       const mail = newUser.email;
-      genOTP(mail);
+      genOtp(mail);
 
       res.status(200).json({
         message: 'Resend OTP sent Successfully',
@@ -160,7 +158,7 @@ export default class AuthController {
           throw new Error(`Email does not exists`);
         }
 
-        genOTP(mail);
+        genOtp(mail);
 
         res.status(200).json({
           message: 'Email Sent Successfully',
@@ -215,7 +213,7 @@ export default class AuthController {
   resetToken = async (req, res, next) => {
     try {
       const refresh_token = req.headers.authorization.split(' ')[1];
-      const refresh_secret = process.env.REFRESH_SECRET;
+      const refresh_secret = configuration.REFRESH_SECRET;
 
       const decoded = jwt.verify(refresh_token, refresh_secret);
 

@@ -1,4 +1,4 @@
-import user from '../models/user.js';
+import user from '../models/userModel.js';
 
 export default class otpValidation {
   verifyUser = async (id) => {

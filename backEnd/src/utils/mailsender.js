@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import configuration from '../config/config.js';
 
 export default class SendMail {
   mailSender = async (email, title, body) => {
@@ -9,10 +7,10 @@ export default class SendMail {
       console.log('sending email...');
 
       const transporter = nodemailer.createTransport({
-        service: process.env.MAIL_SERVICE,
+        service: configuration.MAIL_SERVICE,
         auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
+          user: configuration.MAIL_USER,
+          pass: configuration.MAIL_PASS,
         },
       });
 

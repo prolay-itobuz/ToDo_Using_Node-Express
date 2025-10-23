@@ -1,13 +1,12 @@
-import express from 'express'; // used because its express framework
-import dotenv from 'dotenv'; // used because we use sensetive keys inside .env
+import express from 'express';
+import configuration from './config/config.js';
 import todoRoutes from './routes/routes.js';
 import authRoutes from './routes/authRoutes.js';
-import cors from 'cors'; // for link backend and frontend
+import cors from 'cors';
 import connectDB from './config/db.js';
 import loggerMiddleware from './validations/middlewares/logerMiddlewere.js';
 
-dotenv.config();
-const port = process.env.PORT;
+const port = configuration.PORT;
 
 connectDB();
 
@@ -32,5 +31,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Todo app listening on port ${port}`);
 });

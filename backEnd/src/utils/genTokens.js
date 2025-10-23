@@ -1,15 +1,13 @@
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import configuration from '../config/config.js';
 
-dotenv.config();
-
-const access_secret = process.env.ACCESS_SECRET;
-const refresh_secret = process.env.REFRESH_SECRET;
+const access_secret = configuration.ACCESS_SECRET;
+const refresh_secret = configuration.REFRESH_SECRET;
 
 export default class TokenGen {
   genAccess = (id) => {
     const access_token = jwt.sign({ userId: id }, access_secret, {
-      expiresIn: process.env.ACCESS_EXPIRE,
+      expiresIn: configuration.ACCESS_EXPIRE,
     });
 
     return access_token;
@@ -17,7 +15,7 @@ export default class TokenGen {
 
   genRefresh = (id) => {
     const refresh_token = jwt.sign({ userId: id }, refresh_secret, {
-      expiresIn: process.env.REFRESH_EXPIRE,
+      expiresIn: configuration.REFRESH_EXPIRE,
     });
 
     return refresh_token;

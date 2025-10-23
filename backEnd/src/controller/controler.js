@@ -1,4 +1,4 @@
-import Task from '../models/tasks.js';
+import Task from '../models/taskModel.js';
 import getUserId from '../utils/validateToken.js';
 
 export default class controllerClass {
