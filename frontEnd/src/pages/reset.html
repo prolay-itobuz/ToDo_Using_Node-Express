@@ -23,7 +23,7 @@
     <div class="signup-form" id="resetFormSection">
       <div class="container">
         <div class="header mb-0">
-          <h1>Verify Your Email</h1>
+          <h1>Reset Password</h1>
           <p>Verify OTP to reset password</p>
         </div>
         <form id="resetVerifyForm">
@@ -31,35 +31,21 @@
             <i class="fa-solid fa-envelope"></i>
             <input type="email" placeholder="Email" id="userMail" />
           </div>
-          <input class="signup-btn mt-0" type="submit" value="VERIFY" />
-        </form>
+          <div
+            id="otpSection"
+            class="d-flex gap-2 justify-content-between d-none"
+          >
+            <div class="input mb-0">
+              <i class="fa-solid fa-key"></i>
+              <input type="number" placeholder="4 digit OTP" id="userOtp" />
+            </div>
+            <div id="timer" class="m-auto">Resend 1:00</div>
+            <button type="button" id="resendButton" class="p-2 m-0 d-none">
+              Resend Code
+            </button>
+          </div>
 
-        <p>Don't have an account ? <a href="./signup.html">sign up</a></p>
-      </div>
-    </div>
-
-    <form class="otp-container d-none" id="otpSection">
-      <h1>OTP Verification</h1>
-      <p>Enter the 4-digit code sent to your device</p>
-      <div id="timer">Time remaining: 1:00</div>
-      <div class="otp-input">
-        <input type="number" min="0" max="9" required />
-        <input type="number" min="0" max="9" required />
-        <input type="number" min="0" max="9" required />
-        <input type="number" min="0" max="9" required />
-      </div>
-      <button type="submit">Verify</button>
-      <button id="resendButton" disabled>Resend Code</button>
-    </form>
-
-    <div class="signup-form d-none" id="resetPasswordForm">
-      <div class="container">
-        <div class="header mb-0">
-          <h1>Enter New Password</h1>
-          <p>Set a new set password</p>
-        </div>
-        <form id="resetVerifyPass">
-          <div class="input">
+          <div class="input mt-4 d-none" id="passwordSection">
             <i class="fa-solid fa-lock"></i>
             <input
               type="password"
@@ -68,17 +54,13 @@
               autocomplete="false"
             />
           </div>
-          <div class="input">
-            <i class="fa-solid fa-lock"></i>
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              id="userConfirmPassword"
-              autocomplete="false"
-            />
-          </div>
-          <input class="signup-btn mt-0" type="submit" value="SAVE" />
+
+          <input class="signup-btn mt-0" type="submit" value="SUBMIT" />
         </form>
+
+        <p id="redirectLink">
+          Don't have an account ? <a href="./signup.html">sign up</a>
+        </p>
       </div>
     </div>
   </body>

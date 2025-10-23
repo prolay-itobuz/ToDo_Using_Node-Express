@@ -14,7 +14,7 @@ export async function createUser(userDetails) {
   return userinfo;
 }
 
-export async function verifyOTP(id, verifyDetails) {
+export async function verifyOtp(id, verifyDetails) {
   const res = await fetch(
     authAPI + "/otp/" + id,
     details.option("POST", verifyDetails)
@@ -24,7 +24,7 @@ export async function verifyOTP(id, verifyDetails) {
   return userinfo;
 }
 
-export async function resendOTP(id) {
+export async function resendOtp(id) {
   const res = await fetch(authAPI + "/resend/" + id, details.option("POST"));
 
   const userinfo = await res.json();

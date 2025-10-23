@@ -4,6 +4,7 @@ import Templates from "../dashboard/utils/templates.js";
 const taskTemplates = new Templates();
 const inputs = document.querySelectorAll(".otp-input input");
 const toastSection = document.getElementById("toastSection");
+const timer = document.getElementById("timer");
 
 let timeLeft = 60;
 let timerId;
@@ -63,10 +64,6 @@ export async function resendOtp(userid) {
       toastSection.innerHTML = taskTemplates.errorToast(resendRequest.message);
     }
 
-    setTimeout(() => {
-      toastSection.innerHTML = "";
-    }, 3000);
-
     timeLeft = 60;
     inputs.forEach((input) => {
       input.value = "";
@@ -80,6 +77,10 @@ export async function resendOtp(userid) {
     startTimer();
   } catch (err) {
     toastSection.innerHTML = taskTemplates.errorToast(err.message);
+  } finally {
+    setTimeout(() => {
+      toastSection.innerHTML = "";
+    }, 3000);
   }
 }
 
@@ -87,7 +88,7 @@ window.resendOtp = resendOtp;
 
 export async function otpSubmit(otp, taskName, userid) {
   try {
-    const authVerification = await authApi.verifyOTP(userid, {
+    const authVerification = await authApi.verifyOtp(userid, {
       data: otp,
       task: taskName,
     });
@@ -97,28 +98,19 @@ export async function otpSubmit(otp, taskName, userid) {
         authVerification.message
       );
     } else {
-      if (taskName === "verify") {
-        toastSection.innerHTML = taskTemplates.successToast(
-          authVerification.message
-        );
+      toastSection.innerHTML = taskTemplates.successToast(
+        authVerification.message
+      );
 
-        setTimeout(() => {
-          window.location.href = "/pages/signin.html";
-        }, 1000);
-      } else {
-        toastSection.innerHTML = taskTemplates.successToast(
-          authVerification.message
-        );
-
-        otpSection.classList.add("d-none");
-        resetPasswordForm.classList.remove("d-none");
-
-        setTimeout(() => {
-          toastSection.innerHTML = "";
-        }, 3000);
-      }
+      setTimeout(() => {
+        window.location.href = "/pages/signin.html";
+      }, 1000);
     }
   } catch (err) {
     toastSection.innerHTML = taskTemplates.errorToast(err.message);
+  } finally {
+    setTimeout(() => {
+      toastSection.innerHTML = "";
+    }, 3000);
   }
 }

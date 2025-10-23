@@ -1,30 +1,36 @@
 import "../../scss/Pages/auth.scss";
 import * as authApi from "../api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
-import { resendOtp, startTimer } from "../common/otpForm.js";
 import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
-const inputs = document.querySelectorAll(".otp-input input");
+const passwordSection = document.getElementById("passwordSection");
 const userMail = document.getElementById("userMail");
+const otpSection = document.getElementById("otpSection");
+const resetVerifyForm = document.getElementById("resetVerifyForm");
+const toastSection = document.getElementById("toastSection");
+const timer = document.getElementById("timer");
+const resendButton = document.getElementById("resendButton");
 
-let userid = "";
-let email = "";
+resetVerifyForm.addEventListener("submit", formSubmit);
 
-resetVerifyForm.addEventListener("submit", async (e) => {
+let userId;
+
+async function formSubmit(e) {
   e.preventDefault();
   try {
-    email = userMail.value;
+    const email = userMail.value;
     const data = await authApi.reset({ email: email });
 
     if (!data.success) {
       toastSection.innerHTML = taskTemplates.errorToast(data.message);
     } else {
       toastSection.innerHTML = taskTemplates.successToast(data.message);
-      resetFormSection.classList.add("d-none");
       otpSection.classList.remove("d-none");
+      passwordSection.classList.remove("d-none");
+      redirectLink.classList.add("d-none");
 
-      userid = data.user._id;
+      userId = data.user._id;
       startTimer();
     }
   } catch (err) {
@@ -34,43 +40,22 @@ resetVerifyForm.addEventListener("submit", async (e) => {
       toastSection.innerHTML = "";
     }, 3000);
   }
-});
+}
 
-// otp page js
-otpSection.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const otp = Array.from(inputs)
-    .map((input) => input.value)
-    .join("");
-
-  otpSubmit(otp, "reset", userid);
-});
-
-// set password form
-resetVerifyPass.addEventListener("submit", async (e) => {
-  e.preventDefault();
+resendButton.addEventListener("click", async () => {
   try {
-    if (userConfirmPassword.value === userPass.value) {
-      const data = await authApi.reset({
-        email: email,
-        id: userid,
-        password: userPass.value,
-      });
+    const resendRequest = await authApi.resendOtp(userId);
 
-      if (data.success) {
-        toastSection.innerHTML = taskTemplates.successToast(data.message);
-
-        setTimeout(() => {
-          window.location.href = "/pages/signin.html";
-        }, 1000);
-      } else {
-        toastSection.innerHTML = taskTemplates.errorToast(data.message);
-      }
-    } else {
-      toastSection.innerHTML = taskTemplates.errorToast(
-        "Password and Confirm Password don't match."
+    if (resendRequest.success) {
+      toastSection.innerHTML = taskTemplates.successToast(
+        resendRequest.message
       );
+      resendButton.classList.add("d-none");
+      timer.classList.remove("d-none");
+
+      startTimer();
+    } else {
+      toastSection.innerHTML = taskTemplates.errorToast(resendRequest.message);
     }
   } catch (err) {
     toastSection.innerHTML = taskTemplates.errorToast(err.message);
@@ -81,6 +66,24 @@ resetVerifyPass.addEventListener("submit", async (e) => {
   }
 });
 
-resendButton.addEventListener("click", async () => {
-  resendOtp(userid);
-});
+function startTimer() {
+  let timeLeft = 60;
+  const timerId = setInterval(() => {
+    if (timeLeft <= 0) {
+      clearInterval(timerId);
+
+      resendButton.classList.remove("d-none");
+      timer.classList.add("d-none");
+    } else {
+      resendButton.classList.add("d-none");
+      timer.classList.remove("d-none");
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+
+      timer.textContent = `Resend ${minutes}:${seconds
+        .toString()
+        .padStart(2, "0")}`;
+      timeLeft--;
+    }
+  }, 1000);
+}
