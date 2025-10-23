@@ -3,7 +3,7 @@ import otp from '../models/otpModel.js';
 import genOtp from '../utils/genOtp.js';
 import otpValidation from '../utils/otpValidation.js';
 import bcrypt from 'bcrypt';
-import TokenGen from '../utils/genTokens.js';
+import TokenGen from '../utils/tokenGen.js';
 import jwt from 'jsonwebtoken';
 import configuration from '../config/config.js';
 
@@ -14,19 +14,19 @@ export default class AuthController {
   signup = async (req, res, next) => {
     try {
       const newUser = new user(req.body);
-      const mail = req.body.email;
+      const email = req.body.email;
 
-      const appUser = await user.find({ email: mail });
+      const appUser = await user.findOne({ email });
 
-      if (appUser[0] && appUser[0].isVerified) {
+      if (appUser && appUser.isVerified) {
         res.status(403);
 
         throw new Error(`User already exists`);
-      } else if (appUser[0] && !appUser[0].isVerified) {
-        const uid = appUser[0]._id.toString();
+      } else if (appUser && !appUser.isVerified) {
+        const uid = appUser._id.toString();
 
         await user.findByIdAndUpdate(uid, req.body);
-        genOtp(mail);
+        genOtp(email);
 
         res.status(200).json({
           message: 'OTP Sent Successfully',
@@ -35,7 +35,7 @@ export default class AuthController {
         });
       } else {
         await newUser.save();
-        genOtp(mail);
+        genOtp(email);
 
         res.status(201).json({
           message: 'OTP Sent Successfully',
@@ -48,7 +48,7 @@ export default class AuthController {
     }
   };
 
-  verifyOTP = async (req, res, next) => {
+  verifyOtp = async (req, res, next) => {
     try {
       const id = req.params.id;
       const newUser = await user.findById(id);
@@ -77,15 +77,7 @@ export default class AuthController {
         throw new Error(`OTP Expired`);
       }
 
-      let verifiedUser = {};
-
-      if (req.body.task == 'verify') {
-        verifiedUser = await validateOtp.verifyUser(id);
-      } else if (req.body.task == 'reset') {
-        verifiedUser = await user.findByIdAndUpdate(id, {
-          isVerified: true,
-        });
-      }
+      const verifiedUser = await validateOtp.verifyUser(id);
 
       res.status(200).send({
         message: 'Email Verified Successfully.',
@@ -97,7 +89,7 @@ export default class AuthController {
     }
   };
 
-  resendOTP = async (req, res, next) => {
+  resendOtp = async (req, res, next) => {
     try {
       const id = req.params.id;
       const newUser = await user.findById(id);
@@ -107,11 +99,20 @@ export default class AuthController {
         throw new Error(`User not found`);
       }
 
-      const mail = newUser.email;
-      genOtp(mail);
+      const email = newUser.email;
+      const lastOtp = await otp.findOne({ email }).sort({
+        createdAt: -1,
+      });
+
+      if (Date.now() - lastOtp.createdAt < 1000 * 60) {
+        res.status(425);
+        throw new Error('Please wait 1 min to resend');
+      }
+
+      genOtp(email);
 
       res.status(200).json({
-        message: 'Resend OTP sent Successfully',
+        message: 'OTP sent Successfully',
         success: true,
         user: newUser,
       });
@@ -122,50 +123,21 @@ export default class AuthController {
 
   resetPass = async (req, res, next) => {
     try {
-      const mail = req.body.email;
+      const email = req.body.email;
+      const newUser = await user.findOne({ email });
 
-      if (!mail) {
-        res.status(400);
-
-        throw new Error('Email is required');
-      } else if (mail && req.body.id) {
-        const userid = req.body.id;
-
-        console.log('test : ', req.body.password);
-
-        if (!req.body.password) {
-          res.status(400);
-
-          throw new Error('New password is required');
-        } else {
-          const data = await user.findByIdAndUpdate(userid, {
-            password: await bcrypt.hash(req.body.password, 10),
-          });
-
-          res.status(200).json({
-            message: 'Password Updated',
-            success: true,
-            user: data,
-          });
-        }
-      } else if (mail) {
-        const isUser = await user.find({ email: mail });
-
-        console.log('hello');
-
-        if (!isUser[0]) {
-          res.status(404);
-          throw new Error(`Email does not exists`);
-        }
-
-        genOtp(mail);
-
-        res.status(200).json({
-          message: 'Email Sent Successfully',
-          success: true,
-          user: isUser[0],
-        });
+      if (!newUser) {
+        res.status(404);
+        throw new Error('Email Does not Exists.');
       }
+
+      genOtp(email);
+
+      res.status(200).json({
+        message: 'OTP sent Successfully',
+        success: true,
+        user: newUser,
+      });
     } catch (err) {
       next(err);
     }
@@ -174,26 +146,26 @@ export default class AuthController {
   signin = async (req, res, next) => {
     try {
       const loginData = req.body;
-      const userinfo = await user.find({ email: loginData.email });
+      const email = loginData.email;
+      const userinfo = await user.findOne({ email });
 
-      if (!userinfo[0]) {
+      if (!userinfo) {
         res.status(404);
         throw new Error(`User does not exists`);
       }
 
-      if (userinfo[0].isVerified) {
-        const hashedPass = userinfo[0].password;
+      if (userinfo.isVerified) {
+        const hashedPass = userinfo.password;
         const passMatch = await bcrypt.compare(loginData.password, hashedPass);
 
         if (passMatch) {
-          const access_token = tokenGenerator.genAccess(userinfo[0]._id);
-          const refresh_token = tokenGenerator.genRefresh(userinfo[0]._id);
+          const tokens = tokenGenerator.genToken(userinfo._id);
 
           res.status(200).json({
             message: 'Login Successful.',
             success: true,
-            access_token: access_token,
-            refresh_token: refresh_token,
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token,
           });
         } else {
           res.status(401);
@@ -218,14 +190,13 @@ export default class AuthController {
       const decoded = jwt.verify(refresh_token, refresh_secret);
 
       if (decoded) {
-        const access = tokenGenerator.genAccess(decoded.userId);
-        const refresh = tokenGenerator.genRefresh(decoded.userId);
+        const tokens = tokenGenerator.genToken(decoded.userId);
 
         res.status(200).json({
           message: 'Token Regenerated successfully',
           success: true,
-          access_token: access,
-          refresh_token: refresh,
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token,
         });
       }
     } catch (err) {
