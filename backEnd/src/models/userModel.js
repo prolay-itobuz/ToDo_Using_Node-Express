@@ -19,6 +19,9 @@ const usrSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    imagePath: {
+      type: String,
+    },
     role: {
       type: String,
       required: true,

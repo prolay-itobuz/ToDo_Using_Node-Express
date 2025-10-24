@@ -19,7 +19,6 @@ export default class controllerClass {
     } catch (err) {
       if (err.message == 'jwt expired') {
         res.status(401);
-        next(err);
       }
 
       next(err);

@@ -1,7 +1,8 @@
 import express from 'express';
 import configuration from './config/config.js';
-import todoRoutes from './routes/routes.js';
+import todoRoutes from './routes/todoRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import loggerMiddleware from './validations/middlewares/logerMiddlewere.js';
@@ -18,6 +19,7 @@ app.use(loggerMiddleware);
 
 app.use('/', todoRoutes);
 app.use('/user/auth', authRoutes);
+app.use('/user/profile', profileRoutes);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
