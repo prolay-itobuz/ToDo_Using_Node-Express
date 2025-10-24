@@ -6,11 +6,14 @@ import { otpSubmit } from "../common/otpForm.js";
 const taskTemplates = new displayTemplates();
 const passwordSection = document.getElementById("passwordSection");
 const userMail = document.getElementById("userMail");
+const userOtp = document.getElementById("userOtp");
 const otpSection = document.getElementById("otpSection");
+const userPass = document.getElementById("userPass");
 const resetVerifyForm = document.getElementById("resetVerifyForm");
 const toastSection = document.getElementById("toastSection");
 const timer = document.getElementById("timer");
 const resendButton = document.getElementById("resendButton");
+const redirectLink = document.getElementById("redirectLink");
 
 resetVerifyForm.addEventListener("submit", formSubmit);
 
@@ -20,7 +23,11 @@ async function formSubmit(e) {
   e.preventDefault();
   try {
     const email = userMail.value;
-    const data = await authApi.reset({ email: email });
+    const data = await authApi.reset({
+      email: email,
+      otp: userOtp.value,
+      password: userPass.value,
+    });
 
     if (!data.success) {
       toastSection.innerHTML = taskTemplates.errorToast(data.message);
@@ -29,6 +36,14 @@ async function formSubmit(e) {
       otpSection.classList.remove("d-none");
       passwordSection.classList.remove("d-none");
       redirectLink.classList.add("d-none");
+      userPass.setAttribute("required", "");
+      userOtp.setAttribute("required", "");
+
+      if (data.message == "Password updated successfully") {
+        setTimeout(() => {
+          window.location.href = "/pages/signin.html";
+        }, 1000);
+      }
 
       userId = data.user._id;
       startTimer();
@@ -50,8 +65,6 @@ resendButton.addEventListener("click", async () => {
       toastSection.innerHTML = taskTemplates.successToast(
         resendRequest.message
       );
-      resendButton.classList.add("d-none");
-      timer.classList.remove("d-none");
 
       startTimer();
     } else {

@@ -14,6 +14,10 @@ export default async function init() {
   const completeTasks = document.getElementById("completeTasks");
   const allTasks = document.getElementById("allTasks");
   const toastSection = document.getElementById("toastSection");
+  const allTaskLabel = document.getElementById("allTaskLabel");
+  const impTaskLabel = document.getElementById("impTaskLabel");
+  const activeTaskLabel = document.getElementById("activeTaskLabel");
+  const completeTaskLabel = document.getElementById("completeTaskLabel");
 
   helper.showSelectedCard();
 
@@ -76,6 +80,11 @@ export default async function init() {
     }
 
     helper.showSelectedCard();
+
+    allTaskLabel.innerHTML = `All (${allCount})`;
+    impTaskLabel.innerHTML = `Important (${importantCount})`;
+    activeTaskLabel.innerHTML = `Active (${activeCount})`;
+    completeTaskLabel.innerHTML = `Complete (${completeCount})`;
   } catch (err) {
     toastSection.innerHTML = taskTemplates.errorToast(err.message);
   }

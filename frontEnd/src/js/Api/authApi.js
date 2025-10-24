@@ -31,8 +31,11 @@ export async function resendOtp(id) {
   return userinfo;
 }
 
-export async function reset(mail) {
-  const res = await fetch(authAPI + "/reset", details.option("POST", mail));
+export async function reset(resetFormDetails) {
+  const res = await fetch(
+    authAPI + "/reset",
+    details.option("POST", resetFormDetails)
+  );
 
   const userinfo = await res.json();
   return userinfo;
