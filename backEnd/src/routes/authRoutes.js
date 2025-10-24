@@ -1,10 +1,10 @@
 import express from 'express';
 import AuthController from '../controller/authController.js';
-import userValidation from '../validations/middlewares/userValidation.js';
+import UserValidation from '../validations/middlewares/userValidation.js';
 import ResetFormValidation from '../validations/middlewares/resetFormValidation.js';
 
 const authController = new AuthController();
-const userValidationRequest = new userValidation();
+const userValidationRequest = new UserValidation();
 const resetValidationRequest = new ResetFormValidation();
 
 const router = express.Router();

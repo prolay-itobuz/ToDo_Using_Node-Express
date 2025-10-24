@@ -2,7 +2,7 @@ import { userSchema } from '../schema/userSchema.js';
 import { ValidationError } from 'yup';
 import bcrypt from 'bcrypt';
 
-export default class userValidation {
+export default class UserValidation {
   userCreateRequest = async (req, res, next) => {
     try {
       if (req.headers.role === 'admin') {

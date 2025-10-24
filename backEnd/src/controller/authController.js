@@ -1,13 +1,13 @@
 import user from '../models/userModel.js';
 import otp from '../models/otpModel.js';
 import genOtp from '../utils/genOtp.js';
-import otpValidation from '../utils/otpValidation.js';
+import OtpValidation from '../utils/otpValidation.js';
 import bcrypt from 'bcrypt';
 import TokenGen from '../utils/tokenGen.js';
 import jwt from 'jsonwebtoken';
 import configuration from '../config/config.js';
 
-const validateOtp = new otpValidation();
+const validateOtp = new OtpValidation();
 const tokenGenerator = new TokenGen();
 
 export default class AuthController {
@@ -131,13 +131,46 @@ export default class AuthController {
         throw new Error('Email Does not Exists.');
       }
 
-      genOtp(email);
+      if (email && req.body.otp && req.body.password) {
+        if (req.body.otp.length !== 4) {
+          res.status(400);
 
-      res.status(200).json({
-        message: 'OTP sent Successfully',
-        success: true,
-        user: newUser,
-      });
+          throw new Error('OTP should be 4 digits');
+        }
+
+        const otpDetails = await otp.findOne({ email }).sort({ createdAt: -1 });
+
+        if (otpDetails.otp !== req.body.otp) {
+          res.status(400);
+
+          throw new Error('Invalid OTP');
+        }
+
+        if (Date.now() - otpDetails.createdAt > 1000 * 60 * 5) {
+          res.status(400);
+
+          throw new Error('OTP Expired');
+        }
+
+        const updatedUser = await user.findOneAndUpdate(newUser._id, {
+          password: await bcrypt.hash(req.body.password, 10),
+          isVerified: true,
+        });
+
+        res.status(200).json({
+          message: 'Password updated successfully',
+          success: true,
+          user: updatedUser,
+        });
+      } else if (email) {
+        genOtp(email);
+
+        res.status(200).json({
+          message: 'OTP sent Successfully',
+          success: true,
+          user: newUser,
+        });
+      }
     } catch (err) {
       next(err);
     }

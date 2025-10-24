@@ -1,6 +1,6 @@
 import user from '../models/userModel.js';
 
-export default class otpValidation {
+export default class OtpValidation {
   verifyUser = async (id) => {
     const verifiedUser = await user.findByIdAndUpdate(
       id,
