@@ -28,7 +28,7 @@ const taskSchema = new mongoose.Schema(
   }
 );
 
-taskSchema.query.byTitle = function (name) {
+taskSchema.query = function (name) {
   return this.where({ name: new RegExp(name, 'i') });
 };
 
