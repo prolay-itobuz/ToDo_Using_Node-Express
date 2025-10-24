@@ -1,0 +1,100 @@
+// Import all of Bootstrap’s CSS
+@import "bootstrap/scss/bootstrap";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+body {
+  min-height: 100vh;
+  color: #eee;
+  background-color: #121212;
+}
+
+.toast-section {
+  position: absolute;
+}
+
+.bg-custom {
+  background-color: #3f37c9;
+}
+
+.toast {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  width: 300px;
+  font-weight: 700;
+  z-index: 1000;
+  animation: toast 500ms forwards;
+  p {
+    color: #eee;
+  }
+}
+
+@keyframes toast {
+  from {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.container {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 20px;
+}
+
+/* Header Section */
+
+.profile-header {
+  position: relative;
+
+  margin-bottom: 20px;
+}
+
+.cover-photo {
+  height: 350px;
+
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  border-radius: 8px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.profile-pic {
+  position: absolute;
+
+  top: 60px; /* Increased to show more of the circle */
+
+  left: 50%;
+
+  transform: translateX(-50%); /* Center horizontally */
+
+  width: 200px;
+
+  height: 200px;
+
+  border-radius: 50%;
+
+  background: white; /* Solid white background */
+
+  overflow: hidden;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+  z-index: 2; /* Ensure it's above other elements */
+}

@@ -1,7 +1,6 @@
 import "../../scss/Pages/auth.scss";
 import * as authApi from "../api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
-import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
 const passwordSection = document.getElementById("passwordSection");
@@ -14,10 +13,9 @@ const toastSection = document.getElementById("toastSection");
 const timer = document.getElementById("timer");
 const resendButton = document.getElementById("resendButton");
 const redirectLink = document.getElementById("redirectLink");
+let userId;
 
 resetVerifyForm.addEventListener("submit", formSubmit);
-
-let userId;
 
 async function formSubmit(e) {
   e.preventDefault();
@@ -57,7 +55,9 @@ async function formSubmit(e) {
   }
 }
 
-resendButton.addEventListener("click", async () => {
+resendButton.addEventListener("click", resendOtpBtn);
+
+async function resendOtpBtn() {
   try {
     const resendRequest = await authApi.resendOtp(userId);
 
@@ -77,7 +77,7 @@ resendButton.addEventListener("click", async () => {
       toastSection.innerHTML = "";
     }, 3000);
   }
-});
+}
 
 function startTimer() {
   let timeLeft = 60;

@@ -12,6 +12,7 @@ const toastSection = document.getElementById("toastSection");
 const errMsg = document.getElementById("errMsg");
 const delModal = document.getElementById("staticBackdrop");
 const deleteModal = new bootstrap.Modal(delModal);
+const profileBtn = document.getElementById("profileBtn");
 
 // Display The task Cards
 init();
@@ -93,3 +94,8 @@ function delTask(taskId) {
 }
 
 window.delTask = delTask;
+
+//redirect to profile page
+profileBtn.addEventListener("click", (e) => {
+  window.location.href = "/pages/profile.html";
+});

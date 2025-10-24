@@ -67,3 +67,10 @@ export async function deleteTodo(id) {
 
   return data;
 }
+
+//get user details
+export async function getUserData() {
+  const res = await fetch(BASE_URL + "/user/profile", details.option("POST"));
+
+  return res;
+}
