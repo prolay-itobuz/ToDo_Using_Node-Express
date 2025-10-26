@@ -41,4 +41,16 @@ export default class Helper {
 
     return data;
   };
+
+  fileUpload = (method, file) => {
+    const data = {
+      method: method,
+      headers: {
+         
+      },
+    };
+
+    data.body = file
+    return data;
+  };
 }

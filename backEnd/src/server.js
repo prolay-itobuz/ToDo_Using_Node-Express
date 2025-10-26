@@ -16,6 +16,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(loggerMiddleware);
+app.use('/userUploads', express.static('userUploads'));
 
 app.use('/', todoRoutes);
 app.use('/user/auth', authRoutes);

@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, user-scalable=no"
-    />
-    <title>User Profile</title>
-    <script type="module" src="../js/profile/profile.js" defer></script>
 
-    <link
-      rel="icon"
-      href="https://png.pngtree.com/png-clipart/20221230/original/pngtree-simple-to-do-list-icon-design-vector-png-image_8832876.png"
-      type="image/x-icon"
-    />
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>User Profile</title>
+  <script type="module" src="../js/profile/profile.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="icon"
+    href="https://png.pngtree.com/png-clipart/20221230/original/pngtree-simple-to-do-list-icon-design-vector-png-image_8832876.png"
+    type="image/x-icon" />
+</head>
 
-  <body>
-    <div id="toastSection">
-      <!-- custom toast message -->
-    </div>
+<body>
+  <div id="toastSection">
+    <!-- custom toast message -->
+  </div>
 
-    <form class="container">
-      <!-- Profile Header -->
-
-      <div class="profile-header">
-        <div class="cover-photo"></div>
-        <label class="profile-pic" for="dp">
-          <img
-            class="profile-image w-100 h-100"
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000"
-            alt=""
-          />
+  <form class="container" enctype="multipart/form-data" id="profileForm" method="post">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="cover-photo"></div>
+      <div class="profile-pic-container">
+        <label class="profile-pic" for="fileInput">
+          <img id="userImage" class="profile-image" src="" alt="Profile picture" />
+          <div class="profile-edit-overlay">
+            <span class="edit-text"><i class='fas fa-pen'></i></span>
+          </div>
         </label>
       </div>
-      <input type="file" name="DP" id="dp" class="d-none" />
-      <div class="nav d-flex justify-content-between">
-        <h1 id="username">Prolay Halder</h1>
-        <button
-          type="button"
-          class="bg-danger text-light border-0 rounded-2 mt-1 mb-1"
-        >
-          Logout
+    </div>
+
+    <input type="file" name="DP" id="fileInput" class="d-none" />
+
+    <div class="action-buttons d-flex justify-content-between align-items-center mb-4">
+      <button type="button" id="goBackBtn" class="btn btn-outline-light go-back-btn">
+        ← Go Back
+      </button>
+      <button type="button" id="logoutBth" class="btn btn-danger logout-btn">
+        Logout
+      </button>
+    </div>
+
+    <div class="profile-content">
+      <h1 id="username" class="text-center mb-4"></h1>
+
+      <div class="user-info">
+        <div class="info-item">
+          <span class="info-label">Email:</span>
+          <span class="info-value" id="userEmail"></span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Member Since:</span>
+          <span class="info-value" id="createdAt"></span>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <button class="btn btn-primary update-profile-btn">
+          Update Profile
         </button>
       </div>
+    </div>
+  </form>
+</body>
 
-      <hr />
-      <div class="d-flex flex-column">
-        <label for="">Email : prolayhalder2004@gmail.com</label>
-        <label for="">Member Since : 22th Oct, 2025</label>
-      </div>
-
-      <button class="bg-custom text-light border-0 rounded-2 p-2 mt-3">
-        Update Profile
-      </button>
-    </form>
-  </body>
 </html>
