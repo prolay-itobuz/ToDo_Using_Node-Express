@@ -74,3 +74,10 @@ export async function getUserData() {
 
   return res;
 }
+
+// upload profile image
+export async function uploadPhoto(image) {
+  const res = await fetch(BASE_URL + "/user/profile/upload", details.fileUpload("POST", image));
+
+  return res;
+}
