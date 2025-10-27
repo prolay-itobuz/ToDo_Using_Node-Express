@@ -24,10 +24,10 @@ export default class ProfileController {
     try {
       const userId = getUserId(req);
 
-      if(!req.file) {
-        res.status(400)
+      if (!req.file) {
+        res.status(400);
 
-        throw new Error("No Image Uploaded")
+        throw new Error('No Image Uploaded');
       }
 
       const updatedUser = await user.findByIdAndUpdate(userId, {

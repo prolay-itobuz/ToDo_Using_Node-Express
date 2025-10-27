@@ -16,6 +16,6 @@ const userProfile = new ProfileController();
 
 router.post('/', userProfile.profile);
 
-router.post('/upload/', upload.single('DP'), userProfile.uploadPhoto);
+router.post('/upload', upload.single('DP'), userProfile.uploadPhoto);
 
 export default router;
