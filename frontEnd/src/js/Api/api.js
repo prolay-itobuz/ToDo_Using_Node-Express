@@ -77,7 +77,10 @@ export async function getUserData() {
 
 // upload profile image
 export async function uploadPhoto(image) {
-  const res = await fetch(BASE_URL + "/user/profile/upload", details.fileUpload("POST", image));
+  const res = await fetch(
+    BASE_URL + "/user/profile/upload",
+    details.fileUpload("POST", image)
+  );
 
   return res;
 }

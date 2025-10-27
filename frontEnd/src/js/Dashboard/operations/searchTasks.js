@@ -10,6 +10,7 @@ const toastSection = document.getElementById("toastSection");
 const searchTasks = document.getElementById("searchTasks");
 const searchBtn = document.getElementById("searchBtn");
 const resetBtn = document.getElementById("resetBtn");
+const searchForm = document.getElementById("searchForm");
 
 searchForm.addEventListener("submit", handleSubmit);
 

@@ -1,68 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <title>User Profile</title>
+    <script type="module" src="../js/profile/profile.js" defer></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="icon"
+      href="https://png.pngtree.com/png-clipart/20221230/original/pngtree-simple-to-do-list-icon-design-vector-png-image_8832876.png"
+      type="image/x-icon"
+    />
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>User Profile</title>
-  <script type="module" src="../js/profile/profile.js" defer></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="icon"
-    href="https://png.pngtree.com/png-clipart/20221230/original/pngtree-simple-to-do-list-icon-design-vector-png-image_8832876.png"
-    type="image/x-icon" />
-</head>
-
-<body>
-  <div id="toastSection">
-    <!-- custom toast message -->
-  </div>
-
-  <form class="container" enctype="multipart/form-data" id="profileForm" method="post">
-    <!-- Profile Header -->
-    <div class="profile-header">
-      <div class="cover-photo"></div>
-      <div class="profile-pic-container">
-        <label class="profile-pic" for="fileInput">
-          <img id="userImage" class="profile-image" src="" alt="Profile picture" />
-          <div class="profile-edit-overlay">
-            <span class="edit-text"><i class='fas fa-pen'></i></span>
-          </div>
-        </label>
-      </div>
+  <body>
+    <div id="toastSection">
+      <!-- custom toast message -->
     </div>
 
-    <input type="file" name="DP" id="fileInput" class="d-none" />
-
-    <div class="action-buttons d-flex justify-content-between align-items-center mb-4">
-      <button type="button" id="goBackBtn" class="btn btn-outline-light go-back-btn">
-        ← Go Back
-      </button>
-      <button type="button" id="logoutBth" class="btn btn-danger logout-btn">
-        Logout
-      </button>
-    </div>
-
-    <div class="profile-content">
-      <h1 id="username" class="text-center mb-4"></h1>
-
-      <div class="user-info">
-        <div class="info-item">
-          <span class="info-label">Email:</span>
-          <span class="info-value" id="userEmail"></span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Member Since:</span>
-          <span class="info-value" id="createdAt"></span>
+    <form
+      class="container"
+      enctype="multipart/form-data"
+      id="profileForm"
+      method="post"
+    >
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <div class="cover-photo"></div>
+        <div class="profile-pic-container">
+          <label class="profile-pic" for="fileInput">
+            <img
+              id="userImage"
+              class="profile-image"
+              src=""
+              alt="Profile picture"
+            />
+            <div class="profile-edit-overlay">
+              <span class="edit-text"><i class="fas fa-pen"></i></span>
+            </div>
+          </label>
         </div>
       </div>
 
-      <div class="text-center mt-5">
-        <button class="btn btn-primary update-profile-btn">
-          Update Profile
+      <input type="file" name="DP" id="fileInput" class="d-none" />
+
+      <div
+        class="action-buttons d-flex justify-content-between align-items-center mb-4"
+      >
+        <button
+          type="button"
+          id="goBackBtn"
+          class="btn btn-outline-light go-back-btn"
+        >
+          ← Go Back
+        </button>
+        <button type="button" id="logoutBth" class="btn btn-danger logout-btn">
+          Logout
         </button>
       </div>
-    </div>
-  </form>
-</body>
 
+      <div class="profile-content">
+        <h1 id="username" class="text-center mb-4"></h1>
+
+        <div class="user-info">
+          <div class="info-item">
+            <span class="info-label">Email:</span>
+            <span class="info-value" id="userEmail"></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Member Since:</span>
+            <span class="info-value" id="createdAt"></span>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <button class="btn btn-primary update-profile-btn">
+            Update Profile
+          </button>
+        </div>
+      </div>
+    </form>
+  </body>
 </html>

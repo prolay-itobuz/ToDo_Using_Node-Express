@@ -6,46 +6,59 @@ import { otpSubmit } from "../common/otpForm.js";
 
 const taskTemplates = new displayTemplates();
 const inputs = document.querySelectorAll(".otp-input input");
+const signupForm = document.getElementById("signupForm");
+const username = document.getElementById("username");
+const userMail = document.getElementById("userMail");
+const userPass = document.getElementById("userPass");
+const userConfirmPassword = document.getElementById("userConfirmPassword");
+const otpSection = document.getElementById("otpSection");
+const signupFormSection = document.getElementById("signupFormSection");
+const toastSection = document.getElementById("toastSection");
+const resendButton = document.getElementById("resendButton");
 let userid = "";
 
-signupForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+signupForm.addEventListener("submit", handleSignup);
 
-  const userdata = {
-    username: username.value,
-    email: userMail.value,
-    password: userPass.value,
-    confirmPassword: userConfirmPassword.value,
-  };
+async function handleSignup(e) {
+  try {
+    e.preventDefault();
 
-  if (userdata.password == userdata.confirmPassword) {
-    const userinfo = await authApi.createUser(userdata);
+    const userdata = {
+      username: username.value,
+      email: userMail.value,
+      password: userPass.value,
+      confirmPassword: userConfirmPassword.value,
+    };
 
-    console.log(userinfo);
+    if (userdata.password == userdata.confirmPassword) {
+      const userinfo = await authApi.createUser(userdata);
 
-    if (userinfo.success) {
-      //redirect otp page
-      otpSection.classList.remove("d-none");
-      signupFormSection.classList.add("d-none");
-      toastSection.innerHTML = taskTemplates.successToast(userinfo.message);
+      if (userinfo.success) {
+        //redirect otp page
+        otpSection.classList.remove("d-none");
+        signupFormSection.classList.add("d-none");
+        toastSection.innerHTML = taskTemplates.successToast(userinfo.message);
 
-      const temp = userinfo.user._id || userinfo.user[0]._id;
-      userid = temp.toString();
+        const temp = userinfo.user._id || userinfo.user[0]._id;
+        userid = temp.toString();
 
-      startTimer();
+        startTimer();
+      } else {
+        toastSection.innerHTML = taskTemplates.errorToast(userinfo.message);
+      }
     } else {
-      toastSection.innerHTML = taskTemplates.errorToast(userinfo.message);
+      toastSection.innerHTML = taskTemplates.errorToast(
+        "Confirm password not matched."
+      );
     }
-  } else {
-    toastSection.innerHTML = taskTemplates.errorToast(
-      "Confirm password not matched."
-    );
+  } catch (err) {
+    toastSection.innerHTML = taskTemplates.errorToast(err.message);
+  } finally {
+    setTimeout(() => {
+      toastSection.innerHTML = "";
+    }, 3000);
   }
-
-  setTimeout(() => {
-    toastSection.innerHTML = "";
-  }, 3000);
-});
+}
 
 // otp page js
 otpSection.addEventListener("submit", async (e) => {

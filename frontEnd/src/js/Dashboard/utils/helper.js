@@ -45,12 +45,10 @@ export default class Helper {
   fileUpload = (method, file) => {
     const data = {
       method: method,
-      headers: {
-         
-      },
+      headers: {},
     };
 
-    data.body = file
+    data.body = file;
     return data;
   };
 }

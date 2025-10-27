@@ -5,7 +5,7 @@ const taskTemplates = new Templates();
 const inputs = document.querySelectorAll(".otp-input input");
 const toastSection = document.getElementById("toastSection");
 const timer = document.getElementById("timer");
-
+const resendButton = document.getElementById("resendButton");
 let timeLeft = 60;
 let timerId;
 

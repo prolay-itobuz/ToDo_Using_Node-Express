@@ -3,8 +3,14 @@ import * as authApi from "../api/authApi.js";
 import displayTemplates from "../Dashboard/utils/templates.js";
 
 const taskTemplates = new displayTemplates();
+const signinForm = document.getElementById("signinForm");
+const userMail = document.getElementById("userMail");
+const userPass = document.getElementById("userPass");
+const toastSection = document.getElementById("toastSection");
 
-signinForm.addEventListener("submit", async (e) => {
+signinForm.addEventListener("submit", handleLogin);
+
+async function handleLogin(e) {
   e.preventDefault();
 
   const data = {
@@ -34,4 +40,4 @@ signinForm.addEventListener("submit", async (e) => {
       toastSection.innerHTML = "";
     }, 3000);
   }
-});
+}
