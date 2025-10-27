@@ -1,6 +1,5 @@
 import { userSchema } from '../schema/userSchema.js';
 import { ValidationError } from 'yup';
-import bcrypt from 'bcrypt';
 
 export default class UserValidation {
   userCreateRequest = async (req, res, next) => {
@@ -15,8 +14,6 @@ export default class UserValidation {
         abortEarly: false, // return all validation errors
         stripUnknown: true, // remove unexpected fields
       });
-
-      req.body.password = await bcrypt.hash(req.body.password, 10);
 
       next();
     } catch (err) {

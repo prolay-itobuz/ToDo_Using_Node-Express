@@ -13,9 +13,10 @@ const tokenGenerator = new TokenGen();
 export default class AuthController {
   signup = async (req, res, next) => {
     try {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+
       const newUser = new user(req.body);
       const email = req.body.email;
-
       const appUser = await user.findOne({ email });
 
       if (appUser && appUser.isVerified) {
