@@ -7,7 +7,7 @@ import cors from 'cors';
 import connectDB from './config/db.js';
 import loggerMiddleware from './validations/middlewares/logerMiddlewere.js';
 
-const port = configuration.PORT;
+const port = configuration.PORT || 8000;
 
 connectDB();
 
