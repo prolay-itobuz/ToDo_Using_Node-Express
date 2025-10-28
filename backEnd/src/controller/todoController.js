@@ -1,7 +1,7 @@
 import Task from '../models/taskModel.js';
 import getUserId from '../utils/validateToken.js';
 
-export default class controllerClass {
+export default class ControllerClass {
   getAllTodos = async (req, res, next) => {
     try {
       const userId = getUserId(req);

@@ -1,11 +1,11 @@
 import express from 'express';
 
-import controllerClass from '../controller/todoControler.js';
+import ControllerClass from '../controller/todoController.js';
 import ToDoValidations from '../validations/middlewares/todoValidations.js';
 
 const router = express.Router();
 const validationMiddleware = new ToDoValidations();
-const controller = new controllerClass();
+const controller = new ControllerClass();
 
 router.get('/', controller.getAllTodos);
 
