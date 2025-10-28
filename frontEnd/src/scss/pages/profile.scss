@@ -1,0 +1,222 @@
+// Import all of Bootstrap’s CSS
+@import "bootstrap/scss/bootstrap";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+body {
+  min-height: 100vh;
+  color: #eee;
+  background-color: #121212;
+  font-family: 'Poppins', sans-serif;
+}
+
+.toast-section {
+  position: absolute;
+}
+
+.bg-custom {
+  background-color: #3f37c9;
+}
+
+.toast {
+  position: fixed;
+  top: 50px;
+  right: 20px;
+  width: 300px;
+  font-weight: 700;
+  z-index: 1000;
+  animation: toast 500ms forwards;
+  p {
+    color: #eee;
+  }
+}
+
+@keyframes toast {
+  from {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header Section */
+.profile-header {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.cover-photo {
+  height: 250px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-pic-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: -100px;
+}
+
+.profile-pic {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: white;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 4px solid #121212;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.profile-edit-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+}
+
+.edit-text {
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.profile-pic:hover {
+  .profile-edit-overlay {
+    opacity: 1;
+  }
+  
+}
+
+.action-buttons {
+  margin-bottom: 30px;
+  
+  .go-back-btn {
+    border-color: #667eea;
+    color: #667eea;
+    padding: 8px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: #667eea;
+      color: white;
+    }
+  }
+
+}
+
+.profile-content {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.info-label {
+  font-weight: 600;
+  color: #667eea;
+}
+
+.info-value {
+  color: #eee;
+  font-weight: 400;
+}
+
+.update-profile-btn {
+  background: linear-gradient(135deg, #3f37c9, #667eea);
+  border: none;
+  padding: 12px 40px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .cover-photo {
+    height: 200px;
+  }
+  
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .profile-pic-container {
+    margin-top: -75px;
+  }
+  
+  #username {
+    font-size: 2rem;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 15px;
+    
+    .go-back-btn, .logout-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
