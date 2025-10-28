@@ -7,7 +7,7 @@ import cors from 'cors';
 import connectDB from './config/db.js';
 import loggerMiddleware from './validations/middlewares/logerMiddlewere.js';
 
-const port = configuration.PORT || 8000;
+const port = configuration.PORT;
 
 connectDB();
 
@@ -17,10 +17,6 @@ app.use(cors());
 app.use(express.json());
 app.use(loggerMiddleware);
 app.use('/userUploads', express.static('userUploads'));
-
-app.get('/test', (req, res) => {
-  res.send('Express App Responded');
-});
 
 app.use('/', todoRoutes);
 app.use('/user/auth', authRoutes);
