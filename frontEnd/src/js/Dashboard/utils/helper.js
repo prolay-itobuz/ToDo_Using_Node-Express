@@ -1,3 +1,13 @@
+const completeTasks = document.getElementById("completeTasks");
+const importantTasks = document.getElementById("importantTasks");
+const regularTasks = document.getElementById("regularTasks");
+const allTasks = document.getElementById("allTasks");
+const searchTasks = document.getElementById("searchTasks");
+const importantBtn = document.getElementById("importantBtn");
+const activeButton = document.getElementById("activeButton");
+const completeBtn = document.getElementById("completeBtn");
+const allBtn = document.getElementById("allBtn");
+
 export default class Helper {
   hideAllCards = () => {
     completeTasks.classList.add("d-none");

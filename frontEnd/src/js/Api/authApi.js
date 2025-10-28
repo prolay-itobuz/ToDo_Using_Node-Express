@@ -1,12 +1,12 @@
 import Helper from "../dashboard/utils/helper.js";
 
-const authAPI = "http://localhost:8000/user/auth";
+const BASE_URL = "http://localhost:8000/user/auth";
 const details = new Helper();
 
 // Create User
 export async function createUser(userDetails) {
   const res = await fetch(
-    authAPI + "/signup",
+    BASE_URL + "/signup",
     details.option("POST", userDetails)
   );
 
@@ -16,7 +16,7 @@ export async function createUser(userDetails) {
 
 export async function verifyOtp(id, verifyDetails) {
   const res = await fetch(
-    authAPI + "/otp/" + id,
+    BASE_URL + "/otp/" + id,
     details.option("POST", verifyDetails)
   );
 
@@ -25,7 +25,7 @@ export async function verifyOtp(id, verifyDetails) {
 }
 
 export async function resendOtp(id) {
-  const res = await fetch(authAPI + "/resend/" + id, details.option("POST"));
+  const res = await fetch(BASE_URL + "/resend/" + id, details.option("POST"));
 
   const userinfo = await res.json();
   return userinfo;
@@ -33,7 +33,7 @@ export async function resendOtp(id) {
 
 export async function reset(resetFormDetails) {
   const res = await fetch(
-    authAPI + "/reset",
+    BASE_URL + "/reset",
     details.option("POST", resetFormDetails)
   );
 
@@ -42,7 +42,10 @@ export async function reset(resetFormDetails) {
 }
 
 export async function loginUser(userdata) {
-  const res = await fetch(authAPI + "/login", details.option("POST", userdata));
+  const res = await fetch(
+    BASE_URL + "/login",
+    details.option("POST", userdata)
+  );
 
   const userinfo = await res.json();
   return userinfo;
