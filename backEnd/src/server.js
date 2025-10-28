@@ -18,6 +18,10 @@ app.use(express.json());
 app.use(loggerMiddleware);
 app.use('/userUploads', express.static('userUploads'));
 
+app.get('/test', (req, res) => {
+  res.send('Express App Responded');
+});
+
 app.use('/', todoRoutes);
 app.use('/user/auth', authRoutes);
 app.use('/user/profile', profileRoutes);
