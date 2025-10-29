@@ -1,6 +1,6 @@
 import "../../scss/Pages/profile.scss";
 import { getUserData } from "../api/api.js";
-import Templates from "../Dashboard/utils/templates.js";
+import Templates from "../Dashboard/utils/Templates.js";
 import * as api from "../api/api.js";
 
 const taskTemplates = new Templates();

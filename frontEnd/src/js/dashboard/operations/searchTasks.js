@@ -1,6 +1,6 @@
-import Helper from "../utils/helper.js";
+import Helper from "../utils/Helper.js";
 import * as api from "../../api/api.js";
-import Templates from "../utils/templates.js";
+import Templates from "../utils/Templates.js";
 import init from "./displayTasks.js";
 
 const helper = new Helper();

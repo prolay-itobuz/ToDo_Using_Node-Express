@@ -1,5 +1,5 @@
 import customFetch from "./interceptor.js";
-import Helper from "../dashboard/utils/helper.js";
+import Helper from "../dashboard/utils/Helper.js";
 
 const BASE_URL = "http://localhost:8000";
 const details = new Helper();

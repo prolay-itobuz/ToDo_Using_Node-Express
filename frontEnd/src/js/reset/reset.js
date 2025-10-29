@@ -1,6 +1,6 @@
 import "../../scss/Pages/auth.scss";
 import * as authApi from "../api/authApi.js";
-import displayTemplates from "../Dashboard/utils/templates.js";
+import displayTemplates from "../Dashboard/utils/Templates.js";
 
 const taskTemplates = new displayTemplates();
 const passwordSection = document.getElementById("passwordSection");

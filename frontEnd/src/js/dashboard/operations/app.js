@@ -1,7 +1,7 @@
 import * as bootstrap from "bootstrap";
 import * as api from "../../api/api.js";
 import init from "./displayTasks.js";
-import Templates from "../utils/templates.js";
+import Templates from "../utils/Templates.js";
 
 const taskTemplates = new Templates();
 const addTodoForm = document.getElementById("addTodoForm");

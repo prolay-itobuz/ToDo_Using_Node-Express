@@ -1,7 +1,7 @@
 // Display The task Cards
 import * as api from "../../api/api.js";
-import Templates from "../utils/templates.js";
-import Helper from "../utils/helper.js";
+import Templates from "../utils/Templates.js";
+import Helper from "../utils/Helper.js";
 
 const taskTemplates = new Templates();
 const helper = new Helper();
