@@ -1,7 +1,7 @@
 import express from 'express';
-import AuthController from '../controller/authController.js';
-import UserValidation from '../validations/middlewares/userValidation.js';
-import ResetFormValidation from '../validations/middlewares/resetFormValidation.js';
+import AuthController from '../controller/AuthController.js';
+import UserValidation from '../validations/middlewares/UserValidation.js';
+import ResetFormValidation from '../validations/middlewares/ResetFormValidation.js';
 
 const authController = new AuthController();
 const userValidationRequest = new UserValidation();

@@ -1,9 +1,9 @@
 import user from '../models/userModel.js';
 import otp from '../models/otpModel.js';
 import genOtp from '../utils/genOtp.js';
-import OtpValidation from '../utils/otpValidation.js';
+import OtpValidation from '../utils/OtpValidation.js';
 import bcrypt from 'bcrypt';
-import TokenGen from '../utils/tokenGen.js';
+import TokenGen from '../utils/TokenGen.js';
 import jwt from 'jsonwebtoken';
 import configuration from '../config/config.js';
 

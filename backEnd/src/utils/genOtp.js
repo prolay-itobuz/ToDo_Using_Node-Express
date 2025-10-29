@@ -1,4 +1,4 @@
-import SendMail from './mailSender.js';
+import SendMail from './SendMail.js';
 import otp from '../models/otpModel.js';
 
 const mailer = new SendMail();

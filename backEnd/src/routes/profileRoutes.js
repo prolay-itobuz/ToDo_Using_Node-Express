@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import ProfileController from '../controller/profileController.js';
+import ProfileController from '../controller/ProfileController.js';
 
 const storage = multer.diskStorage({
   destination: './userUploads',
